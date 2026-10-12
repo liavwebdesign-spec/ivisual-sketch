@@ -1,0 +1,194 @@
+/* ויזואל אינטראקטיב · בסיס משותף לשלוש הסקיצות (א/ב/ג)
+   מסגרת נוזלית MV:fluid. כל סקיצה טוענת את הקובץ הזה ואחריו את הקובץ שלה, שמגדיר צבעים, פונטים וגדלים מכוילים. */
+
+/* ---------- פונטים ----------
+   עברית מפונטאפ עם unicode-range בלי A-Z/a-z, והלטינית נופלת ל-Clash עם size-adjust (library/fonts.md).
+   Google Sans עם לטינית משלו, בלי unicode-range. */
+/* הספרות של אלקנה ושל ארז מסוגננות עד שלא קוראים "103" (ה-1 של ארז נראה כמו I): הספרות נופלות ל-Clash יחד עם הלטינית */
+@font-face{font-family:'Elkanah';src:url('fonts/FUP-Elkanah-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap;
+  unicode-range:U+0000-002F,U+003A-0040,U+005B-0060,U+007B-00BF,U+0590-05FF,U+2000-206F,U+20AA,U+FB1D-FB4F}
+@font-face{font-family:'Erez';src:url('fonts/FUP-Erez-Bold.woff2') format('woff2');font-weight:700;font-display:swap;
+  unicode-range:U+0000-002F,U+003A-0040,U+005B-0060,U+007B-00BF,U+0590-05FF,U+2000-206F,U+20AA,U+FB1D-FB4F}
+@font-face{font-family:'Hatzor';src:url('fonts/FUP-Hatzor-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap;
+  unicode-range:U+0000-0040,U+005B-0060,U+007B-00BF,U+0590-05FF,U+2000-206F,U+20AA,U+FB1D-FB4F}
+@font-face{font-family:'Galil';src:url('fonts/FUP-Galil-Regular.woff2') format('woff2');font-weight:400;font-display:swap;
+  unicode-range:U+0000-0040,U+005B-0060,U+007B-00BF,U+0590-05FF,U+2000-206F,U+20AA,U+FB1D-FB4F}
+@font-face{font-family:'Galil';src:url('fonts/FUP-Galil-Medium.woff2') format('woff2');font-weight:500;font-display:swap;
+  unicode-range:U+0000-0040,U+005B-0060,U+007B-00BF,U+0590-05FF,U+2000-206F,U+20AA,U+FB1D-FB4F}
+/* בגין (סקיצה ד): עברית, ספרות וסימנים; הלטינית נופלת ל-Google Sans */
+@font-face{font-family:'Begin';src:url('fonts/FUP-Begin-Bold.woff2') format('woff2');font-weight:700;font-display:swap;
+  unicode-range:U+0000-0040,U+005B-0060,U+007B-00BF,U+0590-05FF,U+2000-206F,U+20AA,U+FB1D-FB4F}
+@font-face{font-family:'Google Sans';src:url('fonts/GoogleSans-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Google Sans';src:url('fonts/GoogleSans-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Clash Display';src:url('fonts/ClashDisplay-Semibold.woff2') format('woff2');font-weight:600 800;font-display:swap;size-adjust:110%}
+@font-face{font-family:'Clash Grotesk';src:url('fonts/ClashGrotesk-Regular.woff2') format('woff2');font-weight:400 500;font-display:swap;size-adjust:112%}
+
+/* ---------- מסגרת נוזלית ---------- */
+:root{
+  --gutter: clamp(24px, 5vw, 96px);
+  --sec: clamp(64px, 7vw, 160px);
+  --sec-loose: clamp(96px, 10vw, 224px);
+  --sec-breath: clamp(112px, 18vw, 320px);
+  --gap-s: clamp(14px, 1vw, 24px);
+  --gap-m: clamp(20px, 2vw, 48px);
+  --measure: clamp(560px, 36vw, 880px);
+  --ease: cubic-bezier(.2,.6,.2,1);
+  --ease-io: cubic-bezier(.76,0,.24,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{margin:0;font-family:var(--f-body);font-size:var(--fs-body);line-height:var(--lh-body);color:var(--ink);background:var(--bg);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,video,svg{display:block;max-width:100%}
+img{height:auto}
+a{color:inherit}
+button{font:inherit;color:inherit}
+h1,h2,h3,p{margin:0}
+h1,h2,.stat{font-family:var(--f-display);font-weight:var(--w-display)}
+h1{font-size:var(--fs-h1);line-height:var(--lh-h1);letter-spacing:-.02em;text-wrap:balance}
+h2{font-size:var(--fs-h2);line-height:var(--lh-h2);letter-spacing:-.015em;text-wrap:balance}
+h3{font-family:var(--f-body);font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--w-strong)}
+strong,b{font-weight:var(--w-strong)}
+.lead{font-size:var(--fs-lead);line-height:var(--lh-lead)}
+.meta{font-size:var(--fs-meta);line-height:1.45}
+.measure{max-width:var(--measure)}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:6px}
+
+/* דלג לתוכן: עצירת הטאב הראשונה */
+.skip{position:fixed;inset-inline-start:16px;top:-80px;z-index:100;display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:12px;
+  background:var(--ink);color:var(--bg);font-weight:var(--w-strong);text-decoration:none}
+.skip:focus{top:16px}
+
+/* ---------- reveal (motion.md 2: keyframes, 16px, 0.5s) ----------
+   מוסתר רק כשהסקריפט רץ ואין הפחתת תנועה (html.rv-js), ו-failsafe מציג הכול אחרי 2.5 שניות */
+@keyframes rv-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes rv-fs{to{opacity:1;transform:none}}
+.rv-js [data-rv]{opacity:0;animation:rv-fs 0s 2.5s forwards}
+.rv-js [data-rv].in{animation:rv-in .5s var(--ease) both;animation-delay:calc(var(--i,0) * 70ms)}
+
+/* ---------- הדר: headroom ---------- */
+.hd.is-hidden,.hd.is-hidden::before,.hd.is-hidden > *{box-shadow:none!important}
+
+/* ================= רכיבים משותפים לשלוש הסקיצות =================
+   כל כיוון מגדיר את הטוקנים: --field (רקע שדה), --field-line, --field-ring (פוקוס), --chip-on/--chip-on-ink, --ft-hover */
+
+/* ---------- טופס: ולידציה בשורה MV:cv9 ---------- */
+.cf{--err:color-mix(in srgb,#d23b22 72%,var(--ink));font-size:16px;line-height:1.6}
+.cf :where(p,li,small){text-wrap:pretty}
+.cf form{display:grid;gap:20px}
+.cf-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.cf-sum{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease)}
+.cf-sum.is-open{grid-template-rows:1fr}
+.cf-sum>div{overflow:hidden;min-height:0}
+.cf-sum-in{padding:16px 20px;border-radius:16px;background:color-mix(in srgb,var(--err) 9%,var(--field))}
+.cf-sum:focus{outline:0}
+/* הטבעת בפנים: outline היה נחתך במסילה שפותחת את התיבה */
+.cf-sum:focus-visible .cf-sum-in{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--err) 45%,transparent)}
+.cf-sum b{display:block;margin-bottom:6px;color:var(--err)}
+.cf-sum ul{margin:0;padding-inline-start:20px}
+.cf-sum a{font-size:15px;text-underline-offset:3px}
+.cf-f label,.cf-need legend{display:block;margin-bottom:8px;padding:0;font-size:14px;font-weight:var(--w-strong)}
+.cf label small,.cf legend small{font-weight:400;opacity:.78}
+.cf-in{position:relative}
+.cf input:not([type=checkbox]),.cf textarea{display:block;width:100%;min-height:52px;padding:0 16px;padding-inline-end:48px;border:0;border-radius:var(--r-field,14px);
+  background:var(--field);font:inherit;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--field-line);transition:box-shadow .18s var(--ease)}
+.cf textarea{min-height:104px;padding:14px 16px;resize:vertical}
+.cf input:not([type=checkbox]):focus,.cf textarea:focus{outline:0;box-shadow:inset 0 0 0 2px var(--field-ring)}
+/* שדה LTR (טלפון, מייל) מתחיל משמאל, איפה שהוי יושב בעמוד RTL: המקום עובר לתחילת השדה */
+.cf input[dir="ltr"]{padding-inline:48px 16px}
+.cf-f.is-bad input{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--err) 70%,transparent)}
+.cf-f.is-bad input:focus{box-shadow:inset 0 0 0 2px var(--err)}
+.cf-tick{position:absolute;inset-inline-end:14px;top:50%;width:20px;height:20px;margin-top:-10px;color:var(--ok,var(--field-ring));opacity:0;transition:opacity .2s var(--ease)}
+.cf-tick path{stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset .3s var(--ease) .05s}
+.cf-f.is-ok .cf-tick{opacity:1}
+.cf-f.is-ok .cf-tick path{stroke-dashoffset:0}
+.cf-err,.cf-sug{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s var(--ease)}
+.cf-err>p,.cf-sug>div{overflow:hidden;min-height:0;margin:0}
+.cf-f.is-bad .cf-err,.cf-sug.is-open{grid-template-rows:1fr}
+.cf-err p{display:flex;gap:8px;align-items:flex-start;padding-top:8px;font-size:14px;line-height:1.45;color:var(--err)}
+.cf-err svg{width:16px;height:16px;flex:none;margin-top:1px}
+.cf-sug button{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:8px;padding:0 14px;border:0;border-radius:999px;cursor:pointer;
+  background:color-mix(in srgb,var(--field-ring) 14%,transparent);font-size:14px;color:var(--ink)}
+.cf-sug button b{direction:ltr;unicode-bidi:isolate}
+.cf-need{margin:0;padding:0;border:0;min-width:0}
+.cf-chips{display:flex;flex-wrap:wrap;gap:8px}
+.cf-chip{position:relative;display:inline-flex}
+.cf-chip input{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer}
+.cf-chip span{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;background:var(--field);box-shadow:inset 0 0 0 1.5px var(--field-line);
+  font-size:15px;transition:background-color .18s var(--ease),color .18s var(--ease),box-shadow .18s var(--ease)}
+.cf-chip input:checked+span{background:var(--chip-on);color:var(--chip-on-ink);box-shadow:none}
+.cf-chip input:focus-visible+span{outline:2px solid var(--focus);outline-offset:3px}
+@media (hover:hover) and (pointer:fine){.cf-chip input:not(:checked):hover+span{box-shadow:inset 0 0 0 1.5px var(--field-ring)}}
+.cf-end{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px}
+.cf-privacy{font-size:13px;opacity:.8}
+.cf-privacy a{text-underline-offset:3px}
+.cf-done{display:none;gap:6px;padding:24px;border-radius:18px;background:color-mix(in srgb,var(--field-ring) 12%,var(--field))}
+.cf-done b{font-size:20px}
+.cf-done small{font-size:13px;opacity:.75}
+.cf-done:focus,.cf-done:focus-visible{outline:0}
+.cf.is-sent form{display:none}
+.cf.is-sent .cf-done{display:grid;animation:cf-in .4s var(--ease)}
+@keyframes cf-in{from{opacity:0;transform:translateY(12px)}}
+@media (max-width:640px){.cf-grid{grid-template-columns:1fr}.cf-end .btn{width:100%}}
+
+/* ---------- הגדלת צילום מסך ---------- */
+.lb{--focus:#B8D43A;position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:#F3F1EC;overflow:hidden}
+.lb[open]{display:block}
+.lb::backdrop{background:rgba(12,11,13,.9)}
+.lb-in{display:grid;grid-template-rows:minmax(0,1fr) auto;justify-items:center;gap:14px;height:100%;padding:clamp(16px,3vw,40px)}
+.lb-fig{align-self:center;margin:0;width:min(var(--lbw,900px),100%);max-height:100%;overflow:auto;overscroll-behavior:contain;border-radius:14px;background:#fff}
+.lb-fig img{width:100%;height:auto}
+.lb-bar{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;width:min(1100px,100%)}
+.lb-cap{font-size:15px;opacity:.86}
+.lb-ctl{display:flex;align-items:center;gap:8px;flex:none}
+.lb-btn{display:grid;place-items:center;width:48px;height:48px;border:0;border-radius:999px;background:rgba(243,241,236,.12);color:inherit;cursor:pointer;transition:background-color .18s var(--ease)}
+.lb-btn[hidden]{display:none}
+.lb-btn svg{width:20px;height:20px}
+.lb-prev svg{transform:scaleX(-1)}
+.lb-n{min-width:8ch;text-align:center;font-size:14px;opacity:.8;font-variant-numeric:tabular-nums}
+@media (hover:hover) and (pointer:fine){.lb-btn:hover{background:rgba(243,241,236,.22)}}
+@media (max-width:640px){.lb-bar{flex-wrap:wrap}.lb-ctl{width:100%;justify-content:space-between}}
+
+/* ---------- פס רץ C10: שני סטים זהים, כל אחד לפחות ברוחב המסך, ולכן הלולאה רציפה ---------- */
+.mq{position:relative;overflow:hidden}
+.mq-track{display:flex;width:max-content;animation:mq var(--mq-dur,60s) linear infinite}
+.mq.rev .mq-track{animation-direction:reverse}
+.mq-set{display:flex;flex-shrink:0;min-width:100vw;justify-content:space-around;align-items:center;gap:var(--mq-gap,56px);padding-inline:calc(var(--mq-gap,56px) / 2);white-space:nowrap}
+@keyframes mq{to{transform:translateX(50%)}}
+@media (hover:hover) and (pointer:fine){.mq:hover .mq-track{animation-play-state:paused}}
+.mq:focus-within .mq-track,.mq-wrap.is-paused .mq-track{animation-play-state:paused}
+.mq-pause{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:0;border-radius:999px;cursor:pointer;font-size:14px;background:transparent;color:inherit;box-shadow:inset 0 0 0 1px currentColor}
+.mq-pause svg{width:14px;height:14px}
+.mq-pause .ic-play,.mq-wrap.is-paused .mq-pause .ic-pause{display:none}
+.mq-wrap.is-paused .mq-pause .ic-play{display:block}
+@media (prefers-reduced-motion:reduce){.mq-track{animation:none}.mq-pause{display:none}}
+
+/* ---------- פוטר: האטומים שבכל פוטר (MV:ft1/ft8) ---------- */
+.ftw{font-size:15px;line-height:1.6}
+.ftw a{color:inherit;text-decoration:none;transition:color .15s var(--ease),opacity .15s var(--ease)}
+.ftw h3{margin:0 0 12px;font-family:var(--f-body);font-size:14px;font-weight:var(--w-strong);line-height:1.4;opacity:.62}
+.ftw :is(h2,h3){text-wrap:balance}
+.ftw ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ft-tel{unicode-bidi:isolate;font-weight:var(--w-strong);justify-self:start;white-space:nowrap}
+.ft-legal{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;font-size:13px}
+.ft-legal p{margin:0}
+.ft-legal>p:not(.ft-credit){opacity:.7}
+.ft-legal nav{display:flex;flex-wrap:wrap;gap:8px 20px}
+.ft-legal nav a{opacity:.7}
+.ft-credit{margin-inline-start:auto!important}
+.ft-credit a{opacity:.7}
+@media (hover:hover) and (pointer:fine){.ftw a:not(.btn):hover,.ft-legal nav a:hover,.ft-credit a:hover{opacity:1;color:var(--ft-hover)}}
+@media (max-width:760px){.ft-credit{margin-inline-start:0!important;flex-basis:100%}}
+/* טלפון: כל קישור בפוטר הוא שורה של 44px */
+@media (pointer:coarse),(max-width:760px){
+  .ftw a:not(.btn){display:inline-flex;align-items:center;min-height:44px}
+  .ftw ul li{display:flex;align-items:center;min-height:44px}
+  .ftw ul{gap:0}
+  .ft-legal,.ft-legal nav{row-gap:0}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
+}

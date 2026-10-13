@@ -325,7 +325,7 @@ button.lnk{padding:0;border:0;background:none;cursor:pointer;font:inherit;font-w
 .sl-view{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:var(--bg-2)}
 .sl-view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;scale:1.14;transition:opacity .45s var(--ease),scale .9s var(--ease)}
 .sl-view img.on{opacity:1;scale:1}
-.cr-w{margin-top:clamp(56px,6vw,128px)}
+.xw{--lens:clamp(120px,10vw,196px);--sr:calc(var(--lens) * 1.15);margin-top:clamp(56px,6vw,128px)}
 .cr-h{margin-bottom:clamp(14px,1.4vw,24px);font-size:var(--fs-meta);color:var(--muted)}
 .cr{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;row-gap:4px;font-size:clamp(18px,1vw + .45rem,30px);line-height:1.55}
 .cr li{display:inline-flex;align-items:center}
@@ -335,6 +335,24 @@ button.lnk{padding:0;border:0;background:none;cursor:pointer;font:inherit;font-w
 .cc.pub{color:var(--ink)}
 @media (hover:hover) and (pointer:fine){.cc:hover{color:var(--ink);text-decoration-color:var(--lime)}}
 .cc:focus-visible{outline-offset:4px}
+/* העדשה על קיר השמות (MV:g101 + MV:g138): השמות בהירים, סביב העדשה עותק כהה שנחתך לעיגול */
+.xw-fig{position:relative}
+.xw-ink,.xw-lens{display:none;pointer-events:none}
+@media (min-width:768px){.xw.mv-on .xw-pin{display:flex;flex-direction:column;justify-content:center;min-height:100svh}}
+.xw.mv-on .cr-h{text-align:center;margin-bottom:calc(var(--lens) * .5 + 8px)}
+.xw.mv-on .cr{justify-content:center;font-size:clamp(20px,1.7vw + .3rem,48px);line-height:1.62}
+.xw.mv-on #ctab .cc,.xw.mv-on #ctab .cc.pub{color:#CFCBC4}
+.xw.mv-on #ctab li::after{background:#CFCBC4;opacity:1}
+.xw.mv-on .xw-ink{display:block;position:absolute;inset:0;clip-path:circle(var(--sr) at var(--lx,50%) var(--ly,50%))}
+.xw-ink .cc{color:var(--soft)}
+.xw-ink .cc.pub{color:var(--ink)}
+.xw-ink li::after{background:var(--muted)!important}
+.xw.mv-on .xw-lens{--peek:var(--lens);display:block;position:absolute;left:0;top:0;z-index:2;width:var(--lens);height:var(--lens);will-change:transform}
+.xw-tag{display:none}
+.xw.mv-on .xw-tag{display:flex;justify-content:center;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin-top:clamp(18px,2vw,36px);min-height:1.6em;font-size:var(--fs-meta);line-height:1.35;text-align:center}
+.xw-tag b::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--lime);margin-inline-end:8px;vertical-align:.15em}
+.xw-tag b{font-weight:500;color:var(--ink)}
+.xw-tag span{color:var(--muted)}
 
 /* ================= מה מספרים עלינו: מסלול צילומים שנע לרוחב עם הגלילה ================= */
 .said{padding:var(--sec) 0;overflow-x:clip}
@@ -551,6 +569,8 @@ button.lnk{padding:0;border:0;background:none;cursor:pointer;font:inherit;font-w
   .sl-eye{--peek:clamp(92px,26vw,130px)}
   .sl-mid{--sl-fs:clamp(28px,8.6vw,46px)}
   .cr{font-size:15px;line-height:1.7}
+  .xw{--lens:96px}
+  .xw.mv-on .cr{font-size:16px;line-height:1.75}
   .sd-head{grid-template-columns:1fr;grid-template-areas:"k" "h" "p"}
   .sd-h{flex-direction:column;align-items:flex-start;gap:10px}
   .sd-h .big{font-size:clamp(84px,26vw,130px)}

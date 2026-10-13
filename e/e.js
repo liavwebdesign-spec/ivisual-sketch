@@ -454,6 +454,64 @@
     addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){if(doc.clientWidth!==lw){lw=doc.clientWidth;fill();ScrollTrigger.refresh();}},200);});
   })();
 
+  /* ================= כל הלקוחות: העדשה נוסעת על קיר השמות (MV:g101), וסביבה זרקור שמחדד אותם (MV:g138) =================
+     שכבת השמות הבהירה היא הקישורים עצמם. מעליה עותק כהה שנחתך לעיגול סביב העדשה, ובתוך העדשה עבודה של הלקוח הקרוב.
+     העדשה עוצרת על הגופים הציבוריים, ומסיימת במסעדה. בלי תנועה: רשימה רגילה, בלי עדשה */
+  function xrayWall(order,depsTxt){
+    var root=document.getElementById("xw"),pin=root.querySelector(".xw-pin"),fig=document.getElementById("xw-fig");
+    var ct=document.getElementById("ctab"),ink=document.getElementById("xw-ink"),lens=document.getElementById("xw-lens");
+    var view=document.getElementById("xw-view"),tag=document.getElementById("xw-tag");
+    ink.innerHTML='<ul class="cr">'+ct.innerHTML.replace(/<a /g,'<span ').replace(/<\/a>/g,'</span>').replace(/ href="#work"/g,'')+'</ul>';
+    var inkLis=[].slice.call(ink.querySelectorAll("li")),lis=[].slice.call(ct.children);
+    // תמונה אחת לכל לקוח, נטענת רק כשהעדשה מגיעה אליו
+    var pics=order.map(function(c){var w=c.works.filter(function(q){return q.quality!=="poor";})[0]||c.works[0];return w.src;});
+    var imgs=[];
+    function pic(i){
+      if(!imgs[i]){var im=document.createElement("img");im.alt="";im.decoding="async";im.src=pics[i];view.appendChild(im);imgs[i]=im;}
+      return imgs[i];
+    }
+    // העצירות: עד שישה ציבוריים, ואחריהם הלקוח האחרון בתחום המסעדות
+    var stopIdx=order.map(function(c,i){return c.pub?i:-1;}).filter(function(i){return i>-1;}).slice(0,6);
+    var food=order.map(function(c,i){return /מסעד|קייטרינג|אוכל/.test(c.field||"")?i:-1;}).filter(function(i){return i>-1;}).pop();
+    if(food!=null&&stopIdx.indexOf(food)<0)stopIdx.push(food);
+    if(stopIdx.length<2)stopIdx=[0,order.length-1];
+    var cur=-1,shown=null;
+    function setCur(i){
+      if(i===cur)return;
+      if(cur>-1)inkLis[cur].classList.remove("on");
+      cur=i;inkLis[i].classList.add("on");
+      var im=pic(i);if(shown&&shown!==im)shown.classList.remove("on");im.classList.add("on");shown=im;
+      var c=order[i];tag.innerHTML='<b>'+c.name+'</b><span>'+depsTxt(c)+(c.pub?' · גוף ציבורי':'')+'</span>';
+    }
+    if(!hasGsap)return;
+    // בטלפון הרשימה גבוהה מהמסך, ולכן בלי נעילה: העדשה נוסעת תוך כדי גלילה רגילה
+    gsap.matchMedia().add({ok:"(prefers-reduced-motion: no-preference)",wide:"(min-width:768px)"},function(cx){
+      if(!cx.conditions.ok)return;
+      root.classList.add("mv-on");
+      var o={x:0,y:0},pts=[],cs=[];
+      // offsetParent של הקישור הוא המסגרת עצמה, ולכן המיקום יחסי אליה
+      function center(li){var a=li.firstChild;return {x:a.offsetLeft+a.offsetWidth/2,y:a.offsetTop+a.offsetHeight/2};}
+      function paint(){
+        fig.style.setProperty("--lx",o.x+"px");fig.style.setProperty("--ly",o.y+"px");
+        gsap.set(lens,{x:o.x,y:o.y,xPercent:-50,yPercent:-50});
+        // הלקוח הקרוב ביותר למרכז העדשה
+        var b=0,bd=1e9;for(var i=0;i<cs.length;i++){var dx=cs[i].x-o.x,dy=cs[i].y-o.y,d=dx*dx+dy*dy;if(d<bd){bd=d;b=i;}}
+        setCur(b);
+      }
+      function measure(){
+        cs=lis.map(center);pts=stopIdx.map(function(i){return cs[i];});
+        tl.clear();o.x=pts[0].x;o.y=pts[0].y;
+        pts.slice(1).forEach(function(p){tl.to(o,{x:p.x,y:p.y,duration:1,ease:"power2.inOut"}).to(o,{duration:.35});});
+        paint();
+      }
+      var tl=gsap.timeline({onUpdate:paint,scrollTrigger:cx.conditions.wide?{trigger:pin,start:"center center",end:"+=220%",pin:true,scrub:.7,anticipatePin:1,
+        onRefresh:function(s){measure();tl.progress(s.progress);}}:{trigger:fig,start:"top 70%",end:"bottom 45%",scrub:.7,
+        onRefresh:function(s){measure();tl.progress(s.progress);}}});
+      measure();
+      return function(){root.classList.remove("mv-on");fig.style.removeProperty("--lx");fig.style.removeProperty("--ly");gsap.set(lens,{clearProps:"transform"});};
+    });
+  }
+
   /* ================= לקוחות: מכונת מזל שמתגלגלת עם הגלילה, ורשימת קרדיטים ================= */
   (function(){
     var byClient={},order=[];
@@ -470,7 +528,6 @@
     // הקרדיטים: כל הלקוחות בשורה זורמת, הציבוריים ראשונים ובצבע מלא. ריחוף מראה עבודה בעדשה
     var ct=document.getElementById("ctab");
     ct.innerHTML=order.map(function(c,i){return '<li><a class="cc'+(c.pub?' pub':'')+'" href="#work" data-k="'+i+'"><b>'+c.name+'</b></a></li>';}).join("");
-    peekList(ct,".cc","b",function(a){return order[+a.dataset.k].works.slice(0,4);},function(){});
     // לחיצה על לקוח: לעבודה שלו בגריד, אחרת לפאנל שלו, אחרת לראש העבודות
     ct.addEventListener("click",function(e){
       var a=e.target.closest(".cc");if(!a)return;
@@ -523,7 +580,7 @@
     var auto=0,hov=false;
     var secEl=document.getElementById("clients");
     secEl.addEventListener("mouseenter",function(){hov=true;});secEl.addEventListener("mouseleave",function(){hov=false;});
-    if(!hasGsap||still.matches){auto=setInterval(function(){if(!hov&&!document.hidden)setIdx((at+1)%SL.length,false);},2500);return;}
+    if(!hasGsap||still.matches){auto=setInterval(function(){if(!hov&&!document.hidden)setIdx((at+1)%SL.length,false);},2500);xrayWall(order,depsTxt);return;}
     gsap.matchMedia().add("(prefers-reduced-motion: no-preference)",function(){
       var pin=document.querySelector(".sl-pin");
       ScrollTrigger.create({trigger:pin,start:"center center",end:"+="+(SL.length*14)+"%",pin:true,anticipatePin:1,
@@ -534,6 +591,8 @@
         scrollTrigger:{trigger:pin,start:"top 80%",once:true}});
       return function(){nEl.textContent=order.length;nEl.style.minWidth="";};
     });
+    // אחרי הנעילה של מכונת המזל, כדי שהנעילה של הקיר תחושב מתחתיה
+    xrayWall(order,depsTxt);
   })();
 
   /* ================= מכאן: התוכן המשותף (קיר, צוות, טופס) ================= */

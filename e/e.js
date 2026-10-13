@@ -470,11 +470,8 @@
       if(!imgs[i]){var im=document.createElement("img");im.alt="";im.decoding="async";im.src=pics[i];view.appendChild(im);imgs[i]=im;}
       return imgs[i];
     }
-    // העצירות: עד שישה ציבוריים, ואחריהם הלקוח האחרון בתחום המסעדות
-    var stopIdx=order.map(function(c,i){return c.pub?i:-1;}).filter(function(i){return i>-1;}).slice(0,6);
-    var food=order.map(function(c,i){return /מסעד|קייטרינג|אוכל/.test(c.field||"")?i:-1;}).filter(function(i){return i>-1;}).pop();
-    if(food!=null&&stopIdx.indexOf(food)<0)stopIdx.push(food);
-    if(stopIdx.length<2)stopIdx=[0,order.length-1];
+    // תחנות בזיגזג על כל הקיר, כמו במאגר: מהפינה העליונה, דרך האמצע, עד התחתית. כל תחנה נצמדת לשם הקרוב אליה
+    var STOPS=[[86,10],[34,32],[74,52],[16,72],[58,92],[46,46]];
     var cur=-1,shown=null;
     function setCur(i){
       if(i===cur)return;
@@ -493,15 +490,23 @@
       function center(li){var a=li.firstChild;return {x:a.offsetLeft+a.offsetWidth/2,y:a.offsetTop+a.offsetHeight/2};}
       function paint(){
         fig.style.setProperty("--lx",o.x+"px");fig.style.setProperty("--ly",o.y+"px");
-        gsap.set(lens,{x:o.x,y:o.y,xPercent:-50,yPercent:-50});
+        gsap.set(lens,{x:o.x,y:o.y,xPercent:-50,yPercent:-50,overwrite:false});
         // הלקוח הקרוב ביותר למרכז העדשה
         var b=0,bd=1e9;for(var i=0;i<cs.length;i++){var dx=cs[i].x-o.x,dy=cs[i].y-o.y,d=dx*dx+dy*dy;if(d<bd){bd=d;b=i;}}
         setCur(b);
       }
       function measure(){
-        cs=lis.map(center);pts=stopIdx.map(function(i){return cs[i];});
+        cs=lis.map(center);
+        var W=fig.clientWidth,H=fig.clientHeight,used=[];
+        pts=STOPS.map(function(p){var x=p[0]/100*W,y=p[1]/100*H,b=0,bd=1e12;
+          cs.forEach(function(c,i){if(used.indexOf(i)>-1)return;var d=(c.x-x)*(c.x-x)+(c.y-y)*(c.y-y);if(d<bd){bd=d;b=i;}});used.push(b);return cs[b];});
         tl.clear();o.x=pts[0].x;o.y=pts[0].y;
-        pts.slice(1).forEach(function(p){tl.to(o,{x:p.x,y:p.y,duration:1,ease:"power2.inOut"}).to(o,{duration:.35});});
+        // x ו-y בעקומות שונות, ולכן המסלול מתעקל ולא נוסע בקו ישר. בכל תחנה העדשה "מתמקדת": מתנפחת קצת וחוזרת
+        pts.slice(1).forEach(function(p,k){
+          var at=k*1.4;
+          tl.to(o,{x:p.x,duration:1,ease:"power3.inOut"},at).to(o,{y:p.y,duration:1,ease:k%2?"back.inOut(1.4)":"sine.inOut"},at)
+            .to(lens,{scale:.86,duration:.5,ease:"sine.in"},at).to(lens,{scale:1.1,duration:.3,ease:"sine.out"},at+.5).to(lens,{scale:1,duration:.6,ease:"sine.inOut"},at+.8);
+        });
         paint();
       }
       var tl=gsap.timeline({onUpdate:paint,scrollTrigger:cx.conditions.wide?{trigger:pin,start:"center center",end:"+=220%",pin:true,scrub:.7,anticipatePin:1,

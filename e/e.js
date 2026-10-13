@@ -454,7 +454,7 @@
     addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){if(doc.clientWidth!==lw){lw=doc.clientWidth;fill();ScrollTrigger.refresh();}},200);});
   })();
 
-  /* ================= לקוחות: טבלה, הציבוריים ראשונים ================= */
+  /* ================= לקוחות: מכונת מזל שמתגלגלת עם הגלילה, ורשימת קרדיטים ================= */
   (function(){
     var byClient={},order=[];
     good.forEach(function(w){
@@ -464,27 +464,13 @@
       (w.departments||[]).forEach(function(d){c.deps[d]=1;});
     });
     order.sort(function(a,b){return (b.pub?1:0)-(a.pub?1:0)||b.works.length-a.works.length;});
-    var ct=document.getElementById("ctab"),more=document.getElementById("ctab-more"),SHOW=18;
-    document.getElementById("cl-n").textContent=order.length;
-    function depsTxt(c){var d=["branding","web","digital"].filter(function(k){return c.deps[k];});return d.length===3?"כל המחלקות":d.map(function(k){return DEPTS_SHORT[k];}).join(" · ");}
-    ct.innerHTML=order.map(function(c,i){
-      return '<li'+(i>=SHOW?' hidden':'')+'><a class="cc" href="#work" data-k="'+i+'"><b>'+c.name+'</b>'+
-        '<span class="m"><span>'+depsTxt(c)+'</span>'+(c.field?'<span>'+c.field+'</span>':'')+(c.pub?'<span class="pub">גוף ציבורי</span>':'')+'</span></a></li>';
-    }).join("");
-    var rest=order.length-SHOW;
-    if(rest>0){
-      more.hidden=false;
-      var setMore=function(open){more.textContent=open?"להציג פחות":"ועוד "+rest+" לקוחות";more.setAttribute("aria-expanded",String(open));};
-      setMore(false);
-      more.addEventListener("click",function(){
-        var open=more.getAttribute("aria-expanded")!=="true";
-        ct.querySelectorAll("li").forEach(function(li,i){if(i>=SHOW)li.hidden=!open;});
-        setMore(open);
-        if(open)ct.children[SHOW].querySelector("a").focus({preventScroll:true});
-      });
-    }
-    function setCur(){}
-    peekList(ct,".cc","b",function(a){return order[+a.dataset.k].works.slice(0,4);},setCur);
+    var nEl=document.getElementById("cl-n");nEl.textContent=order.length;
+    function depsTxt(c){var d=["branding","web","digital"].filter(function(k){return c.deps[k];});return d.length===3?"כל המחלקות":d.map(function(k){return DEPTS[k];}).join(" + ");}
+
+    // הקרדיטים: כל הלקוחות בשורה זורמת, הציבוריים ראשונים ובצבע מלא. ריחוף מראה עבודה בעדשה
+    var ct=document.getElementById("ctab");
+    ct.innerHTML=order.map(function(c,i){return '<li><a class="cc'+(c.pub?' pub':'')+'" href="#work" data-k="'+i+'"><b>'+c.name+'</b></a></li>';}).join("");
+    peekList(ct,".cc","b",function(a){return order[+a.dataset.k].works.slice(0,4);},function(){});
     // לחיצה על לקוח: לעבודה שלו בגריד, אחרת לפאנל שלו, אחרת לראש העבודות
     ct.addEventListener("click",function(e){
       var a=e.target.closest(".cc");if(!a)return;
@@ -496,49 +482,107 @@
       if(fp){go(fp);fp.querySelector(".fp-c").focus({preventScroll:true});return;}
       var h=document.getElementById("work-h");go(document.getElementById("work"));h.setAttribute("tabindex","-1");h.focus({preventScroll:true});
     });
+
+    // מכונת המזל: עשרה לקוחות. הגלילה בוחרת שם, הגלגל "נוקש" אליו, והעדשה מחליפה עבודה
+    var SL=order.filter(function(c){return c.works.some(function(w){return w.quality!=="poor";});}).slice(0,10);
+    var slot=document.getElementById("slot"),view=document.getElementById("sl-view"),meta=document.getElementById("sl-meta");
+    slot.innerHTML=SL.map(function(c){return '<li><span>'+c.name+'</span></li>';}).join("");
+    document.getElementById("cl-h").insertAdjacentHTML("beforeend",'<span class="sr"> '+SL.slice(0,3).map(function(c){return c.name;}).join(", ")+' ועוד. הרשימה המלאה מתחת.</span>');
+    var lis=[].slice.call(slot.children);
+    var imgs=SL.map(function(c){
+      var w=c.works.filter(function(q){return q.quality!=="poor";})[0]||c.works[0];
+      var im=document.createElement("img");im.alt="";im.decoding="async";im.src=w.src;view.appendChild(im);return im;
+    });
+    var at=-1;
+    function place(i,anim){
+      var y=(1-i)*lis[0].offsetHeight;
+      if(!hasGsap){slot.style.transform="translateY("+y+"px)";return;}
+      if(anim&&!still.matches)gsap.to(slot,{y:y,duration:.6,ease:"back.out(1.7)",overwrite:true});
+      else gsap.set(slot,{y:y});
+    }
+    function setIdx(i,anim){
+      i=Math.max(0,Math.min(SL.length-1,i));if(i===at)return;at=i;
+      lis.forEach(function(li,k){li.classList.toggle("on",k===i);});
+      imgs.forEach(function(im,k){im.classList.toggle("on",k===i);});
+      var c=SL[i];meta.innerHTML='<i></i>'+depsTxt(c)+(c.field?' · '+c.field:'')+(c.pub?' · גוף ציבורי':'');
+      place(i,anim);
+    }
+    // שם ארוך מתכווץ כדי להיכנס לחלון בשורה אחת
+    function fit(){
+      var W=slot.parentNode.clientWidth;
+      lis.forEach(function(li){var s=li.firstChild;s.style.fontSize="";var k=W/(s.offsetWidth+4);if(k<1)s.style.fontSize=(k*100).toFixed(1)+"%";});
+      if(at>-1)place(at,false);
+    }
+    setIdx(0,false);fit();
+    if(window.ResizeObserver)new ResizeObserver(function(){fit();}).observe(slot.parentNode);
+    if(document.fonts)document.fonts.ready.then(fit);
+    addEventListener("load",fit);
+    if(document.fonts&&document.fonts.addEventListener)document.fonts.addEventListener("loadingdone",fit);
+    var fz=0;addEventListener("resize",function(){clearTimeout(fz);fz=setTimeout(fit,150);});
+    // בלי תנועה: הגלגל מתקדם לבד כל שתי שניות וחצי, ועוצר בריחוף
+    var auto=0,hov=false;
+    var secEl=document.getElementById("clients");
+    secEl.addEventListener("mouseenter",function(){hov=true;});secEl.addEventListener("mouseleave",function(){hov=false;});
+    if(!hasGsap||still.matches){auto=setInterval(function(){if(!hov&&!document.hidden)setIdx((at+1)%SL.length,false);},2500);return;}
+    gsap.matchMedia().add("(prefers-reduced-motion: no-preference)",function(){
+      var pin=document.querySelector(".sl-pin");
+      ScrollTrigger.create({trigger:pin,start:"center center",end:"+="+(SL.length*14)+"%",pin:true,anticipatePin:1,
+        onUpdate:function(s){setIdx(Math.round(s.progress*(SL.length-1)),true);}});
+      // המספר נספר כשהסקשן נכנס
+      nEl.style.minWidth=nEl.offsetWidth+"px";var o={v:0};nEl.textContent="0";
+      gsap.to(o,{v:order.length,duration:1.6,ease:"power3.out",onUpdate:function(){nEl.textContent=Math.round(o.v);},
+        scrollTrigger:{trigger:pin,start:"top 80%",once:true}});
+      return function(){nEl.textContent=order.length;nEl.style.minWidth="";};
+    });
   })();
 
   /* ================= מכאן: התוכן המשותף (קיר, צוות, טופס) ================= */
   if(!C){rv(document);return;}
   var lb=lightbox();
 
-  /* מה מספרים עלינו: מספר ענק C7 עם ציטוטים סביבו, ופסיפס C13 */
+  /* מה מספרים עלינו: הסקשן ננעל, וצילומי המסך עוברים לרוחב עם הגלילה. כל צילום מתיישר כשהוא מגיע למרכז */
   function byId(id){return C.quotes.filter(function(q){return q.id===id;})[0]||C.shots.filter(function(x){return x.id===id;})[0];}
   function whoOrg(q){var o=(q.org||"").split(" · ")[0].split(", ").pop();return o?q.who+", "+o:q.who;}
   (function(){
-    var sats=["rev-06","rev-01","rev-03","rev-16"].map(byId).filter(Boolean);
-    var ms=["rev-07","rev-02","rev-13","rev-09","rev-17","rev-08","rev-14","rev-15","rev-22"].map(byId).filter(Boolean);
-    var list=sats.concat(ms).map(wallItem);
+    var qs=["rev-06","rev-01","rev-07","rev-03","rev-02","rev-13","rev-16","rev-09","rev-17","rev-08"].map(byId).filter(Boolean);
+    var list=qs.map(wallItem),N=qs.length;
+    function pad(n){return n<10?"0"+n:""+n;}
     document.getElementById("sd-n").textContent=C.wallTotal;
     document.getElementById("sd-since").textContent=C.wallSince;
+    document.getElementById("sd-t").textContent=pad(N);
     document.querySelector(".sd-more .btn").firstChild.textContent="לכל "+C.wallTotal+" ההודעות";
-    document.getElementById("c7").insertAdjacentHTML("beforeend",sats.map(function(q,i){
-      return '<button class="sat s'+(i+1)+'" type="button" data-k="'+i+'" data-rv><span class="sq">״'+q.short+'״</span>'+
-        '<span class="sw">'+whoOrg(q)+'</span><span class="sl">לצילום המקורי'+ARR+'</span></button>';
-    }).join(""));
-    var mz=document.getElementById("mzc"),key="";
-    var tiles=ms.map(function(q,i){
-      var s=C.shot(q.id),f=document.createElement("figure");
-      f.className="ms"+(i>=6?" xs-out":"");f.setAttribute("data-rv","");
-      f.innerHTML='<button class="ms-shot" type="button" data-k="'+(sats.length+i)+'" style="--ar:'+s.w+'/'+s.h+'">'+
-        '<img src="'+s.thumb+'" alt="צילום מסך של הודעה: '+q.who+'" width="'+s.w+'" height="'+s.h+'" loading="lazy" decoding="async"></button>'+
-        '<figcaption>'+whoOrg(q)+'</figcaption>';
-      f._r=s.h/s.w;return f;
-    });
-    function lay(){
-      var w=innerWidth,k=w<640?"2x":w<1024?"2":"3";
-      if(k===key)return;key=k;mz.textContent="";
-      var n=parseInt(k,10),cs=[],h=[];
-      for(var c=0;c<n;c++){var d=document.createElement("div");d.className="ms-col";mz.appendChild(d);cs.push(d);h.push(0);}
-      tiles.forEach(function(t){
-        if(k==="2x"&&t.classList.contains("xs-out"))return;
-        var m=h.indexOf(Math.min.apply(null,h));cs[m].appendChild(t);h[m]+=t._r+.14;
-      });
-    }
-    lay();var rz=0;addEventListener("resize",function(){if(!rz)rz=requestAnimationFrame(function(){rz=0;lay();});});
-    document.getElementById("wall").addEventListener("click",function(e){
-      var b=e.target.closest("[data-k]");if(!b)return;
-      lb.open(list,+b.dataset.k,b);
+    var tr=document.getElementById("sd-track"),vp=document.getElementById("sd-vp"),sec=document.getElementById("wall");
+    tr.innerHTML=qs.map(function(q,i){
+      var s=C.shot(q.id),ar=Math.max(.66,Math.min(1.5,s.w/s.h));
+      return '<li class="sd-c" style="--ar:'+ar.toFixed(3)+'"><button class="sd-b" type="button" data-k="'+i+'">'+
+        '<span class="sd-shot"><img src="'+s.thumb+'" alt="צילום מסך של הודעה: '+q.who+'" width="'+s.w+'" height="'+s.h+'" loading="lazy" decoding="async"></span>'+
+        '<span class="sd-cap">'+(q.short?'<span class="sd-q">״'+q.short+'״</span>':'')+'<span class="sd-w">'+whoOrg(q)+'</span></span></button></li>';
+    }).join("");
+    var cards=[].slice.call(tr.children),bar=document.getElementById("sd-bar"),idx=document.getElementById("sd-i");
+    function prog(p){p=Math.max(0,Math.min(1,p));bar.style.transform="scaleX("+p.toFixed(4)+")";idx.textContent=pad(1+Math.round(p*(N-1)));}
+    sec.addEventListener("click",function(e){var b=e.target.closest(".sd-b");if(b)lb.open(list,+b.dataset.k,b);});
+    // טלפון והפחתת תנועה: קרוסלה שנגללת לצד, והפס מראה איפה אנחנו
+    vp.addEventListener("scroll",function(){var m=vp.scrollWidth-vp.clientWidth;if(m>0)prog(Math.abs(vp.scrollLeft)/m);},{passive:true});
+    prog(0);
+    if(!hasGsap)return;
+    gsap.matchMedia().add("(min-width: 768px) and (prefers-reduced-motion: no-preference)",function(){
+      sec.classList.add("is-pin");
+      var pin=sec.querySelector(".sd-pin");
+      function dist(){return Math.max(0,tr.scrollWidth-vp.clientWidth);}
+      // כל צילום נוטה ויורד מעט כשהוא רחוק מהמרכז, ומתיישר כשהוא מגיע אליו
+      var sets=cards.map(function(c){return {r:gsap.quickSetter(c,"rotate","deg"),y:gsap.quickSetter(c,"y","px"),s:gsap.quickSetter(c,"scale")};});
+      function tilt(){
+        var mid=innerWidth/2;
+        cards.forEach(function(c,i){
+          var r=c.getBoundingClientRect(),d=Math.max(-1.4,Math.min(1.4,(r.left+r.width/2-mid)/mid));
+          sets[i].r(d*-5);sets[i].y(Math.abs(d)*26);sets[i].s(1-Math.min(1,Math.abs(d))*.07);
+        });
+      }
+      gsap.to(tr,{x:function(){return dist();},ease:"none",onUpdate:tilt,
+        scrollTrigger:{trigger:pin,start:"top top",end:function(){return "+="+Math.round(dist()*.6);},pin:true,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
+          onUpdate:function(s){prog(s.progress);},onRefresh:tilt}});
+      tilt();
+      return function(){sec.classList.remove("is-pin");gsap.set(cards,{clearProps:"transform,rotate,scale"});prog(0);};
     });
   })();
 
@@ -560,18 +604,66 @@
     var ob=cap.querySelector("button");ob.addEventListener("click",function(){lb.open([wallItem(tq)],0,ob);});
   })();
 
-  /* קריירה: המתאר של השורה השנייה מתמלא עם הגלילה, ושתי המשרות */
+  /* קריירה: המתאר של השורה השנייה מתמלא עם הגלילה, והמשרות כאינדקס שנפתח במקום */
   (function(){
     var n=C.jobs.length;
     document.getElementById("jb-n").textContent=n===1?"משרה אחת פתוחה":n+" משרות פתוחות";
-    document.getElementById("jb-list").innerHTML=C.jobs.map(function(j,i){
-      return '<li data-rv><a class="jb" href="#jobs"><span class="jb-no" aria-hidden="true">0'+(i+1)+'</span><b class="jb-t">'+j.title+'</b>'+
-        '<span class="jb-wh">'+j.where+'</span><span class="jb-w">'+j.what+'</span><span class="jb-go">לפרטים ולהגשה'+ARR+'</span></a></li>';
+    var waBase=C.contact.wa.split("?")[0],el=document.getElementById("jb-list");
+    function dep(j){return /סושיאל|שיווק|קמפיין/.test(j.title)?"digital":"branding";}
+    el.innerHTML=C.jobs.map(function(j,i){
+      var mail="mailto:"+C.contact.email+"?subject="+encodeURIComponent("מועמדות: "+j.title);
+      var wa=waBase+"?text="+encodeURIComponent("היי ויזואל, ראיתי באתר את המשרה "+j.title+" ורוצה לשמוע עוד");
+      return '<li class="jr" data-rv data-d="'+dep(j)+'"><h3 class="jr-h"><button class="jr-b" type="button" id="jr-b-'+i+'" aria-expanded="false" aria-controls="jr-p-'+i+'">'+
+        '<span class="jr-no" aria-hidden="true">0'+(i+1)+'</span><span class="jr-t">'+j.title+'</span><span class="jr-wh">'+j.where+'</span><span class="jr-ic" aria-hidden="true"></span></button></h3>'+
+        '<div class="jr-p" id="jr-p-'+i+'" role="region" aria-labelledby="jr-b-'+i+'"><div class="jr-in"><div class="jr-box">'+
+          '<p class="jr-w">'+j.what+'</p>'+
+          '<div class="jr-cta"><a class="btn btn-lime" href="'+mail+'">להגשת מועמדות'+ARR+'</a><a class="lnk" href="'+wa+'" target="_blank" rel="noopener">'+IC.wa+'שאלה בוואטסאפ</a></div>'+
+        '</div></div></div></li>';
     }).join("");
+    var rows=[].slice.call(el.children);
+    function setOpen(li,open){
+      li.classList.toggle("open",open);li.querySelector(".jr-b").setAttribute("aria-expanded",String(open));li.querySelector(".jr-p").inert=!open;
+    }
+    rows.forEach(function(li,i){setOpen(li,i===0);li.querySelector(".jr-b").addEventListener("click",function(){setOpen(li,!li.classList.contains("open"));});});
+    // ריחוף: העדשה מדפדפת בעבודות מהתחום של המשרה
+    var lists={};["branding","digital"].forEach(function(k){lists[k]=good.filter(function(w){return w.quality!=="poor"&&w.departments.indexOf(k)>-1;}).slice(0,6);});
+    peekList(el,".jr-b",".jr-t",function(b){return lists[b.closest(".jr").dataset.d];},function(b){
+      rows.forEach(function(r){r.classList.toggle("cur",!!b&&r.contains(b));});el.classList.toggle("is-on",!!b);
+    });
     var l2=document.querySelector(".jb-l2");
     if(hasGsap&&!still.matches){
       gsap.fromTo(l2,{"--p":"0%"},{"--p":"100%",ease:"none",scrollTrigger:{trigger:l2,start:"top 88%",end:"bottom 52%",scrub:.4}});
     }else l2.style.setProperty("--p","100%");
+  })();
+
+  /* מילים בליים בכותרות: האותיות קופצות פנימה בזו אחר זו, ומרקר ליים נמרח מאחוריהן */
+  (function(){
+    var ws=[].slice.call(document.querySelectorAll(".lw"));
+    if(!hasGsap||still.matches||!ws.length)return;
+    ws.forEach(function(w){
+      var txt=w.textContent,vis=document.createElement("span"),sr=document.createElement("span");
+      sr.className="sr";sr.textContent=txt;vis.setAttribute("aria-hidden","true");
+      txt.split(/([\s ]+)/).forEach(function(part){
+        if(!part)return;
+        if(/^[\s ]+$/.test(part)){vis.appendChild(document.createTextNode(part));return;}
+        var wd=document.createElement("span");wd.className="lw-w";
+        Array.from(part).forEach(function(ch){var c=document.createElement("span");c.className="lw-c";c.textContent=ch;wd.appendChild(c);});
+        vis.appendChild(wd);
+      });
+      w.textContent="";w.appendChild(sr);w.appendChild(vis);
+    });
+    gsap.matchMedia().add("(prefers-reduced-motion: no-preference)",function(){
+      ws.forEach(function(w){
+        var cs=w.querySelectorAll(".lw-c");
+        gsap.set(w,{"--fill":0});
+        var tl=gsap.timeline({paused:true})
+          .from(cs,{yPercent:70,rotate:-10,opacity:0,duration:.6,ease:"back.out(2.4)",stagger:.04})
+          .to(w,{"--fill":1,duration:.75,ease:"expo.inOut"},"-=.4");
+        if(w.closest(".hero"))gsap.delayedCall(1.2,function(){tl.play();});
+        else ScrollTrigger.create({trigger:w,start:"top 84%",once:true,onEnter:function(){tl.play();}});
+      });
+      return function(){gsap.set(ws,{clearProps:"--fill"});};
+    });
   })();
 
   /* סוגר: דרכי קשר כאינדקס, וטופס */

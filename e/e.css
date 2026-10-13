@@ -41,6 +41,16 @@ h1,h2{font-weight:700;letter-spacing:-.01em}
 
 /* ---------- קווי העמודות MV:b10 ---------- */
 .grain{position:fixed;inset:0;z-index:45;pointer-events:none;background:url(img/grain.png) 0 0/256px 256px repeat}
+/* מסך טעינה: רק כשיש תנועה. בזמן שהוא פתוח האתר לא נגלל, והכניסה של ההירו מחכה לו */
+.pl{display:none}
+.pl-on{overflow:hidden;scrollbar-gutter:stable}
+.pl-on *{animation-play-state:paused!important}
+.pl-on .pl,.pl.out{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:var(--bg) url(img/grain.png) 0 0/256px 256px repeat;
+  -webkit-mask:radial-gradient(circle at var(--mx,50%) var(--my,50%),transparent var(--r,0px),#000 calc(var(--r,0px) + 1px));
+  mask:radial-gradient(circle at var(--mx,50%) var(--my,50%),transparent var(--r,0px),#000 calc(var(--r,0px) + 1px))}
+.pl-logo{position:relative;direction:ltr;width:min(72vw,560px);aspect-ratio:2726/610}
+.pl-word{position:absolute;inset:0;width:100%;height:100%;opacity:0;clip-path:inset(0 70.21% 0 0)}
+.pl-mark{position:absolute;left:0;top:0;width:29.79%;height:100%;overflow:visible}
 /* הקווים מאחורי התוכן: נראים על הרקע, נעלמים מתחת לתמונות (כמו ב-tyco) */
 main,.ftw{position:relative;z-index:1}
 /* ---------- כפתורים, קישורים, kick ---------- */

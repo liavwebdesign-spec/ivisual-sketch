@@ -12,7 +12,31 @@
   if(window.Flip)gsap.registerPlugin(Flip);
   var doc=document.documentElement;
   var ARR='<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg>';
-  function go(el,block){el.scrollIntoView({behavior:still.matches?"auto":"smooth",block:block||"start"});}
+  /* גלילה רכה לעוגנים: האצה והאטה עדינות, והזמן גדל עם המרחק. גלגלת או מגע של המשתמש עוצרים אותה */
+  var glide=null;
+  function stopGlide(){if(glide){glide.kill();glide=null;}}
+  ["wheel","touchstart","keydown"].forEach(function(t){addEventListener(t,stopGlide,{passive:true});});
+  function scrollToY(y){
+    y=Math.max(0,Math.min(y,doc.scrollHeight-innerHeight));stopGlide();
+    if(still.matches||!hasGsap){scrollTo(0,y);return;}
+    var o={y:scrollY},d=Math.abs(y-scrollY);
+    glide=gsap.to(o,{y:y,duration:Math.min(2,.8+d/5000),ease:"power3.inOut",onUpdate:function(){scrollTo(0,o.y);},onComplete:function(){glide=null;}});
+  }
+  function go(el,block){
+    var r=el.getBoundingClientRect(),y=r.top+scrollY;
+    if(block==="center")y-=(innerHeight-r.height)/2;
+    scrollToY(y);
+  }
+  document.addEventListener("click",function(e){
+    if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;
+    var id=a.getAttribute("href").slice(1),t=id&&document.getElementById(id);if(!t)return;
+    e.preventDefault();
+    if(id==="top")scrollToY(0);else go(t);
+    if(history.pushState)history.pushState(null,"","#"+id);
+    if(!/^(A|BUTTON|INPUT|SELECT|TEXTAREA)$/.test(t.tagName)&&!t.hasAttribute("tabindex"))t.setAttribute("tabindex","-1");
+    t.focus({preventScroll:true});
+  });
   function depsTag(w){return w.departments.length===3?'<i class="all">כל המחלקות</i>':w.departments.map(function(d){return "<i>"+DEPTS_SHORT[d]+"</i>";}).join("");}
 
   /* העבודות הטובות קודם, ובתוכן הציבוריות */
@@ -69,6 +93,49 @@
       var i=f.indexOf(document.activeElement);
       var n=e.shiftKey?(i<=0?f.length-1:i-1):(i===f.length-1?0:i+1);
       e.preventDefault();f[n].focus();
+    });
+  })();
+
+  /* ================= מסך טעינה: הלוגו מצטייר, והעדשה שלו נפתחת אל האתר ================= */
+  (function(){
+    var pl=document.getElementById("pl");if(!pl)return;
+    function done(){doc.classList.remove("pl-on");pl.remove();if(hasGsap)ScrollTrigger.refresh();}
+    if(!hasGsap||!doc.classList.contains("pl-on")){done();return;}
+    var ring=pl.querySelector(".pl-ring"),sat=pl.querySelector(".pl-sat"),pupil=pl.querySelector(".pl-pupil"),word=pl.querySelector(".pl-word"),logo=pl.querySelector(".pl-logo"),mark=pl.querySelector(".pl-mark");
+    var cR=2*Math.PI*240,cS=2*Math.PI*97;
+    // בהתחלה הסימן לבד במרכז; כשהמילה נכתבת, הלוגו כולו זז למרכז
+    var shift=function(){return logo.offsetWidth*(1-.2979)/2;};
+    gsap.set(ring,{strokeDasharray:cR,strokeDashoffset:cR,rotation:-120,transformOrigin:"50% 50%"});
+    gsap.set(sat,{strokeDasharray:cS,strokeDashoffset:cS,rotation:150,transformOrigin:"50% 50%"});
+    gsap.set(pupil,{scale:0,transformOrigin:"50% 50%"});
+    gsap.set(logo,{x:shift});
+    var ready=new Promise(function(res){
+      var n=0;function one(){if(++n===2)res();}
+      if(document.readyState==="complete")one();else addEventListener("load",one,{once:true});
+      setTimeout(one,1500);   // מינימום, כדי שהאנימציה תספיק להתנגן
+    });
+    var cap=new Promise(function(res){setTimeout(res,4200);});
+    var tl=gsap.timeline();
+    tl.to(ring,{strokeDashoffset:0,rotation:-90,duration:.8,ease:"power3.inOut"})
+      .to(sat,{strokeDashoffset:0,rotation:0,duration:.5,ease:"power2.out"},"-=.28")
+      .to(pupil,{scale:1,duration:.5,ease:"back.out(2.4)"},"-=.3")
+      // האישון מסתכל ימינה, למטה, וחוזר למקום שלו בלוגו
+      .to(pupil,{x:120,y:20,duration:.26,ease:"power2.inOut"},"+=.02")
+      .to(pupil,{x:50,y:110,duration:.22,ease:"power2.inOut"})
+      .to(pupil,{x:0,y:0,duration:.3,ease:"back.out(1.6)"})
+      // הסימן המצויר מתחלף בסימן המקורי מהלוגו, ואז "visual" נכתב והכול זז למרכז
+      .to(word,{opacity:1,duration:.18,ease:"none"},"-=.05").set(mark,{autoAlpha:0})
+      .to(logo,{x:0,duration:.75,ease:"power3.inOut"},"+=.02")
+      .to(word,{clipPath:"inset(0 0% 0 0)",duration:.7,ease:"power3.out"},"<.12");
+    Promise.all([new Promise(function(r){tl.eventCallback("onComplete",r);}),Promise.race([ready,cap])]).then(function(){
+      // הסימן המצויר מתחלף בלוגו המקורי, ומהאישון נפתח חור שמגלה את האתר
+      var b=pupil.getBoundingClientRect(),mx=b.left+b.width/2,my=b.top+b.height/2;
+      pl.style.setProperty("--mx",mx+"px");pl.style.setProperty("--my",my+"px");
+      var far=Math.hypot(Math.max(mx,innerWidth-mx),Math.max(my,innerHeight-my))+40,o={r:0};
+      pl.classList.add("out");doc.classList.remove("pl-on");
+      gsap.timeline({onComplete:function(){pl.remove();ScrollTrigger.refresh();}})
+        .to(o,{r:far,duration:1.05,ease:"power3.inOut",onUpdate:function(){pl.style.setProperty("--r",o.r+"px");}},.1)
+        .to(logo,{scale:1.12,autoAlpha:0,duration:.6,ease:"power2.in"},.15);
     });
   })();
 

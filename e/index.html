@@ -12,13 +12,27 @@
 <link rel="stylesheet" href="../shared/base.css">
 <link rel="stylesheet" href="e.css">
 <script>document.documentElement.style.setProperty("--colw",document.documentElement.clientWidth/8+"px");
-if(matchMedia("(prefers-reduced-motion:no-preference)").matches)document.documentElement.classList.add("open-anim","rv-js")</script>
+if(matchMedia("(prefers-reduced-motion:no-preference)").matches){document.documentElement.classList.add("open-anim","rv-js","pl-on");
+// רשת ביטחון: אם הסקריפט לא עלה, מסך הטעינה לא נשאר תקוע
+setTimeout(function(){var d=document.documentElement;if(d.classList.contains("pl-on")){d.classList.remove("pl-on");var p=document.getElementById("pl");if(p)p.remove();}},6000)}</script>
 </head>
 <body>
 <a class="skip" href="#main">דלג לתוכן</a>
 
 <!-- גריין עדין על כל העמוד, במקום קווי העמודות (סקיצה ה) -->
 <div class="grain" aria-hidden="true"></div>
+
+<!-- מסך טעינה: הסימן מהלוגו מצטייר, האישון מסתכל סביב, "visual" נכתב, והעדשה נפתחת אל האתר -->
+<div class="pl" id="pl" aria-hidden="true">
+  <div class="pl-logo">
+    <img class="pl-word" src="../shared/brand/logo.svg" alt="" width="2726" height="610">
+    <svg class="pl-mark" viewBox="0 0 812 610" overflow="visible">
+      <circle class="pl-ring" cx="300" cy="285" r="240" fill="none" stroke="#444444" stroke-width="120"/>
+      <circle class="pl-sat" cx="688" cy="444" r="97" fill="none" stroke="#444444" stroke-width="80"/>
+      <circle class="pl-pupil" cx="258" cy="243" r="138" fill="#9AB709"/>
+    </svg>
+  </div>
+</div>
 
 <header class="h4x hd" id="hd">
   <a class="h4-chip" href="#top" aria-label="ויזואל, לראש העמוד"><img src="../shared/brand/logo.svg" alt="ויזואל" width="117" height="26"></a>

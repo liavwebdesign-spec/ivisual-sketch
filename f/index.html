@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-motion="expressive">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ויזואל · סקיצה ו · השולחן</title>
+<meta name="description" content="ויזואל: מיתוג ועיצוב, בניית אתרים ושיווק דיגיטלי, תחת קורת גג אחת בצפת.">
+<meta name="theme-color" content="#0A1330">
+<link rel="icon" href="../shared/brand/lens.svg" type="image/svg+xml">
+<link rel="preload" href="../shared/fonts/FUP-Erez-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../shared/base.css">
+<link rel="stylesheet" href="f.css">
+<script>(function(d){
+  // קרקע לבחירה בקישור: ?bg=ink (שחור עמוק) או ?bg=forest (ירוק עמוק). ברירת המחדל כחול לילה
+  var b=new URLSearchParams(location.search).get("bg");if(b==="ink"||b==="forest")d.setAttribute("data-bg",b);
+  if(matchMedia("(prefers-reduced-motion:no-preference)").matches)d.classList.add("rv-js","tb-intro");
+})(document.documentElement)</script>
+</head>
+<body>
+<a class="skip" href="#main">דלג לתוכן</a>
+
+<!-- הדר: גלולת זכוכית צפה עם headroom (MV:hd3) -->
+<header class="gp glass hd" id="hd">
+  <a class="gp-logo" href="#top" aria-label="ויזואל, לראש העמוד"><img src="../shared/brand/logo-light.svg" alt="ויזואל" width="117" height="26"></a>
+  <nav class="gp-nav" aria-label="ראשי">
+    <a href="#work">עבודות</a>
+    <a href="#contact" class="gp-cta">בואו נדבר</a>
+  </nav>
+</header>
+
+<main id="main">
+  <!-- ================= השולחן: כל העבודות על משטח אינסופי שגוררים לכל כיוון ================= -->
+  <section class="tb" id="top" aria-labelledby="h1">
+    <div class="tb-stage" id="tb" role="region" aria-roledescription="שולחן עבודות" aria-label="שולחן העבודות. גררו או השתמשו בחיצים כדי לראות עוד. הרשימה המלאה בסקשן העבודות" tabindex="0">
+      <div class="tb-layer" id="tb-layer" aria-hidden="true"></div>
+    </div>
+    <!-- גרדיאנט מקומי מתחת לטקסט, בלי קופסה. התחתית נמסה לקרקע של הסקשן הבא -->
+    <div class="tb-fade" aria-hidden="true"></div>
+
+    <div class="tb-foot">
+    <div class="tb-txt">
+      <p class="kick tb-in" style="--i:0"><i></i>ויזואל · מיתוג, אתרים ושיווק דיגיטלי · צפת</p>
+      <h1 id="h1" class="tb-in" style="--i:1">כל מה שרואים כאן יצא ממשרד אחד <span class="lw">בצפת</span></h1>
+      <p class="lead tb-in" style="--i:2">שלוש מחלקות תחת קורת גג אחת: מיתוג ועיצוב, בניית אתרים ושיווק דיגיטלי. רשויות, גופי תיירות ועסקים בגליל עובדים איתנו כבר שנים.</p>
+    </div>
+
+    <!-- בורר המחלקות: מושך את העבודות של המחלקה למרכז השולחן -->
+    <div class="tb-ctl tb-in" style="--i:3">
+      <p class="tb-ctl-l" id="pull-l">מה להביא למרכז?</p>
+      <div class="pull glass" id="pull" role="group" aria-labelledby="pull-l"></div>
+      <p class="tb-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M12 3l-3 3m3-3 3 3M12 21l-3-3m3 3 3-3M3 12l3-3m-3 3 3 3M21 12l-3-3m3 3-3 3"/></svg><span class="hint-fine">גררו את השולחן לכל כיוון</span><span class="hint-touch">החליקו לצדדים</span></p>
+    </div>
+    </div>
+    <p class="sr" id="pull-status" aria-live="polite"></p>
+  </section>
+
+  <!-- ================= העבודות: גריד מפוזר שמתכנס בגלילה (MV:g54) עם סינון (MV:b34) ================= -->
+  <section class="work" id="work" aria-labelledby="work-h">
+    <div class="sec-head">
+      <p class="kick" data-rv><i></i>עבודות נבחרות</p>
+      <h2 id="work-h" data-rv>עבודות לרשויות, לתיירות ולעסקים <span class="lw">בצפון</span></h2>
+      <p class="lead" data-rv>כל עבודה מסומנת בכל המחלקות שעבדו עליה.</p>
+    </div>
+    <div class="ctrl" data-rv>
+      <div class="fbar" role="group" aria-label="סינון לפי מחלקה" id="f-dept"></div>
+      <div class="fbar fbar-f" role="group" aria-label="סינון לפי תחום" id="f-field"></div>
+      <p class="fcount" id="f-count" aria-hidden="true"></p>
+      <p class="sr" id="f-status" aria-live="polite"></p>
+    </div>
+    <ul class="cv" id="cv"></ul>
+    <p class="cv-empty" id="cv-empty" hidden>אין עבודות בצירוף הזה. נסו תחום אחר.</p>
+    <button type="button" class="cv-more" id="cv-more" hidden></button>
+  </section>
+
+  <!-- ================= סגירה ================= -->
+  <section class="close" id="contact" aria-labelledby="ct-h">
+    <p class="kick" data-rv><i></i>בואו נדבר</p>
+    <h2 id="ct-h" class="ct-giant" data-rv>יש לכם <span class="lw">תאריך יעד?</span> נתחיל ממנו.</h2>
+    <div class="ct-row" data-rv>
+      <a class="btn btn-lime" id="ct-wa" href="#">כתבו לנו בוואטסאפ<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a>
+      <a class="ct-l" id="ct-tel" href="#"></a>
+      <a class="ct-l" id="ct-mail" href="#"></a>
+      <a class="ct-l" id="ct-addr" href="#" target="_blank" rel="noopener"></a>
+    </div>
+  </section>
+</main>
+
+<footer class="ft">
+  <a class="ft-logo" href="#top" aria-label="ויזואל, לראש העמוד"><img src="../shared/brand/logo-light.svg" alt="" width="2726" height="610"></a>
+  <p>© <span data-year>2026</span> ויזואל אינטראקטיב בע״מ · מיתוג, אתרים ושיווק דיגיטלי, צפת</p>
+  <nav aria-label="מסמכים"><a href="#privacy">מדיניות פרטיות</a><a href="#accessibility">הצהרת נגישות</a></nav>
+</footer>
+
+<!-- תווית שרודפת את הסמן מעל השולחן (MV:g76): "גררו", ומעל עבודה שם הלקוח -->
+<div class="cur" id="cur" aria-hidden="true"><span class="cur-dot"></span><span class="cur-t"></span></div>
+
+<script src="../shared/works.js"></script>
+<script src="../shared/content.js"></script>
+<script src="../shared/vendor/gsap/gsap.min.js"></script>
+<script src="../shared/vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="../shared/vendor/gsap/Flip.min.js"></script>
+<script src="../shared/vendor/gsap/Draggable.min.js"></script>
+<script src="../shared/vendor/gsap/InertiaPlugin.min.js"></script>
+<script src="../shared/site.js"></script>
+<script src="f.js"></script>
+</body>
+</html>

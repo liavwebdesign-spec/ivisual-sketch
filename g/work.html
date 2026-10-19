@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-motion="expressive">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>עבודות · ויזואל · סקיצה ז</title>
+<meta name="description" content="תיק העבודות של ויזואל: מיתוג ועיצוב, אתרים ושיווק דיגיטלי.">
+<meta name="theme-color" content="#FEFDFA">
+<link rel="icon" href="../shared/brand/lens.svg" type="image/svg+xml">
+<link rel="preload" href="../shared/fonts/GoogleSans-Medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../shared/base.css">
+<link rel="stylesheet" href="g.css">
+<script>(function(d){
+  var b=new URLSearchParams(location.search).get("bg");if(b==="night"||b==="olive"||b==="plum")d.setAttribute("data-bg",b);
+  if(matchMedia("(prefers-reduced-motion:no-preference)").matches)d.classList.add("open-anim","rv-js");
+})(document.documentElement)</script>
+</head>
+<body>
+<a class="skip" href="#main">דלג לתוכן</a>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="h4x hd" id="hd">
+  <a class="h4-chip" href="./" aria-label="ויזואל, לעמוד הבית">
+    <img class="lg-d" src="../shared/brand/logo.svg" alt="ויזואל" width="134" height="30">
+    <img class="lg-l" src="../shared/brand/logo-light.svg" alt="" width="134" height="30">
+  </a>
+  <div class="h4-end">
+    <a class="btn btn-line" href="./#contact">בואו נדבר</a>
+    <button class="h4-menu" id="fs-open" type="button" aria-expanded="false" aria-controls="fs">תפריט<i aria-hidden="true"></i></button>
+  </div>
+</header>
+
+<div class="fs" id="fs" role="dialog" aria-modal="true" aria-label="תפריט" inert>
+  <button class="fs-close" type="button">סגירה<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+  <div class="fs-eye" aria-hidden="true"><div class="fs-view"></div><i class="fs-pupil"></i><i class="fs-sat"></i></div>
+  <ul class="fs-links">
+    <li><a href="work.html" style="--i:0" aria-current="page"><small>01</small>עבודות</a></li>
+    <li><a href="./#depts" style="--i:1"><small>02</small>מחלקות</a></li>
+    <li><a href="./#clients" style="--i:2"><small>03</small>לקוחות</a></li>
+    <li><a href="./#wall" style="--i:3"><small>04</small>מה מספרים</a></li>
+    <li><a href="./#contact" style="--i:4"><small>05</small>צור קשר</a></li>
+  </ul>
+  <div class="fs-side" id="fs-side"></div>
+</div>
+
+<main id="main">
+  <section class="ar" aria-labelledby="ar-h">
+    <div class="ar-head">
+      <h1 id="ar-h" data-rv>עבודות</h1>
+      <div class="ar-tabs" id="ar-tabs" role="group" aria-label="סינון לפי מחלקה" data-rv></div>
+    </div>
+    <p class="sr" id="ar-status" aria-live="polite"></p>
+    <ul class="ar-grid" id="ar-grid"></ul>
+  </section>
+</main>
+
+<footer class="ftw ftg" id="ft" data-dark>
+  <div class="ftg-in">
+    <div class="ftg-top">
+      <a class="ftg-logo" href="./" aria-label="ויזואל, לעמוד הבית"><img src="../shared/brand/logo-light.svg" alt="" width="2726" height="610"></a>
+      <p class="ftg-about">מיתוג, אתרים ושיווק דיגיטלי.<br>לרשויות, לגופים ציבוריים ולעסקים בכל הארץ.</p>
+      <ul class="ftg-soc" id="ft-soc"></ul>
+    </div>
+    <div class="ftg-cols" id="ft-cols"></div>
+    <div class="ft-legal">
+      <p>© <span data-year>2026</span> ויזואל אינטראקטיב בע״מ</p>
+      <nav aria-label="מסמכים"><a href="#privacy">מדיניות פרטיות</a><a href="#accessibility">הצהרת נגישות</a></nav>
+      <p class="ft-credit"><a href="https://liavmatzri.co.il" target="_blank" rel="noopener">עוצב ופותח על ידי ליאב מצרי</a></p>
+    </div>
+  </div>
+</footer>
+
+<div class="pc" id="pc" aria-hidden="true"><span>לפרויקט</span></div>
+
+<script src="../shared/works.js"></script>
+<script src="../shared/content.js"></script>
+<script src="../shared/vendor/gsap/gsap.min.js"></script>
+<script src="../shared/vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="../shared/vendor/gsap/Flip.min.js"></script>
+<script src="../shared/site.js"></script>
+<script src="common.js"></script>
+<script src="work.js"></script>
+</body>
+</html>

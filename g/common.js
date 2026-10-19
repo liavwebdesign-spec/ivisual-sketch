@@ -24,7 +24,7 @@
     return (q[a.quality]!=null?q[a.quality]:1)-(q[b.quality]!=null?q[b.quality]:1)||(b.public_body===true)-(a.public_body===true);
   });
   function file(w){return w.src.split("/").pop();}
-  function thumb(w){return "../f/img/t/"+file(w);}
+  function thumb(w){return w.thumb||"../f/img/t/"+file(w);}
   function deps(w){return w.departments.length===3?"כל המחלקות":w.departments.map(function(d){return DEPTS_SHORT[d];}).join(" · ");}
   function lbItem(w){return {full:w.src,fw:w.w,fh:w.h,alt:w.alt_he,cap:w.client_he+" · "+w.title_he};}
   function tags(ds){return ["branding","web","digital"].filter(function(d){return ds[d];}).map(function(d){return TAG[d];});}

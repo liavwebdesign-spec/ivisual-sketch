@@ -218,24 +218,21 @@
 
   /* ================= עבודות נבחרות: פאנל במסך מלא לכל לקוח, נפתח ונערם על הקודם (ברוח Tyco) =================
      ליאב על ד: "לא אהבתי את הקטעים שפתאום הם הופכים לשחור". לכן אין החשכה: התחתית נמסה לרקע והכיתוב כהה */
+  var BYID={};WORKS.forEach(function(w){BYID[w.id]=w;});
   var FEAT=[
-    {n:"משרד האוצר",ws:[2],img:"../e/img/f-ministry.jpg",iw:1600,ih:1051,d:"דוח שנתי 2019"},
-    {n:"פלג הגליל",ws:[1,22,36],img:"../e/img/f-peleg.jpg",iw:1500,ih:1177,d:"דוח שנתי ואתר"},
-    {n:"המכללה האזורית צפת",ws:[8],img:"../e/img/f-college.jpg",iw:2400,ih:1543,d:"אתר המכללה"},
-    {n:"אביב לניצולי השואה",ws:[55,29,51,57],img:"../e/img/f-aviv.jpg",iw:1600,ih:872,d:"קמפיין דיגיטלי"},
-    {n:"אלדו, רשת גלידריות",ws:[47,15,16],d:"שילוט וקטלוג"},
-    {n:"מכינת קשת יהודה",ws:[20,21,46],d:"מיתוג ואתר"}
+    {n:"החשב הכללי, משרד האוצר",ws:["ag-payments-status","ag-annual-2021","ag-financial-2021"],d:"דוחות שנתיים ומיתוג"},
+    {n:"GenCell",ws:["gencell-evox","gencell-c","gencell-a","gencell-b","gencell-board"],d:"מצגת מוצר וקמפיין"},
+    {n:"המכללה האזורית צפת",ws:["college-campaign"],d:"קמפיין הרשמה"},
+    {n:"אביב לניצולי השואה",ws:["aviv-deck","aviv-brochure","aviv-brochure-b","aviv-infographic","aviv-flyer"],d:"חוברות וקמפיין"},
+    {n:"אלדו, רשת גלידריות",ws:["aldo-ad-a","aldo-ad-b","aldo-ad-d","aldo-ad-c","aldo-menu"],d:"מודעות ותפריטים"},
+    {n:"BENNY'S",ws:["bennys-site"],d:"אתר החנות"}
   ];
-  function setLB(s){
-    var list=s.ws.map(function(i){return lbItem(WORKS[i]);});
-    if(s.img)list.unshift({full:s.img,fw:s.iw,fh:s.ih,alt:s.n+", "+s.d,cap:s.n+" · "+s.d});
-    return list;
-  }
-  function depSet(ws){var o={};ws.forEach(function(i){WORKS[i].departments.forEach(function(d){o[d]=1;});});return o;}
+  function setLB(s){return s.ws.map(function(i){return lbItem(BYID[i]);});}
+  function depSet(ws){var o={};ws.forEach(function(i){BYID[i].departments.forEach(function(d){o[d]=1;});});return o;}
   (function(){
     var featEl=document.getElementById("feat");
     featEl.innerHTML=FEAT.map(function(s,i){
-      var w=WORKS[s.ws[0]],src=s.img||w.src,iw=s.img?s.iw:w.w,ih=s.img?s.ih:w.h;
+      var w=BYID[s.ws[0]],src=w.src,iw=w.w,ih=w.h;
       var tg=G.tags(depSet(s.ws)).map(function(t){return "<i>"+t+"</i>";}).join("");
       return '<article class="fp" aria-labelledby="fp-'+i+'">'+
         '<figure class="fp-media"><img src="'+src+'" alt="'+s.n+", "+s.d+'" width="'+iw+'" height="'+ih+'" loading="'+(i?"lazy":"eager")+'" decoding="async"></figure>'+
@@ -303,9 +300,9 @@
   (function(){
     if(!C)return;
     var dpa=document.getElementById("dpa"),KEYS=["branding","web","digital"];
-    var PICK={branding:[2,13,18,47,21],web:[8,7,46,31,58],digital:[55,56,5,4,3]};
+    var PICK={branding:["maatouk-brand","mishkan-eliyahu","lemon-park","finalytix","active-brand"],web:["shir-shel-yom","katz-resort-site","vayudot-site","extreme-site","izraex-site"],digital:["mbc-instagram","gencell-b","nati-social","focus-event","aviv-infographic"]};
     dpa.innerHTML=KEYS.map(function(k,i){var d=C.depts[k];
-      var ims=PICK[k].filter(function(n){return WORKS[n];}).map(function(n,j){var w=WORKS[n];
+      var ims=PICK[k].filter(function(n){return BYID[n];}).map(function(n,j){var w=BYID[n];
         return '<img src="'+(j?thumb(w):w.src)+'" data-full="'+w.src+'" alt="" width="'+w.w+'" height="'+w.h+'" loading="lazy" decoding="async"'+(j?'':' class="on"')+'>';}).join("");
       return '<li class="dpa-i'+(i?'':' on')+'" data-d="'+k+'"><a class="dpa-a" href="work.html?d='+k+'">'+
         '<span class="dpa-m" aria-hidden="true">'+ims+'</span>'+
@@ -394,7 +391,7 @@
   (function(){
     // שש תחנות של העדשה, בזיגזג על הקיר. 44 שמות + 4 כפולים = שש שורות מלאות של 8.
     // בטלפון (3 עמודות) חמש הראשונות לכל הרוחב, כדי שגם שם השורה האחרונה תהיה מלאה
-    var STOPS=[["משרד האוצר",1,1,2],["פלג הגליל",2,6,2],["המכללה האזורית צפת",3,2,2],["החברה לפיתוח קצרין",4,6,2],["עיריית צפת, מחלקת הנוער",5,1,1],["אלדו, רשת גלידריות",6,5,1]];
+    var STOPS=[["החשב הכללי, משרד האוצר",1,1,2],["משרד האנרגיה",2,6,2],["המכללה האזורית צפת",3,2,2],["GenCell",4,6,2],["עיריית צפת, מחלקת הנוער",5,1,1],["אלדו, רשת גלידריות",6,5,1]];
     var big=STOPS.map(function(s){return byClient[s[0]];}).filter(Boolean);
     var rest=order.filter(function(c){return big.indexOf(c)<0;});
     var seq=[];rest.forEach(function(c,i){if(i%6===0&&big[i/6])seq.push(big[i/6]);seq.push(c);});

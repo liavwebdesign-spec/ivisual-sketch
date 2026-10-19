@@ -237,7 +237,7 @@
       return '<article class="fp" aria-labelledby="fp-'+i+'">'+
         '<figure class="fp-media"><img src="'+src+'" alt="'+s.n+", "+s.d+'" width="'+iw+'" height="'+ih+'" loading="'+(i?"lazy":"eager")+'" decoding="async"></figure>'+
         '<div class="fp-txt">'+
-          '<div class="fp-main"><span class="fp-no" aria-hidden="true">0'+(i+1)+'</span><h3 class="fp-c" id="fp-'+i+'">'+s.n+'</h3></div>'+
+          '<div class="fp-main"><h3 class="fp-c" id="fp-'+i+'">'+s.n+'</h3></div>'+
           '<div class="fp-side"><span class="fp-tags">'+tg+'</span><span class="fp-d">'+s.d+'</span></div>'+
         '</div>'+
         '<button class="fp-hit" type="button" data-k="'+i+'" aria-label="'+s.n+": "+s.d+', פתיחת העבודות"></button>'+
@@ -306,7 +306,7 @@
         return '<img src="'+(j?thumb(w):w.src)+'" data-full="'+w.src+'" alt="" width="'+w.w+'" height="'+w.h+'" loading="lazy" decoding="async"'+(j?'':' class="on"')+'>';}).join("");
       return '<li class="dpa-i'+(i?'':' on')+'" data-d="'+k+'"><a class="dpa-a" href="work.html?d='+k+'">'+
         '<span class="dpa-m" aria-hidden="true">'+ims+'</span>'+
-        '<span class="dpa-t"><span class="dpa-no" aria-hidden="true">0'+(i+1)+'</span>'+
+        '<span class="dpa-t">'+
           '<span class="dpa-n">'+d.name+'</span>'+
           '<span class="dpa-s"><span>'+d.services.slice(0,3).join(" · ")+'</span></span></span>'+
         '<span class="dpa-go" aria-hidden="true">'+ARR+'</span>'+

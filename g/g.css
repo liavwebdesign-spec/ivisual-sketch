@@ -149,7 +149,6 @@ html.fs-lock .flogo,html.fs-lock .flogo-dot{visibility:hidden;transition:visibil
 .fs-links{position:relative;list-style:none;margin:0;padding:0;text-align:center}
 .fs-links a{position:relative;display:inline-block;padding:2px 0;font-family:var(--f-display);font-weight:500;font-size:clamp(40px,5vw,84px);line-height:1.2;letter-spacing:-.025em;color:#F3F1EC;text-decoration:none;
   opacity:0;transform:translateY(32px);transition:opacity .2s,transform .2s,color .2s}
-.fs-links small{position:absolute;inset-inline-start:calc(100% + 14px);top:.9em;font-family:var(--f-body);font-size:13px;font-weight:400;letter-spacing:.04em;color:rgba(243,241,236,.55)}
 .fs.open .fs-links a{opacity:1;transform:none;transition-duration:.6s,.6s,.2s;transition-delay:calc(.25s + var(--i)*60ms),calc(.25s + var(--i)*60ms),0s}
 @media (hover:hover) and (pointer:fine){.fs-links:has(a:hover) a:not(:hover){color:rgba(243,241,236,.4)}.fs-links a:hover{color:var(--lime)}}
 .fs-links a:focus-visible{color:var(--lime)}
@@ -176,7 +175,6 @@ html.fs-lock .flogo,html.fs-lock .flogo-dot{visibility:hidden;transition:visibil
   .fs-eye{--e:min(96vw,460px)}
   .fs{padding:96px var(--gut) 112px}
   .fs-side{bottom:20px;gap:0 20px}
-  .fs-links small{display:none}
 }
 
 /* ================= השולחן: כל העבודות על משטח בהיר אינסופי ================= */
@@ -235,7 +233,6 @@ html.fs-lock .flogo,html.fs-lock .flogo-dot{visibility:hidden;transition:visibil
 .fp-media::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,var(--bg) 0%,color-mix(in srgb,var(--bg) 90%,transparent) 14%,color-mix(in srgb,var(--bg) 46%,transparent) 30%,transparent 46%)}
 .fp-txt{position:absolute;z-index:1;inset-inline:var(--gutter);bottom:clamp(28px,5.5vh,72px);display:flex;align-items:flex-end;justify-content:space-between;gap:16px 48px;pointer-events:none}
 .fp-main{display:flex;align-items:baseline;gap:clamp(14px,1.6vw,32px);min-width:0}
-.fp-no{font-size:var(--fs-meta);color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
 .fp-c{font-family:var(--f-display);font-weight:500;font-size:var(--fs-giant);line-height:1.02;letter-spacing:-.035em;color:var(--ink);text-wrap:balance}
 .fp-side{display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex:none;padding-bottom:.5em}
 .fp-tags{display:flex;gap:6px}
@@ -289,7 +286,6 @@ html.pc-on .pc{display:grid}
 .dpa-m img.on{opacity:1}
 .dpa-a::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,var(--bg) 0%,color-mix(in srgb,var(--bg) 82%,transparent) 20%,color-mix(in srgb,var(--bg) 30%,transparent) 42%,transparent 60%)}
 .dpa-t{position:absolute;z-index:1;inset-inline:clamp(16px,1.6vw,32px);bottom:clamp(18px,1.8vw,36px);display:flex;flex-direction:column;align-items:flex-start;gap:6px}
-.dpa-no{font-size:var(--fs-meta);color:var(--muted);font-variant-numeric:tabular-nums}
 .dpa-n{font-family:var(--f-display);font-weight:500;font-size:clamp(26px,2.3vw + .2rem,60px);line-height:1.08;letter-spacing:-.025em}
 .dpa-s{display:grid;grid-template-rows:0fr;opacity:0;font-size:var(--fs-body);color:var(--soft);transition:grid-template-rows .6s var(--ease),opacity .4s}
 .dpa-i.on .dpa-s{grid-template-rows:1fr;opacity:1;transition-delay:.2s,.3s}
@@ -426,17 +422,15 @@ html.pc-on .pc{display:grid}
 .ct-giant{margin:0 0 clamp(48px,6vw,128px);font-size:clamp(40px,5.4vw,132px);line-height:1.06;letter-spacing:-.035em;max-width:15ch;text-wrap:balance}
 .ways{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(48px,6vw,144px);align-items:start}
 .ways-l{list-style:none;margin:0;padding:0;display:grid;gap:clamp(32px,3.4vw,64px)}
-.way{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:clamp(14px,1.4vw,28px);row-gap:10px;align-items:start}
-.way-no{grid-row:1/span 2;padding-top:clamp(8px,1vw,20px);font-size:var(--fs-meta);color:var(--muted);font-variant-numeric:tabular-nums}
+.way{display:grid;grid-template-columns:minmax(0,1fr);row-gap:10px;align-items:start}
 .way-a{justify-self:start;display:inline-flex;align-items:center;gap:.26em;min-height:44px;font-family:var(--f-display);font-weight:500;font-size:clamp(34px,3.1vw + .4rem,80px);line-height:1.1;letter-spacing:-.03em;
   color:var(--ink);text-decoration:none}
 .way-t{padding-bottom:.04em;background:linear-gradient(var(--lime),var(--lime)) right bottom .02em / 0% .16em no-repeat;transition:background-size .55s var(--ease)}
 .way-arr{width:.6em;height:.6em;flex:none;transition:transform .4s var(--ease)}
 @media (hover:hover) and (pointer:fine){.way-a:hover .way-t{background-size:100% .16em}.way-a:hover .way-arr{transform:translateX(-10px)}}
 .way-a:focus-visible .way-t{background-size:100% .16em}
-.way-m{grid-column:2;font-size:var(--fs-body);color:var(--muted)}
-.way-h{grid-column:2;margin-bottom:clamp(14px,1.4vw,24px);font-family:var(--f-display);font-weight:500;font-size:var(--fs-h3);line-height:1.3}
-.way-f .cl-form{grid-column:2}
+.way-m{font-size:var(--fs-body);color:var(--muted)}
+.way-h{margin-bottom:clamp(14px,1.4vw,24px);font-family:var(--f-display);font-weight:500;font-size:var(--fs-h3);line-height:1.3}
 .cl-form{--field:transparent;--field-line:color-mix(in srgb,var(--ink) 50%,transparent);--field-ring:var(--ink);--chip-on:var(--ink);--chip-on-ink:var(--bg);--ok:var(--lime-t);--r-field:0}
 .cl-form .cf{font-size:clamp(16px,.4vw + .7rem,19px)}
 .cl-form .cf form{gap:clamp(24px,2.2vw,32px)}
@@ -458,9 +452,6 @@ html.pc-on .pc{display:grid}
 @media (max-width:1023px){.ways{grid-template-columns:1fr}}
 @media (max-width:767px){
   .way-a{font-size:clamp(30px,8.4vw,44px)}
-  .way-no{padding-top:8px}
-  .way-f .way-h,.way-f .cl-form{grid-column:1/-1}
-  .way-f .way-no{grid-row:1}
 }
 
 /* ================= פוטר: מינימלי וכהה. העמוד נגמר כאן ================= */

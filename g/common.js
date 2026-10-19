@@ -114,7 +114,7 @@
     var d=C?C.depts:{branding:{name:DEPTS.branding},web:{name:DEPTS.web},digital:{name:DEPTS.digital}};
     function col(h,items){return '<div><h3>'+h+'</h3><ul>'+items.map(function(x){return '<li>'+x+'</li>';}).join("")+'</ul></div>';}
     document.getElementById("ft-cols").innerHTML=
-      col("האתר",['<a href="work.html">עבודות</a>','<a href="'+P+'#depts">מחלקות</a>','<a href="'+P+'#clients">לקוחות</a>','<a href="'+P+'#wall">מה מספרים עלינו</a>','<a href="'+P+'#contact">צור קשר</a>'])+
+      col("האתר",['<a href="work.html">פרויקטים</a>','<a href="'+P+'#depts">מחלקות</a>','<a href="'+P+'#clients">לקוחות</a>','<a href="'+P+'#wall">מה מספרים עלינו</a>','<a href="'+P+'#contact">צור קשר</a>'])+
       col("מחלקות",["branding","web","digital"].map(function(k){return '<a href="work.html?d='+k+'">'+d[k].name+'</a>';}))+
       col("דברו איתנו",['<a href="'+SALES_TEL+'"><span dir="ltr">'+SALES+'</span></a>','<a href="'+WA+'" target="_blank" rel="noopener">וואטסאפ</a>']);
     if(C)document.getElementById("ft-soc").innerHTML=

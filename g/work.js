@@ -72,7 +72,24 @@
     function cl(card){return list[+card.querySelector(".ar-b").dataset.k];}
     function put(card,role){out.push(card);card.dataset.r=role;var c=cl(card);setImg(card,role[0]==="T"?tallest(c):role==="W"?widest(c):first(c),role);}    /* מי שיש לו עבודה עומדת נשמר לכרטיס גבוה, וכל השאר לפי הסדר */
     function take(){for(var i=0;i<q.length;i++){if(!tallest(cl(q[i])))return q.splice(i,1)[0];}return q.shift();}
+    /* הסוף: ארבעה כרטיסים אחרונים או פחות נסגרים בשורות מלאות, כדי שכרטיס לא יישאר לבד בחצי שורה */
+    function finish(){
+      var n=q.length,i,j=-1;
+      if(n===4){put(take(),"n");put(take(),"n");ends.push(out.length);put(take(),"n");put(take(),"n");}
+      else if(n===3){
+        for(i=0;i<3;i++){if(tallest(cl(q[i]))){j=i;break;}}
+        if(j>-1){var r=PAT[k%12];put(q.splice(j,1)[0],r[0]==="T"?r:"T1");put(take(),"n");put(take(),"n");}
+        else{for(i=0;i<3;i++){if(broad(cl(q[i]))){j=i;break;}}
+          var w=j>-1?q.splice(j,1)[0]:null;put(take(),"n");put(take(),"n");ends.push(out.length);
+          if(w)put(w,"W");else{var o=take();put(o,"n");}}
+      }
+      else if(n===2){put(take(),"n");put(take(),"n");}
+      else if(n===1){var z=take();put(z,broad(cl(z))?"W":"n");}
+      if(n)ends.push(out.length);
+      q.length=0;
+    }
     while(q.length){
+      if(q.length<=4){finish();break;}
       var role=PAT[k%12];
       if(role[0]==="T"){
         var j=-1;if(q.length>=3)for(var i=0;i<q.length;i++){if(tallest(cl(q[i]))){j=i;break;}}

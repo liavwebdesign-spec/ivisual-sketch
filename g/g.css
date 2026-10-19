@@ -90,42 +90,57 @@ h1,h2,h3,p{margin:0}
 .lw-c{display:inline-block}
 .sec-head h2{max-width:22ch;text-wrap:balance}
 
-/* ================= הדר: לוגו, "בואו נדבר" שקוף ו"תפריט" (MV:hd4) ================= */
-.h4x{position:fixed;top:16px;inset-inline:16px;z-index:50;display:flex;align-items:center;justify-content:space-between;pointer-events:none;transition:transform .45s var(--ease)}
-.h4x>*{pointer-events:auto}
-.h4x.is-hidden{transform:translateY(calc(-100% - 32px))}
-.h4-chip{position:relative;display:inline-flex;align-items:center;min-height:52px;padding:0 8px;border-radius:6px}
-.h4-chip img{display:block;height:30px;width:auto;transition:opacity .6s var(--ease-io)}
-.h4-chip .lg-l{position:absolute;top:11px;right:8px;/* qa-allow: physical */ opacity:0}
-html.is-dark .h4-chip .lg-d{opacity:0}
-html.is-dark .h4-chip .lg-l{opacity:1}
-.h4-end{display:flex;gap:8px;align-items:center}
-/* "בואו נדבר" שקוף, עם רקע נייר עדין כדי שיהיה קריא גם מעל העבודות בשולחן */
-.h4-end .btn-line{background:color-mix(in srgb,var(--bg) 55%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-@media (hover:hover) and (pointer:fine){.h4-end .btn-line:hover{background:var(--ink)}}
-.h4-menu{display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:8px;padding-inline-start:20px;border:0;border-radius:6px;background:var(--ink);color:var(--bg);
-  font-family:var(--f-body);font-size:15px;font-weight:500;cursor:pointer;transition:transform .18s var(--ease)}
-.h4-menu i{position:relative;width:36px;height:36px;border-radius:4px;background:var(--bg)}
-.h4-menu i::before,.h4-menu i::after{content:"";position:absolute;inset-inline:11px;height:2px;border-radius:2px;background:var(--ink);transition:transform .3s var(--ease)}
-.h4-menu i::before{top:14px}
-.h4-menu i::after{top:20px}
-@media (hover:hover) and (pointer:fine){.h4-menu:hover i::before{transform:translateX(-3px)}.h4-menu:hover i::after{transform:translateX(3px)}}
-.open-anim .h4x{animation:op-drop .6s var(--ease) both}
+/* ================= הדר (סבב 19.10): טיפוגרפי, בלי קופסאות. לוגו, ארבעה קישורים, "בואו נדבר" עם חץ, ו"תפריט" שפותח את המסך המלא.
+   למעלה דהייה רכה מהנייר כדי שהכיתוב יהיה קריא מעל השולחן, ובגלילה פס נייר שקוף למחצה. הצבעים מ-ink ו-bg, ולכן מתהפכים באזורים הכהים ================= */
+.hx{position:fixed;top:0;inset-inline:0;z-index:50;display:flex;align-items:center;gap:24px;min-height:84px;padding:0 var(--gutter);color:var(--ink);transition:transform .45s var(--ease)}
+.hx::before{content:"";position:absolute;inset:0 0 -28px;z-index:-1;pointer-events:none;transition:opacity .4s var(--ease-io);
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 88%,transparent),color-mix(in srgb,var(--bg) 55%,transparent) 55%,transparent)}
+.hx::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .35s var(--ease-io);
+  background:color-mix(in srgb,var(--bg) 86%,transparent);-webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1)}
+.hx.is-scrolled::before{opacity:0}
+.hx.is-scrolled::after{opacity:1}
+.hx.menu-open::before,.hx.menu-open::after{opacity:0}
+.hx.is-hidden{transform:translateY(-100%)}
+.hx-logo{position:relative;display:inline-flex;align-items:center;min-height:48px;flex:none}
+.hx-logo img{display:block;height:30px;width:auto;transition:opacity .6s var(--ease-io)}
+.hx-logo .lg-l{position:absolute;top:9px;right:0;/* qa-allow: physical */ opacity:0}
+html.is-dark .hx-logo .lg-d{opacity:0}
+html.is-dark .hx-logo .lg-l{opacity:1}
+.hx-nav{display:flex;gap:clamp(20px,2.4vw,44px);margin-inline:auto}
+.hx-nav a,.hx-talk,.hx-menu{position:relative;display:inline-flex;align-items:center;min-height:48px;color:inherit;font-family:var(--f-body);font-size:15px;font-weight:500;letter-spacing:.005em;text-decoration:none}
+/* נקודת ליים קטנה מתחת לקישור: בריחוף, ובעמוד שבו נמצאים */
+.hx-nav a::after{content:"";position:absolute;bottom:6px;left:50%;width:5px;height:5px;margin-left:-2.5px;/* qa-allow: physical, centered dot */ border-radius:50%;background:var(--lime);transform:scale(0);transition:transform .3s var(--ease)}
+.hx-nav a[aria-current]::after{transform:none}
+.hx-end{display:flex;align-items:center;gap:clamp(18px,2vw,36px);flex:none}
+.hx-talk{gap:8px}
+.hx-talk svg{width:18px;height:18px;transition:transform .3s var(--ease)}
+.hx-talk span{background:linear-gradient(var(--lime),var(--lime)) right 0 bottom 2px / 100% 2px no-repeat;transition:background-size .4s var(--ease)}
+.hx-menu{gap:12px;padding:0;border:0;background:none;cursor:pointer}
+.hx-menu i{position:relative;width:26px;height:12px}
+.hx-menu i::before,.hx-menu i::after{content:"";position:absolute;inset-inline:0;height:2px;border-radius:2px;background:currentColor;transition:transform .35s var(--ease),inset .35s var(--ease)}
+.hx-menu i::before{top:0}
+.hx-menu i::after{bottom:0;inset-inline-start:8px}
+@media (hover:hover) and (pointer:fine){
+  .hx-nav a:hover::after{transform:none}
+  .hx-talk:hover svg{transform:translateX(-4px)}
+  .hx-talk:hover span{background-size:0 2px}
+  .hx-menu:hover i::after{inset-inline-start:0}
+  .hx-menu:hover i::before{transform:translateX(-4px)}
+}
+.open-anim .hx{animation:op-drop .6s var(--ease) both}
 @keyframes op-drop{from{opacity:0;translate:0 -16px}}
 @media (max-width:1023px){
-  .h4x::before{content:"";position:absolute;inset:-16px -16px -10px;z-index:-1;pointer-events:none;opacity:0;transition:opacity .3s;
-    background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
-  .h4x.is-scrolled::before{opacity:1}
-  .h4x.menu-open::before{opacity:0}
+  .hx{min-height:72px}
+  .hx-nav{display:none}
+  .hx-end{margin-inline-start:auto}
 }
 @media (max-width:420px){
-  .h4x{top:10px;inset-inline:10px}
-  .h4-end .btn{min-height:48px;padding:0 16px;font-size:15px}
-  .h4-menu{min-height:48px;padding:6px;padding-inline-start:14px;gap:10px}
-  .h4-menu i{width:36px;height:36px}
-  .h4-chip img{height:26px}
-  .h4-chip .lg-l{top:11px}
+  .hx{gap:16px;min-height:64px}
+  .hx-end{gap:20px}
+  .hx-logo img{height:26px}
+  .hx-logo .lg-l{top:11px}
 }
+@media (forced-colors:active){.hx::after{background:Canvas}}
 
 /* ================= תפריט מסך מלא: נפתח בעיגול מהכפתור, הטבעת מהלוגו מאחור, בלי תמונה ================= */
 .fs{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:112px var(--gut);
@@ -247,7 +262,7 @@ html.pc-on .pc{display:grid}
 .pc.on{opacity:1;visibility:visible;transition:opacity .25s,visibility 0s}
 
 /* ================= "וזה רק חלק מהתיק" והתג המסתובב (MV:g83) ================= */
-.more-end{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px 40px;padding:clamp(56px,6vw,128px) var(--gutter) var(--sec)}
+.more-end{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:24px 40px;padding:clamp(56px,6vw,128px) var(--gutter) var(--sec)}
 .more-big{max-width:26ch;font-family:var(--f-display);font-weight:500;font-size:var(--fs-h2);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
 .badge{--badge:clamp(112px,9vw,168px);position:relative;flex:none;display:grid;place-items:center;width:var(--badge);height:var(--badge);border-radius:50%;
   background:var(--lime);color:var(--on-lime);text-decoration:none;transition:scale .45s var(--ease)}
@@ -491,7 +506,13 @@ html.pc-on .pc{display:grid}
 .ar-c[data-r=T1],.ar-c[data-r=T2]{grid-row:span 2;align-self:stretch}
 .ar-c[data-r=T1]{grid-column:1}
 .ar-c[data-r=T2]{grid-column:2}
-.ar-c[hidden]{display:none}
+.ar-c[hidden],.ar-c.is-later{display:none}
+.ar-more{display:flex;justify-content:center;margin-top:clamp(48px,5vw,96px)}
+.ar-more[hidden]{display:none}
+.ar-more button{display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:0 4px;border:0;background:none;color:var(--ink);font:inherit;font-family:var(--f-display);font-weight:500;font-size:clamp(17px,.5vw + 12px,21px);cursor:pointer}
+.ar-more i{width:10px;height:10px;border-radius:50%;background:var(--lime);animation:ar-pulse 1.4s var(--ease-io) infinite}
+@keyframes ar-pulse{50%{transform:scale(.55);opacity:.6}}
+@media (prefers-reduced-motion:reduce){.ar-more i{animation:none}}
 .ar-b{display:block;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:start;cursor:pointer}
 .ar-b:focus-visible{outline-offset:6px}
 .ar-m{position:relative;display:block;aspect-ratio:3/2;overflow:hidden;border-radius:4px;background:var(--bg-2)}

@@ -38,11 +38,9 @@
   </div>
 </div>
 
+<a class="flogo" href="#top" aria-label="ויזואל, לראש העמוד"><img src="img/logo-mono.svg" alt="" width="134" height="30"></a>
+<span class="flogo-dot" aria-hidden="true"><img src="img/logo-dot.svg" alt="" width="134" height="30"></span>
 <header class="hx hd" id="hd">
-  <a class="hx-logo" href="#top" aria-label="ויזואל, לראש העמוד">
-    <img class="lg-d" src="../shared/brand/logo.svg" alt="ויזואל" width="134" height="30">
-    <img class="lg-l" src="../shared/brand/logo-light.svg" alt="" width="134" height="30">
-  </a>
   <nav class="hx-nav" aria-label="ראשי">
     <a href="work.html">פרויקטים</a>
     <a href="#depts">מחלקות</a>
@@ -51,15 +49,18 @@
   </nav>
   <div class="hx-end">
     <a class="hx-talk" href="#contact"><span>בואו נדבר</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a>
-    <button class="hx-menu" id="fs-open" type="button" aria-expanded="false" aria-controls="fs">תפריט<i aria-hidden="true"></i></button>
+    <button class="hx-menu" id="fs-open" type="button" aria-expanded="false" aria-controls="fs"><span>תפריט</span><i aria-hidden="true"></i></button>
   </div>
 </header>
 
 <div class="fs" id="fs" role="dialog" aria-modal="true" aria-label="תפריט" inert>
-  <button class="fs-close" type="button">סגירה<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+  <div class="fs-top">
+    <a class="fs-logo" href="#top" aria-label="ויזואל, לראש העמוד"><img src="../shared/brand/logo-light.svg" alt="" width="134" height="30"></a>
+    <button class="fs-close" type="button"><span>סגירה</span><i aria-hidden="true"></i></button>
+  </div>
   <div class="fs-eye" aria-hidden="true"><div class="fs-view"></div><i class="fs-pupil"></i><i class="fs-sat"></i></div>
   <ul class="fs-links">
-    <li><a href="work.html" style="--i:0"><small>01</small>עבודות</a></li>
+    <li><a href="work.html" style="--i:0"><small>01</small>פרויקטים</a></li>
     <li><a href="#depts" style="--i:1"><small>02</small>מחלקות</a></li>
     <li><a href="#clients" style="--i:2"><small>03</small>לקוחות</a></li>
     <li><a href="#wall" style="--i:3"><small>04</small>מה מספרים</a></li>

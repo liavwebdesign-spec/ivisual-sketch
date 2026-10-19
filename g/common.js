@@ -14,7 +14,7 @@
 
   // מנהל המכירות: הטלפון והוואטסאפ של כל דרכי הקשר (לילך, 18.10)
   var SALES="054-777-2388",SALES_TEL="tel:+972547772388";
-  var WA="https://wa.me/972547772388?text="+encodeURIComponent("היי, הגעתי מהאתר של Visual ורוצה לדבר על פרויקט");
+  var WA="https://wa.me/972547772388?text="+encodeURIComponent("שלום, הגעתי מהאתר של ויזואל ואשמח לדבר על פרויקט.");
   var ARR='<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg>';
   var TAG={branding:"מיתוג",web:"אתרים",digital:"שיווק"};
 

@@ -521,7 +521,7 @@
       if(!fine.matches||open)return;
       e.preventDefault();open=true;
       var t=call.querySelector(".way-t");t.textContent=G.SALES;t.dir="ltr";
-      callM.textContent="מנהל המכירות. לחיצה נוספת מחייגת";
+      callM.textContent="אלעד, מנהל המכירות. לחיצה נוספת מחייגת.";
     });
     document.getElementById("w-wa").href=G.WA;
     var root=document.getElementById("cf-g");
@@ -531,9 +531,9 @@
     var need=root.querySelector(".cf-need");if(need)need.remove();
     var form=root.querySelector("form"),nm=root.querySelector("[data-v=name]"),subj=document.createElement("input");
     subj.type="hidden";subj.name="subject";form.appendChild(subj);
-    function setSubj(){var n=nm.value.trim();subj.value="פנייה חדשה מהאתר של Visual"+(n?" מאת "+n:"");}
+    function setSubj(){var n=nm.value.trim();subj.value="פנייה חדשה מהאתר של ויזואל"+(n?" מאת "+n:"");}
     nm.addEventListener("input",setSubj);setSubj();
-    var msg=root.querySelector("textarea");if(msg){var lab=root.querySelector('label[for="'+msg.id+'"]');if(lab)lab.firstChild.textContent="על מה תרצו לדבר? ";}
+    var msg=root.querySelector("textarea");if(msg){var lab=root.querySelector('label[for="'+msg.id+'"]');if(lab)lab.firstChild.textContent="מה אתם מתכננים? ";}
   })();
 
   G.darkZone(document.getElementById("ft"));

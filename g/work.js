@@ -112,9 +112,9 @@
     vis=out;
   }
 
-  /* טעינה בגלילה: קודם 12 כרטיסים, ועוד 12 כשמתקרבים לסוף. העצירה תמיד בסוף שורה, כדי שכרטיס גבוה לא יישאר בלי זוג.
+  /* טעינה בגלילה: קודם כ-24 כרטיסים, ועוד 24 כשמתקרבים לסוף. העצירה תמיד בסוף שורה, כדי שכרטיס גבוה לא יישאר בלי זוג.
      הכפתור "עוד פרויקטים" הוא גם הדרך למקלדת, ולמי שהגלילה לא הפעילה */
-  var STEP=12,shown=STEP,vis=[],more=document.getElementById("ar-more"),moreBtn=more.querySelector("button");
+  var FIRST=24,STEP=24,shown=FIRST,vis=[],more=document.getElementById("ar-more"),moreBtn=more.querySelector("button");
   function cut(n){for(var i=0;i<ends.length;i++){if(ends[i]>=n)return ends[i];}return vis.length;}
   function cap(){
     var lim=cut(shown);
@@ -131,33 +131,49 @@
     if(window.ScrollTrigger)ScrollTrigger.refresh();
     requestAnimationFrame(near);
   }
-  function near(){if(!more.hidden&&more.getBoundingClientRect().top<innerHeight+600)reveal(false);}
+  var busy=false; /* בזמן מעבר בין סינונים הגריד מתכווץ לרגע, ואסור שזה ייראה כמו הגעה לסוף */
+  function near(){if(!busy&&!more.hidden&&more.getBoundingClientRect().top<innerHeight+600)reveal(false);}
   moreBtn.addEventListener("click",function(){reveal(true);});
-  if("IntersectionObserver" in window)new IntersectionObserver(function(es){if(es[0].isIntersecting)reveal(false);},{rootMargin:"0px 0px 600px 0px"}).observe(more);
+  if("IntersectionObserver" in window)new IntersectionObserver(function(es){if(es[0].isIntersecting&&!busy)reveal(false);},{rootMargin:"0px 0px 600px 0px"}).observe(more);
 
-  /* הסינון: הכול, מיתוג, אתרים, שיווק, עם מספר הלקוחות בכל אחד */
-  var tabs=document.getElementById("ar-tabs"),stat=document.getElementById("ar-status");
+  /* הסינון: סרגל שצף בתחתית המסך (ברוח פירמה). הכול, מיתוג, אתרים, שיווק, עם מספר הלקוחות בכל אחד,
+     וגלולה כהה שמחליקה אל המחלקה שנבחרה */
+  var bar=document.getElementById("af"),tabs=document.getElementById("ar-tabs"),pill=tabs.querySelector(".af-on"),stat=document.getElementById("ar-status");
   var KEYS=["","branding","web","digital"],NAMES={"":"הכול",branding:"מיתוג",web:"אתרים",digital:"שיווק"};
   function count(k){return k?list.filter(function(c){return c.deps[k];}).length:list.length;}
-  tabs.innerHTML=KEYS.map(function(k){return '<button type="button" data-d="'+k+'" aria-pressed="false">'+NAMES[k]+'<sup>'+count(k)+'</sup></button>';}).join("");
+  tabs.insertAdjacentHTML("beforeend",KEYS.map(function(k){return '<button type="button" data-d="'+k+'" aria-pressed="false">'+NAMES[k]+'<sup>'+count(k)+'</sup></button>';}).join(""));
+  function slide(){var b=tabs.querySelector('[aria-pressed="true"]');if(!b)return;pill.style.width=b.offsetWidth+"px";pill.style.transform="translateX("+b.offsetLeft+"px)";}
+  addEventListener("resize",slide);if(document.fonts)document.fonts.ready.then(slide);
   var cur=null;
   function apply(k,anim){
     if(KEYS.indexOf(k)<0)k="";
     if(k===cur)return;cur=k;
     tabs.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.d===k));});
+    slide();
     var go=anim&&hasGsap&&window.Flip&&!still.matches;
     var state=go?Flip.getState(cards):null;
     cards.forEach(function(c){c.hidden=!!k&&c.dataset.d.split(" ").indexOf(k)<0;});
-    layout();shown=STEP;var lim=cap();
-    if(go)Flip.from(state,{duration:.7,ease:"power3.inOut",scale:true,absolute:true,simple:true,
+    layout();shown=FIRST;var lim=cap();
+    if(go){busy=true;Flip.from(state,{duration:.7,ease:"power3.inOut",scale:true,absolute:true,simple:true,
       onEnter:function(els){return gsap.fromTo(els,{opacity:0,scale:.94},{opacity:1,scale:1,duration:.55,delay:.15,ease:"power3.out"});},
       onLeave:function(els){return gsap.to(els,{opacity:0,scale:.94,duration:.35,ease:"power2.in"});},
-      onComplete:function(){ScrollTrigger.refresh();}});
+      onComplete:function(){busy=false;ScrollTrigger.refresh();near();}});}
     stat.textContent=(k?NAMES[k]+": ":"")+count(k)+" לקוחות"+(lim<vis.length?", מוצגים "+lim:"");
     var p=new URLSearchParams(location.search);if(k)p.set("d",k);else p.delete("d");
     history.replaceState(null,"",location.pathname+(p.toString()?"?"+p:"")+location.hash);
   }
-  tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(b)apply(b.dataset.d,true);});
+  /* מי שמסנן מאמצע הרשימה חוזר לראש הגריד, כדי לראות את התוצאה מההתחלה */
+  tabs.addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b||b.dataset.d===cur)return;
+    var top=grid.getBoundingClientRect().top;
+    apply(b.dataset.d,true);
+    if(top<0)G.scrollToY(Math.max(0,top+scrollY-parseFloat(getComputedStyle(doc).getPropertyValue("--hx-h"))-24));
+  });
+  /* הסרגל עולה מלמטה אחרי שהעמוד נפתח, ויורד כשהפוטר נכנס, כדי לא לשבת על הקישורים שבו */
+  var ft=document.getElementById("ft"),atFt=false;
+  function show(){bar.classList.toggle("is-off",atFt);}
+  if("IntersectionObserver" in window)new IntersectionObserver(function(es){atFt=es[0].isIntersecting;show();},{rootMargin:"0px 0px -40px 0px"}).observe(ft);
+  setTimeout(function(){slide();show();},still.matches?0:500);
   apply(new URLSearchParams(location.search).get("d")||"",false);
 
   G.darkZone(document.getElementById("ft"));

@@ -489,14 +489,24 @@ html.pc-on .pc{display:grid}
 .ar-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px 48px;flex-wrap:wrap;margin-bottom:clamp(40px,4vw,88px)}
 .ar-head h1{font-size:var(--fs-giant);line-height:1;letter-spacing:-.04em}
 .ar-head h1 sup{margin-inline-start:.12em;font-size:clamp(14px,.4vw + 10px,18px);font-weight:400;letter-spacing:0;color:var(--muted);vertical-align:top;top:.2em;position:relative;font-variant-numeric:tabular-nums}
-.ar-tabs{display:flex;flex-wrap:wrap;gap:4px clamp(18px,2.2vw,48px)}
-.ar-tabs button{position:relative;display:inline-flex;align-items:baseline;gap:6px;min-height:44px;padding:0;border:0;background:none;cursor:pointer;
-  font-family:var(--f-body);font-size:var(--fs-lead);font-weight:500;color:var(--dim);transition:color .25s}
-.ar-tabs button sup{font-size:.52em;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums;top:-.7em}
-.ar-tabs button[aria-pressed=true]{color:var(--ink)}
-.ar-tabs button::after{content:"";position:absolute;inset-inline:0;bottom:4px;height:2px;background:var(--lime);transform:scaleX(0);transform-origin:right center;transition:transform .45s var(--ease)}
-.ar-tabs button[aria-pressed=true]::after{transform:none}
-@media (hover:hover) and (pointer:fine){.ar-tabs button:hover{color:var(--ink)}}
+/* סרגל הסינון שצף בתחתית המסך (ברוח פירמה): גלולה בהירה, והבחירה הפעילה בכהה שמחליקה בין המחלקות */
+.af{position:fixed;left:50%;/* qa-allow: physical — centered on the screen */ bottom:calc(clamp(16px,2.2vw,32px) + env(safe-area-inset-bottom,0px));z-index:50;display:flex;align-items:center;gap:4px;
+  padding:6px;border-radius:10px;background:var(--paper);color:var(--ink);translate:-50% 0;
+  box-shadow:0 0 0 1px var(--line),0 22px 44px -20px rgba(31,29,32,.42);
+  transition:transform .6s var(--ease),opacity .4s var(--ease-io),visibility 0s}
+.af.is-off{transform:translateY(calc(100% + 48px));opacity:0;visibility:hidden;pointer-events:none;transition:transform .5s var(--ease-io),opacity .35s var(--ease-io),visibility 0s linear .5s}
+.af-ic{flex:none;margin-inline:10px 6px;color:var(--muted)}
+.af-g{position:relative;display:flex;align-items:center}
+.af-on{position:absolute;left:0;/* qa-allow: physical — moved by offsetLeft */ top:0;bottom:0;width:0;border-radius:6px;background:var(--ink);transition:transform .5s var(--ease),width .5s var(--ease)}
+.af-g button{position:relative;display:inline-flex;align-items:baseline;gap:5px;min-height:44px;padding:0 18px;border:0;border-radius:6px;background:none;cursor:pointer;
+  font-family:var(--f-body);font-size:16px;font-weight:500;line-height:44px;color:var(--soft);white-space:nowrap;transition:color .35s var(--ease-io)}
+.af-g button sup{font-size:11px;font-weight:500;line-height:1;color:var(--muted);font-variant-numeric:tabular-nums;top:-.55em;transition:color .35s var(--ease-io)}
+.af-g button[aria-pressed=true]{color:var(--paper)}
+.af-g button[aria-pressed=true] sup{color:var(--lime)}
+.af-g button:focus-visible{outline-offset:-3px}
+@media (hover:hover) and (pointer:fine){.af-g button[aria-pressed=false]:hover{color:var(--ink)}}
+.ar{padding-bottom:calc(var(--sec) + 48px)}
+.ar-b,.ar-more button{scroll-margin-bottom:120px}
 .ar-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row dense;gap:clamp(24px,2.2vw,40px) clamp(12px,1.1vw,20px);align-items:start}
 .ar-c{min-width:0}
 .ar-c[data-r=W]{grid-column:1/-1}
@@ -533,9 +543,9 @@ html.pc-on .pc{display:grid}
   .ar-c[data-r] .ar-m{aspect-ratio:3/2}
   .ar-c[data-r^=T] .ar-m{flex:none;aspect-ratio:4/5}
   .ar-tags i{min-height:26px;font-size:12px}
-  .ar-tabs{gap:0 20px;margin-inline:calc(var(--gutter)*-1);padding-inline:var(--gutter);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
-  .ar-tabs::-webkit-scrollbar{display:none}
-  .ar-tabs button{flex:none}
+  .af{padding:5px}
+  .af-ic{display:none}
+  .af-g button{padding:0 clamp(10px,3.4vw,16px);font-size:15px}
 }
 
 /* ================= בורר הרקע הכהה (רק בסקיצה, להשוואה) ================= */
@@ -567,6 +577,7 @@ html.is-dark .bgp{opacity:1;visibility:visible;translate:0 -50%;transition-delay
   html{transition:none}
   .tb-t img,.sd-shot img,.fp-media img,.ar-m img,.dpa-i,.dpa-m,.dpa-m img,.dpa-s{transition:none}
   .tb-in{opacity:1!important;animation:none!important}
+  .af,.af.is-off,.af-on{transition:none}
 }
 
 /* ================= ניגודיות גבוהה של המערכת: מסגרת פוקוס בצבע המערכת ================= */

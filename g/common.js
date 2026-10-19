@@ -67,6 +67,8 @@
     function set(open,back){
       if(open){
         var r=btn.getBoundingClientRect();
+        // כפתור הסגירה מקבל את הצורה של כפתור התפריט ברגע הפתיחה (מילה או ריבוע), בלי מעבר
+        fs.classList.add("sw");fs.classList.toggle("sq",hd.classList.contains("is-scrolled"));void closeBtn.offsetWidth;fs.classList.remove("sw");
         fs.style.setProperty("--cx",(r.left+r.width/2)+"px");fs.style.setProperty("--cy",(r.top+r.height/2)+"px");
       }
       fs.classList.toggle("open",open);fs.inert=!open;

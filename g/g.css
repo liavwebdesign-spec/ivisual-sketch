@@ -92,7 +92,7 @@ h1,h2,h3,p{margin:0}
 .sec-head h2{max-width:22ch;text-wrap:balance}
 
 /* ================= הדר צף (19.10, סבב שלישי): רק הלוגו מימין וכפתור התפריט משמאל, על דהייה רכה בצבע הרקע לכל אורך הגלילה.
-   כפתור התפריט: "תפריט" ושני קווים, ובגלילה ריבוע מלא בצבע הדיו. התפריט הפתוח מחזיק את אותה שורה בדיוק:
+   כפתור התפריט: "תפריט" ושני קווים, ובגלילה רק שני הקווים, בלי רקע (ליאב, 20.10: "עדיף ללא רקע"). התפריט הפתוח מחזיק את אותה שורה בדיוק:
    הלוגו באותו מקום, והכפתור באותו מקום ובאותה צורה, עם הקווים שהופכים ל-X. הצבעים מ-ink ו-bg, ולכן מתהפכים באזורים הכהים ================= */
 .hx{position:fixed;top:0;inset-inline:0;z-index:50;display:flex;align-items:center;justify-content:flex-end;min-height:var(--hx-h);padding:0 var(--gutter);color:var(--ink);pointer-events:none}
 .hx>*{pointer-events:auto}
@@ -116,9 +116,8 @@ html.fs-lock .flogo,html.fs-lock .flogo-dot{visibility:hidden;transition:visibil
 .hx-menu i::before,.hx-menu i::after,.fs-close i::before,.fs-close i::after{content:"";position:absolute;inset-inline:0;height:2px;border-radius:2px;background:currentColor;transition:transform .35s var(--ease),inset .35s var(--ease),top .35s var(--ease),bottom .35s var(--ease)}
 .hx-menu i::before,.fs-close i::before{top:0}
 .hx-menu i::after,.fs-close i::after{bottom:0;inset-inline-start:8px}
-/* ריבוע: בגלילה בהדר, ובתפריט כשנפתח מהריבוע (fs.sq), באותו גודל ובאותו מקום */
-.hx.is-scrolled .hx-menu,.fs.sq .fs-close{min-width:52px;min-height:52px}
-.hx.is-scrolled .hx-menu{background:var(--ink);color:var(--bg)}
+/* מצב מכווץ: בגלילה בהדר, ובתפריט כשנפתח מהריבוע (fs.sq), באותו גודל ובאותו מקום */
+.hx.is-scrolled .hx-menu,.fs.sq .fs-close{min-width:52px;min-height:52px;justify-content:flex-end}
 .hx.is-scrolled .hx-menu span,.fs.sq .fs-close span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;opacity:0}
 .hx.is-scrolled .hx-menu i,.fs.sq .fs-close i{width:22px}
 .hx.menu-open .hx-menu{visibility:hidden}
@@ -134,7 +133,6 @@ html.fs-lock .flogo,html.fs-lock .flogo-dot{visibility:hidden;transition:visibil
   .flogo img,.flogo-dot img{height:26px}
   .hx.is-scrolled .hx-menu,.fs.sq .fs-close{min-width:48px;min-height:48px}
 }
-@media (forced-colors:active){.hx.is-scrolled .hx-menu,.fs.sq .fs-close{border:1px solid ButtonText}}
 
 /* ================= תפריט מסך מלא: נפתח בעיגול מהכפתור, הטבעת מהלוגו מאחור, בלי תמונה ================= */
 .fs{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:112px var(--gut);

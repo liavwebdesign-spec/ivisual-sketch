@@ -376,6 +376,56 @@
     });
   })();
 
+  /* ================= ענן עבודות: שתים-עשרה עבודות מרחפות בעומק. הגלילה מרימה כל אחת בקצב שלה, והעכבר מזיז לצדדים (MV:g37) ================= */
+  (function(){
+    var sec=document.getElementById("cloud"),box=document.getElementById("cd-imgs");if(!sec)return;
+    // [עבודה, x, y, רוחב, עומק, ובטלפון x, y, רוחב]. x ו-y באחוזים מהסקשן, ועומק גבוה עולה מהר יותר ויושב מעל.
+    // שמונה בפתיחה, וארבע מתחת לקצה שעולות מתוך החושך בזמן הגלילה, כדי שהמסך לא יתרוקן בסוף.
+    // הפינה הימנית התחתונה נשארת לכותרת בפתיחה. בלי ערכי טלפון העבודה לא מוצגת בטלפון
+    var CLOUD=[
+      ["gencell-c",6,12,22,.8, 6,8,54],
+      ["aldo-ad-c",33,9,12,1.4, 66,6,28],
+      ["crunchy-truck",52,18,19,1, 46,26,46],
+      ["smartnpv-can",77,11,15,1.6],
+      ["maatouk-brand",4,56,11,1.9, 6,30,30],
+      ["puzzle-soups",20,40,24,.7, 40,46,54],
+      ["mbc-instagram",50,54,14,1.3, 6,54,32],
+      ["katz-resort-site",70,40,18,1.1],
+      ["ag-financial-2021",8,96,16,1.2, 6,95,46],
+      ["segal-flyers",32,110,13,1.6, 54,110,40],
+      ["puzzle-ad",82,118,13,1.8],
+      ["aldo-ad-d",47,130,10,2, 56,147,30]
+    ];
+    box.innerHTML=CLOUD.map(function(c){
+      var w=BYID[c[0]],m=c.length>5;
+      return '<button type="button" class="cd-i'+(m?"":" cd-dt")+(c[2]>=90?" cd-w":"")+'" data-id="'+w.id+'" data-d="'+c[4]+'" aria-label="'+w.client_he+" · "+w.title_he+', תצוגה מלאה"'+
+        ' style="--x:'+c[1]+';--y:'+c[2]+';--w:'+c[3]+(m?';--mx:'+c[5]+';--my:'+c[6]+';--mw:'+c[7]:"")+';--ar:'+w.w+'/'+w.h+';z-index:'+Math.round(c[4]*10)+'">'+
+        '<img src="'+thumb(w)+'" srcset="'+thumb(w)+' 560w, '+w.src+' '+w.w+'w" sizes="(max-width:767px) '+(m?c[7]:1)+'vw, '+c[3]+'vw" alt="" width="'+w.w+'" height="'+w.h+'" loading="lazy" decoding="async"></button>';
+    }).join("");
+    var btns=[].slice.call(box.children);
+    // החיצים במציג עוברים בין העבודות שבענן (בטלפון רק בין השבע שמוצגות)
+    box.addEventListener("click",function(e){
+      var b=e.target.closest(".cd-i");if(!b)return;
+      var vis=btns.filter(function(x){return x.getClientRects().length;});
+      lb.open(vis.map(function(x){return lbItem(BYID[x.dataset.id]);}),vis.indexOf(b),b);
+    });
+    G.projectCursor([box],".cd-i");
+    if(!hasGsap)return;
+    gsap.matchMedia().add("(prefers-reduced-motion: no-preference)",function(){
+      // opacity ולא autoAlpha: עבודה שעוד לא נכנסה נשארת זמינה במקלדת
+      gsap.set(btns,{opacity:0,scale:.9});
+      gsap.to(btns,{opacity:1,scale:1,duration:.9,ease:"power3.out",stagger:{each:.06,from:"random"},
+        scrollTrigger:{trigger:sec,start:"top 70%",toggleActions:"play none none none"}});
+      var tl=gsap.timeline({scrollTrigger:{trigger:sec,start:"top top",end:"+=130%",pin:true,scrub:.6,invalidateOnRefresh:true}});
+      btns.forEach(function(b){tl.to(b,{y:function(){return -sec.offsetHeight*.5*(+b.dataset.d);},ease:"none"},0);});
+      if(!fine.matches)return;
+      var qs=btns.map(function(b){return {x:gsap.quickTo(b,"x",{duration:.9,ease:"power3"}),d:+b.dataset.d};});
+      function move(e){var r=sec.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width-.5;qs.forEach(function(q){q.x(-nx*60*q.d);});}
+      sec.addEventListener("mousemove",move);
+      return function(){sec.removeEventListener("mousemove",move);};
+    });
+  })();
+
   G.darkZone(document.querySelector(".dz"));
 
   /* ================= לקוחות: קיר הלוגואים של ויזואל, חיוור ובשחור-לבן, והעדשה מהלוגו נוסעת עליו ומגדילה בצבע (MV:g101) ================= */

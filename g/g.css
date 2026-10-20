@@ -328,6 +328,31 @@ html.pc-on .pc{display:grid}
   .qt-row:nth-child(2){display:none}
 }
 
+/* ענן עבודות (MV:g37): המיקום והגודל ב-CSS, כך שהענן מסודר גם בלי תנועה. x נמדד משמאל בכוונה: הכותרת בפינה הימנית התחתונה, והענן נבנה סביבה.
+   יחידת הרוחב נחסמת גם לפי הגובה, כדי שבמסך רחב ונמוך התמונות לא יעלו זו על זו */
+/* clip ולא hidden: פוקוס מקלדת על עבודה שעוד מתחת לקצה לא גולל את הסקשן מבפנים ומזיז את כל הענן */
+.cloud{--u:min(1vw,1.6svh);--mu:min(1vw,.46svh);position:relative;height:100svh;min-height:560px;overflow:clip}
+.cd-imgs{position:absolute;inset:0;z-index:0}
+/* העבודות עולות מתוך החושך בתחתית ונמסות למעלה מתחת להדר. מאחורי הכותרת החושך עמוק יותר, בלי קופסה */
+.cd-fade{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 50% 32% at 78% 82%,var(--bg) 35%,transparent 100%),linear-gradient(to top,var(--bg) 0 12%,transparent 38%),linear-gradient(to bottom,var(--bg),transparent 12%)}
+.cd-i{position:absolute;left:calc(var(--x) * 1%);/* qa-allow: physical */ top:calc(var(--y) * 1%);width:calc(var(--w) * var(--u));aspect-ratio:var(--ar);
+  padding:0;border:0;border-radius:4px;background:var(--bg-2);cursor:pointer;overflow:hidden;will-change:transform;box-shadow:0 30px 60px -30px rgba(0,0,0,.75)}
+.cd-i img{display:block;width:100%;height:100%;object-fit:cover;transition:scale .6s var(--ease)}
+@media (hover:hover) and (pointer:fine){.cd-i:hover img{scale:1.05}}
+.cd-i:focus-visible{outline:2px solid var(--lime);outline-offset:4px}
+.cd-txt{position:absolute;inset-inline:var(--gutter);inset-block-end:10%;display:flex;flex-direction:column;align-items:flex-start;gap:clamp(20px,2vw,32px);pointer-events:none}
+.cd-txt h2{margin:0;font-size:var(--fs-h1);line-height:var(--lh-h1);max-width:14ch}
+.cd-txt .btn{pointer-events:auto}
+/* בלי תנועה הגל השני לא עולה אף פעם למסך, ולכן הוא לא קיים */
+@media (prefers-reduced-motion:reduce){.cd-w{display:none}}
+/* בטלפון, וגם בטאבלט לאורך, הסידור הצר: תשע עבודות, גדולות יותר. הרוחב נחסם לפי הגובה, כדי שבטאבלט הפרופורציות יישארו כמו בטלפון */
+@media (max-width:767px),(orientation:portrait) and (max-width:1199px){
+  .cd-i{left:calc(var(--mx) * 1%);/* qa-allow: physical */ top:calc(var(--my) * 1%);width:calc(var(--mw) * var(--mu))}
+  .cd-i.cd-dt{display:none}
+  .cd-fade{background:radial-gradient(ellipse 80% 24% at 50% 84%,var(--bg) 40%,transparent 100%),linear-gradient(to top,var(--bg) 0 12%,transparent 38%),linear-gradient(to bottom,var(--bg),transparent 12%)}
+}
+
 /* ================= לקוחות: קיר הלוגואים, חיוור ובשחור-לבן, והעדשה מגדילה בצבע (MV:g101) ================= */
 .clients{padding:var(--sec) var(--gutter)}
 .xw{--lens:clamp(170px,14vw,270px);--sr:calc(var(--lens) * .95);margin-top:clamp(40px,4vw,72px)}

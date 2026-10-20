@@ -166,8 +166,7 @@ html.fs-lock .flogo,html.fs-lock .flogo-dot{visibility:hidden;transition:visibil
 /* הקווים של כפתור התפריט הופכים ל-X אחרי שהעיגול נפתח, וחוזרים לקווים בסגירה */
 .fs.open .fs-close i::before{top:5px;transform:rotate(45deg);transition-delay:.25s}
 .fs.open .fs-close i::after{bottom:5px;inset-inline-start:0;transform:rotate(-45deg);transition-delay:.25s}
-.fs.sq .fs-close{background:#F3F1EC;color:var(--dark)}
-@media (hover:hover) and (pointer:fine){.fs-close:hover{color:var(--lime)}.fs.sq .fs-close:hover{background:var(--lime);color:var(--dark)}}
+@media (hover:hover) and (pointer:fine){.fs-close:hover{color:var(--lime)}}
 .fs :focus-visible{outline-color:var(--lime)}
 @media (max-width:700px){
   .fs-eye{--e:min(96vw,460px)}

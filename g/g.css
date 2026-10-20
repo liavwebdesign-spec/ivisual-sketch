@@ -328,39 +328,30 @@ html.pc-on .pc{display:grid}
   .qt-row:nth-child(2){display:none}
 }
 
-/* ================= לקוחות: קיר לוגואים חיוור, והעדשה מגדילה (MV:g101) ================= */
+/* ================= לקוחות: קיר הלוגואים, חיוור ובשחור-לבן, והעדשה מגדילה בצבע (MV:g101) ================= */
 .clients{padding:var(--sec) var(--gutter)}
 .xw{--lens:clamp(170px,14vw,270px);--sr:calc(var(--lens) * .95);margin-top:clamp(40px,4vw,72px)}
 .xw-fig{position:relative}
-.lgw{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-auto-rows:clamp(64px,9svh,96px);grid-auto-flow:dense}
+.lgw{--row:clamp(70px,10.5svh,112px);--b:calc(var(--row) * .64);list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:var(--row)}
 .lgw li{display:flex;min-width:0}
-.lgw li.big{grid-column:span 2}
-.lg{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;min-width:0;padding:0 10px;border:0;border-radius:4px;background:none;
-  color:var(--soft);font-family:var(--f-body);font-size:clamp(13px,.42vw + .5rem,17px);font-weight:500;line-height:1.2;text-align:center;cursor:pointer;transition:color .3s}
-.lgw li.big .lg{font-size:clamp(15px,.7vw + .5rem,23px)}
-.lg-n{text-wrap:balance}
-.lg.lat .lg-n{text-transform:uppercase;letter-spacing:.08em;font-size:.84em}
-@media (hover:hover) and (pointer:fine){.lg:hover{color:var(--ink)}}
-/* שבעה סימנים זמניים, עד שיגיעו הלוגואים האמיתיים */
-.lg-m{position:relative;flex:none;width:1.15em;height:1.15em;color:inherit}
-.lg-m.m0{border-radius:50%;box-shadow:inset 0 0 0 .2em currentColor}
-.lg-m.m1{border-radius:50%;background:currentColor;scale:.62}
-.lg-m.m2{border-radius:.16em;background:currentColor;scale:.82}
-.lg-m.m3{background:currentColor;clip-path:polygon(50% 8%,95% 90%,5% 90%)}
-.lg-m.m4{height:.58em;border-radius:1em 1em 0 0;background:currentColor}
-.lg-m.m5{background:radial-gradient(circle at 28% 50%,currentColor 0 .2em,transparent .21em),radial-gradient(circle at 72% 50%,currentColor 0 .2em,transparent .21em)}
-.lg-m.m6{background:linear-gradient(135deg,transparent 40%,currentColor 40% 60%,transparent 60%)}
+.lg{flex:1;display:flex;align-items:center;justify-content:center;min-width:0;padding:0;border:0;border-radius:4px;background:none}
+button.lg{cursor:pointer}
+/* כל לוגו בתיבה לפי היחס שלו; object-fit שומר על הצורה כשהתיבה נחתכת ברוחב */
+.lg img{display:block;width:calc(var(--b) * var(--s) * var(--ar));height:calc(var(--b) * var(--s));max-width:84%;max-height:82%;object-fit:contain;
+  filter:grayscale(1);opacity:.72;transition:filter .35s,opacity .35s}
+@media (hover:none){.lg img{filter:none;opacity:1}}
+@media (hover:hover) and (pointer:fine){.lg:hover img{filter:none;opacity:1}}
+.lg:focus-visible img{filter:none;opacity:1}
 .xw-ink,.xw-lens{display:none;pointer-events:none}
-/* הקיר חיוור, אבל כל שם עדיין קריא בלי העדשה (4.5:1). העדשה מוסיפה הגדלה, שחור מלא וסימן בליים */
-.xw.mv-on .lgw .lg{color:color-mix(in srgb,var(--ink) 62%,var(--bg))}
-.xw.mv-on .lgw .lg:hover,.xw.mv-on .lgw .lg:focus-visible{color:var(--ink)}
+/* הקיר חיוור ובשחור-לבן. סביב העדשה הלוגואים מתחדדים, ובתוכה הלוגו מוגדל ובצבעים שלו */
+.xw.mv-on .lgw .lg img{filter:grayscale(1);opacity:.46}
+.xw.mv-on .lgw .lg:hover img,.xw.mv-on .lgw .lg:focus-visible img{filter:none;opacity:1}
 .xw.mv-on .xw-ink{display:block;position:absolute;inset:0;clip-path:circle(var(--sr) at var(--lx,50%) var(--ly,50%))}
-.xw.mv-on .xw-ink .lg{color:var(--ink)}
+.xw.mv-on .xw-ink .lg img{filter:grayscale(1);opacity:.92}
 .xw.mv-on .xw-lens{--peek:var(--lens);display:block;position:absolute;left:0;top:0;/* qa-allow: physical */ z-index:2;width:var(--lens);height:var(--lens);will-change:transform;filter:drop-shadow(0 22px 36px rgba(31,29,32,.22))}
 .xw-view{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:var(--bg)}
 .xw-view .lgw{position:absolute;left:0;top:0;/* qa-allow: physical */ transform-origin:0 0}
-.xw.mv-on .xw-view .lg{color:var(--ink)}
-.xw-view .lg-m{color:var(--lime-d)}
+.xw.mv-on .xw-view .lg img{filter:none;opacity:1;transition:none}
 /* הסימן מהלוגו סביב העדשה: טבעת, עיגול קטן ואישון ליים */
 .pk-ring{position:absolute;inset:calc(var(--peek)*-.075);border-radius:50%;border:calc(var(--peek)*.085) solid var(--char);pointer-events:none}
 .pk-sat{position:absolute;width:30%;height:30%;right:-29%;/* qa-allow: physical */ top:60%;border-radius:50%;border:calc(var(--peek)*.045) solid var(--char);background:var(--bg)}
@@ -375,12 +366,7 @@ html.pc-on .pc{display:grid}
 @media (max-width:1279px){.clients .sec-head{display:grid;justify-items:center;text-align:center}}
 @media (max-width:767px){
   .xw{--lens:150px}
-  .lgw{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:60px}
-  .lgw li{grid-row:auto!important;grid-column:auto!important}
-  .lgw li.mb{grid-column:span 3!important}
-  .lg{flex-direction:column;gap:6px;padding:0 4px;font-size:12.5px}
-  .lgw li.mb .lg{flex-direction:row;font-size:16px}
-  .lgw li.big:not(.mb) .lg{font-size:12.5px}
+  .lgw{--row:78px;--b:46px;grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
 /* ================= מה מספרים עלינו: הצילומים עוברים לרוחב, ישרים ================= */

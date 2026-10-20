@@ -378,46 +378,95 @@
 
   G.darkZone(document.querySelector(".dz"));
 
-  /* ================= לקוחות: קיר לוגואים חיוור, והעדשה מהלוגו נוסעת עליו ומגדילה (MV:g101) ================= */
-  var byClient={},order=[];
+  /* ================= לקוחות: קיר הלוגואים של ויזואל, חיוור ובשחור-לבן, והעדשה מהלוגו נוסעת עליו ומגדילה בצבע (MV:g101) ================= */
+  // 42 הלוגואים מקיר הלקוחות של ויזואל (המסמך של לילך, 20.10.2026): [קובץ, שם, רוחב, גובה, גודל יחסי, הלקוח בעבודות]
+  // הגודל היחסי משווה את השטח שהעין רואה: לוגו רחב יוצא נמוך יותר, לוגו מלא וכבד קצת קטן יותר
+  var LOGOS=[
+    ["einav","עינב טכנולוגיות",186,61,0.525,""],
+    ["brainstorm","סיעור מוחות",151,122,0.986,""],
+    ["gencell","GenCell",192,26,0.322,"GenCell"],
+    ["matnasim-safed","החברה למרכזים קהילתיים צפת",137,112,0.879,""],
+    ["safed","עיריית צפת",165,96,0.751,"עיריית צפת|עיריית צפת, מחלקת הנוער"],
+    ["treasury","החשב הכללי, משרד האוצר",129,115,0.851,"החשב הכללי, משרד האוצר"],
+    ["bazelet","BAZELET",203,36,0.381,""],
+    ["foret-blanche","La Forêt Blanche",208,105,0.796,""],
+    ["kfar-saba","החברה הכלכלית לפיתוח כפר סבא",206,76,0.615,""],
+    ["milouof","מילועוף",154,115,0.743,""],
+    ["peleg-hagalil","פלג הגליל, החברה האזורית למים וביוב",174,89,0.746,""],
+    ["aldo","אלדו, רשת גלידריות",173,65,0.687,"אלדו, רשת גלידריות"],
+    ["hatzor","חצור הגלילית",191,57,0.532,""],
+    ["finalytix","FINALYTIX",203,46,0.478,"FINALYTIX"],
+    ["sivan","סיון ביצוע",190,91,0.674,""],
+    ["arachim","ערכים",74,107,1.12,""],
+    ["nursing-safed","בית הספר לסיעוד צפת",219,104,0.702,""],
+    ["smartnpv","smartNPV",179,29,0.356,"smartNPV"],
+    ["maavarim","מעברים, אצבע הגליל",115,115,1.12,""],
+    ["safed-college","המכללה האזורית צפת",181,85,0.645,"המכללה האזורית צפת"],
+    ["palgei-sharon","פלגי שרון, תאגיד מים וביוב",141,107,0.903,""],
+    ["psychodrama","האיגוד הישראלי לפסיכודרמה",217,38,0.39,""],
+    ["fiat","FIAT",117,117,0.86,""],
+    ["iec","חברת החשמל",145,106,0.796,""],
+    ["hasdei-lev","חסדי לב",175,52,0.565,"חסדי לב"],
+    ["lahavot","להבות",140,75,0.748,""],
+    ["istern","iSTERN",194,60,0.568,""],
+    ["ramot-shapira","רמות שפירא, המרכז החינוכי",141,110,0.94,""],
+    ["ashdodance","ASHDODANCE",172,100,0.854,""],
+    ["giladi","מלון גלעדי",95,120,1.12,""],
+    ["hapoalim","בנק הפועלים",172,34,0.443,""],
+    ["katzrin","החברה לפיתוח קצרין",186,52,0.518,""],
+    ["algosec","algosec",165,57,0.594,""],
+    ["ysb","YSB, קבוצת י.ש. אחים יעקובי",130,86,0.699,""],
+    ["yosef-levy","Yosef Levy Marketing",154,113,0.959,""],
+    ["res","מכללת R.E.S",123,127,1.085,""],
+    ["maof","מעוף",168,72,0.704,""],
+    ["tamar","תמר בכפר",106,107,0.864,""],
+    ["rafael-retirees","עמותת גמלאי רפאל",196,101,0.773,""],
+    ["bina","מדרשת בינת, שבות רחל",120,83,0.85,""],
+    ["bama","במה",156,92,0.749,""],
+    ["maale-yosef","מרכז קהילתי מעלה יוסף",178,119,0.77,""]
+  ];
+  var byClient={};
   W.forEach(function(w){
-    var c=byClient[w.client_he];
-    if(!c){c=byClient[w.client_he]={name:w.client_he,works:[],deps:{},pub:false};order.push(c);}
-    c.works.push(w);if(w.public_body)c.pub=true;
-    (w.departments||[]).forEach(function(d){c.deps[d]=1;});
+    var c=byClient[w.client_he]||(byClient[w.client_he]={works:[],deps:{}});
+    c.works.push(w);(w.departments||[]).forEach(function(d){c.deps[d]=1;});
   });
-  order.sort(function(a,b){return (b.pub?1:0)-(a.pub?1:0)||b.works.length-a.works.length;});
+  var CL=LOGOS.map(function(l){
+    var o={f:l[0],name:l[1],w:l[2],h:l[3],s:l[4],works:[],deps:{}};
+    (l[5]?l[5].split("|"):[]).forEach(function(k){var c=byClient[k];if(!c)return;o.works=o.works.concat(c.works);for(var d in c.deps)o.deps[d]=1;});
+    return o;
+  });
   function depsTxt(c){var d=["branding","web","digital"].filter(function(k){return c.deps[k];});return d.length===3?"כל המחלקות":d.map(function(k){return DEPTS[k];}).join(" + ");}
   (function(){
-    // שש תחנות של העדשה, בזיגזג על הקיר. 44 שמות + 4 כפולים = שש שורות מלאות של 8.
-    // בטלפון (3 עמודות) חמש הראשונות לכל הרוחב, כדי שגם שם השורה האחרונה תהיה מלאה
-    var STOPS=[["החשב הכללי, משרד האוצר",1,1,2],["משרד האנרגיה",2,6,2],["המכללה האזורית צפת",3,2,2],["GenCell",4,6,2],["עיריית צפת, מחלקת הנוער",5,1,1],["אלדו, רשת גלידריות",6,5,1]];
-    var big=STOPS.map(function(s){return byClient[s[0]];}).filter(Boolean);
-    var rest=order.filter(function(c){return big.indexOf(c)<0;});
-    var seq=[];rest.forEach(function(c,i){if(i%6===0&&big[i/6])seq.push(big[i/6]);seq.push(c);});
-    big.forEach(function(c){if(seq.indexOf(c)<0)seq.push(c);});
+    // שש תחנות של העדשה, בזיגזג על 7 עמודות ו-6 שורות: מותגים שכל אחד מכיר, ושלושה מהם נפתחים לעבודות.
+    // בטלפון (3 עמודות) אותו סדר נותן 14 שורות מלאות, והעדשה יורדת לפי הגובה
+    var STOPS=["treasury","iec","gencell","hapoalim","aldo","algosec"],SPOS=[1,12,15,26,30,40];
+    var rest=CL.filter(function(c){return STOPS.indexOf(c.f)<0;}),seq=[],r=0;
+    for(var i=0;i<CL.length;i++){var si=SPOS.indexOf(i);seq.push(si<0?rest[r++]:CL.filter(function(c){return c.f===STOPS[si];})[0]);}
+    function img(c,alt,lazy){return '<img src="img/clients/'+c.f+'.webp" alt="'+(alt?c.name:'')+'" width="'+c.w+'" height="'+c.h+'" style="--s:'+c.s+';--ar:'+(c.w/c.h).toFixed(3)+'"'+(lazy?' loading="lazy"':'')+' decoding="async">';}
+    function cells(copy){return seq.map(function(c){
+      var k=CL.indexOf(c);
+      if(copy)return '<li data-k="'+k+'"><span class="lg">'+img(c,0,0)+'</span></li>';
+      return '<li data-k="'+k+'">'+(c.works.length?'<button class="lg" type="button" aria-haspopup="dialog" aria-label="'+c.name+', העבודות">'+img(c,0,1)+'</button>':'<span class="lg">'+img(c,1,1)+'</span>')+'</li>';
+    }).join("");}
     var ct=document.getElementById("ctab");
-    ct.innerHTML=seq.map(function(c,i){
-      var s=STOPS.filter(function(x){return x[0]===c.name;})[0],si=STOPS.indexOf(s);
-      var st=s?' style="grid-row:'+s[1]+';grid-column:'+s[2]+' / span '+s[3]+'"':'';
-      var cl=s?(s[3]>1?'big':'')+(si<5?' mb':''):'';
-      return '<li'+(cl?' class="'+cl.trim()+'"':'')+st+'><button class="lg'+(/^[A-Za-z]/.test(c.name)?' lat':'')+'" type="button" data-k="'+order.indexOf(c)+'" aria-haspopup="dialog">'+
-        '<span class="lg-m m'+(i%7)+'" aria-hidden="true"></span><span class="lg-n">'+c.name+'</span></button></li>';
-    }).join("");
+    ct.innerHTML=cells(0);
     ct.addEventListener("click",function(e){
-      var b=e.target.closest(".lg");if(!b)return;
-      var c=order[+b.dataset.k];lb.open(c.works.map(lbItem),0,b);
+      var b=e.target.closest("button.lg");if(!b)return;
+      lb.open(CL[+b.parentNode.dataset.k].works.map(lbItem),0,b);
     });
 
     var root=document.getElementById("xw"),pin=root.querySelector(".xw-pin"),fig=document.getElementById("xw-fig");
     var ink=document.getElementById("xw-ink"),lens=document.getElementById("xw-lens"),view=document.getElementById("xw-view"),tag=document.getElementById("xw-tag");
-    var copy='<ul class="lgw">'+ct.innerHTML.replace(/<button class="([^"]*)"[^>]*>/g,'<span class="$1">').replace(/<\/button>/g,'</span>')+'</ul>';
-    ink.innerHTML=copy;view.innerHTML=copy;
+    ink.innerHTML=view.innerHTML='<ul class="lgw"></ul>';
     var zoom=view.firstChild,lis=[].slice.call(ct.children),Z=1.8,D=0,curI=-1;
+    // שני העותקים (סביב העדשה ובתוכה) נטענים רק כשהקיר מתקרב, ואז מהזיכרון של הדפדפן
+    var filled=false;
+    function fill(){if(filled)return;filled=true;var h=cells(1);ink.firstChild.innerHTML=h;zoom.innerHTML=h;}
+    if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){fill();io.disconnect();}},{rootMargin:"900px 0px"});io.observe(root);}else fill();
     function setCur(i){
       if(i===curI)return;curI=i;
-      var c=order[+lis[i].firstChild.dataset.k];
-      tag.innerHTML='<b>'+c.name+'</b><span>'+depsTxt(c)+'</span>';
+      var c=CL[+lis[i].dataset.k];
+      tag.innerHTML='<b>'+c.name+'</b>'+(c.works.length?'<span>'+depsTxt(c)+'</span>':'');
     }
     if(!hasGsap)return;
     gsap.matchMedia().add({ok:"(prefers-reduced-motion: no-preference)",wide:"(min-width:768px)"},function(cx){
@@ -426,7 +475,7 @@
       var o={x:0,y:0},pts=[],cs=[];
       var F0={x:0,y:0};
       function center(li){var a=li.firstChild.getBoundingClientRect();return {x:a.left-F0.x+a.width/2,y:a.top-F0.y+a.height/2};}
-      // העדשה לא יוצאת מהמסך: בטלפון שם בעמודה הקיצונית מקבל את העדשה קצת פנימה
+      // העדשה לא יוצאת מהמסך: בטלפון לוגו בעמודה הקיצונית מקבל את העדשה קצת פנימה
       var lo=-1e9,hi=1e9;
       function paint(){
         var x=Math.max(lo,Math.min(hi,o.x));
@@ -441,7 +490,7 @@
         var R=ct.getBoundingClientRect();F0={x:R.left,y:R.top};
         var vw=document.documentElement.clientWidth;lo=D*.56-R.left;hi=vw-R.left-D*.8;
         cs=lis.map(center);
-        pts=big.map(function(c){return cs[seq.indexOf(c)];});
+        pts=SPOS.map(function(i){return cs[i];});
         if(!cx.conditions.wide)pts.sort(function(a,b){return a.y-b.y;});
         tl.clear();o.x=pts[0].x;o.y=pts[0].y;
         // x ו-y בעקומות שונות, ולכן המסלול מתעקל. בכל תחנה העדשה "מתמקדת": מתכווצת, מתנפחת וחוזרת

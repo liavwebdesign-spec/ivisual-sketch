@@ -60,25 +60,35 @@
   (function(){
     var mm=hasGsap?gsap.matchMedia():null;
 
-    // 1 · העבודה מתרחקת לאט אל מקומה, ובגלילה נשארת מעט מאחור
-    if(HERO===1&&mm){
-      var pic=top.querySelector(".h1x-m"),im=pic.querySelector("img");
-      mm.add("(prefers-reduced-motion: no-preference)",function(){
-        gsap.set(im,{scale:1.15});
-        afterPl(function(){gsap.to(im,{scale:1,duration:2.2,ease:"power3.out"});});
-        gsap.to(pic,{yPercent:12,ease:"none",scrollTrigger:{trigger:top,start:"top top",end:"bottom top",scrub:true}});
+    // 1 · מצגת: הפס של העבודה הנוכחית הוא השעון, וכשהוא מתמלא באה הבאה. לחיצה על מחלקה קופצת אליה, וכפתור עוצר.
+    // בהפחתת תנועה אין החלפה לבד: המחלקות עדיין מחליפות, ואין מה לעצור
+    if(HERO===1){
+      var s1=top.querySelector(".sl1"),sl1=[].slice.call(s1.querySelectorAll(".sl1-s")),tb1=[].slice.call(s1.querySelectorAll(".sl1-tab")),pp1=s1.querySelector(".sl1-pp"),c1=0,auto1=!still.matches;
+      if(!auto1){s1.classList.add("still");pp1.hidden=true;}
+      var go1=function(n){
+        c1=(n+sl1.length)%sl1.length;
+        sl1.forEach(function(s,k){s.classList.toggle("on",k===c1);});
+        tb1.forEach(function(t,k){
+          t.setAttribute("aria-current",String(k===c1));t.classList.toggle("done",k<c1);
+          var i=t.querySelector("i");i.style.animation="none";void i.offsetWidth;i.style.animation="";
+        });
+      };
+      tb1.forEach(function(t,k){
+        t.addEventListener("click",function(){go1(k);});
+        t.querySelector("i").addEventListener("animationend",function(){if(auto1&&k===c1)go1(c1+1);});
+      });
+      pp1.addEventListener("click",function(){
+        var on=!s1.classList.contains("paused");s1.classList.toggle("paused",on);
+        pp1.setAttribute("aria-pressed",String(on));pp1.setAttribute("aria-label",on?"המשך המצגת":"עצירת המצגת");
       });
     }
 
-    // 2 · האריחים נפתחים אחד אחרי השני, והעבודות שבתוכם מתרחקות למקום
+    // 2 · רצועת העבודות בין שתי השורות זזה לצד עם הגלילה
     if(HERO===2&&mm){
-      var ts=[].slice.call(top.querySelectorAll(".m2-t")),tim=ts.map(function(t){return t.querySelector("img");});
+      var st2=top.querySelector(".sw2-strip"),tr2=st2.querySelector(".sw2-tr");
       mm.add("(prefers-reduced-motion: no-preference)",function(){
-        gsap.set(ts,{clipPath:"inset(100% 0% 0% 0%)"});gsap.set(tim,{scale:1.25});
-        afterPl(function(){
-          gsap.to(ts,{clipPath:"inset(0% 0% 0% 0%)",duration:1.2,ease:"power4.inOut",stagger:.09});
-          gsap.to(tim,{scale:1,duration:1.8,ease:"power3.out",stagger:.09});
-        });
+        gsap.fromTo(tr2,{x:0},{x:function(){return -Math.max(0,(tr2.offsetWidth-st2.offsetWidth)/2)*.7;},ease:"none",
+          scrollTrigger:{trigger:top,start:"top top",end:"bottom top",scrub:true,invalidateOnRefresh:true}});
       });
     }
 
@@ -93,26 +103,32 @@
       pb.addEventListener("click",function(){var on=!s3.classList.contains("paused");s3.classList.toggle("paused",on);pb.setAttribute("aria-pressed",String(on));});
     }
 
-    // 4 · המילה שבכותרת מחליפה את העבודה בתוך העדשה, והאישון מסתכל עליה. מתחלף לבד שלושה סבבים, וריחוף על מילה עוצר עליה
+    // 4 · מניפה: אחרי הכניסה העבודה שמתחת לעכבר עולה, והשכנות נוטות ממנה חמש מעלות. היא נבחרת לפי הזווית מהציר שמתחת למניפה
     if(HERO===4){
-      var l4=top.querySelector(".l4"),hw=[].slice.call(l4.querySelectorAll(".hw")),lim=[].slice.call(l4.querySelectorAll(".l4-view img")),k4=0,n4=0,tm4=0,hold4=false;
-      var set4=function(i){
-        k4=i;l4.setAttribute("data-k",i);
-        hw.forEach(function(w){w.classList.toggle("on",+w.dataset.k===i);});
-        lim.forEach(function(m){m.classList.toggle("on",+m.dataset.k===i);});
-      };
-      set4(0);
-      hw.forEach(function(w){
-        w.addEventListener("pointerenter",function(){hold4=true;set4(+w.dataset.k);});
-        w.addEventListener("pointerleave",function(){hold4=false;});
-      });
-      if(!still.matches)afterPl(function(){
-        tm4=setInterval(function(){
-          if(hold4||document.hidden)return;
-          if(++n4>=9){clearInterval(tm4);set4(0);return;}
-          set4((k4+1)%3);
-        },2600);
-      });
+      var f4=top.querySelector(".fn4"),fan4=f4.querySelector(".fn4-fan"),cs4=[].slice.call(fan4.children),act4=null;
+      var settle4=function(){f4.classList.add("settled");};
+      fan4.addEventListener("transitionend",function(e){if(e.propertyName==="rotate")settle4();});
+      afterPl(function(){setTimeout(settle4,2600);});
+      if(fine.matches){
+        var deg4=function(c){return parseFloat(c.style.getPropertyValue("--r"));};
+        var lift4=function(c){
+          if(c===act4)return;act4=c;
+          cs4.forEach(function(o){
+            o.classList.toggle("up",o===c);
+            o.style.setProperty("--s",!c||o===c?"0deg":(deg4(o)>deg4(c)?"5deg":"-5deg"));
+          });
+        };
+        fan4.addEventListener("pointermove",function(e){
+          if(!f4.classList.contains("settled"))return;
+          if(!e.target.closest(".fn4-c")){lift4(null);return;}
+          var b=fan4.getBoundingClientRect(),cw=cs4[2].offsetWidth,k=parseFloat(getComputedStyle(fan4).getPropertyValue("--k"))||1;
+          var px=b.left+b.width/2,py=b.bottom+cw*.2+cw*4/3*1.3;
+          var a=Math.atan2(e.clientX-px,py-e.clientY)*180/Math.PI,best=null,gap=1e9;
+          cs4.forEach(function(c){if(!c.offsetWidth)return;var g=Math.abs(a-deg4(c)*k);if(g<gap){gap=g;best=c;}});
+          lift4(best);
+        });
+        fan4.addEventListener("pointerleave",function(){lift4(null);});
+      }
     }
 
     // 5 · החלון 16:9 נפתח בגלילה למסך המלא, מחשיך, ומוסר את המסך לעבודות שעל השחור. בטלפון ובהפחתת תנועה הוא נשאר במקומו

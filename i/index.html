@@ -65,35 +65,30 @@
   <!-- ================= ההירו: אחת מחמש פריסות, בלי פייד לבן. הבחירה בקישור (?hero=1 עד 5) או בבורר שבתחתית ההירו ================= -->
   <section class="hr" id="top" aria-labelledby="h1"></section>
 
-  <!-- 1 · עבודה אחת על כל המסך, עם פילטר כהה אחיד במקום פייד (לילך: "hero שהוא על הכל... עם פילטר עליו") -->
+  <!-- 1 · מצגת על כל המסך: עבודה מכל מחלקה, עם פסי התקדמות בשמות המחלקות ופילטר כהה אחיד (MV:h15) -->
   <template id="hr1">
-    <div class="h1x">
-      <picture class="h1x-m"><source media="(max-width:767px)" srcset="../h/img/dummy/p/c01.jpg"><img src="../h/img/dummy/c01.jpg" alt="" width="2400" height="1350" fetchpriority="high" decoding="async"></picture>
+    <div class="sl1" aria-roledescription="מצגת" aria-label="עבודה מכל מחלקה">
+      <div class="sl1-s on" data-k="0"><picture><source media="(max-width:767px)" srcset="../h/img/dummy/p/b04.jpg"><img src="../h/img/dummy/b04.jpg" alt="" width="2400" height="1350" fetchpriority="high" decoding="async"></picture></div>
+      <div class="sl1-s" data-k="1"><picture><source media="(max-width:767px)" srcset="../h/img/dummy/p/w01.jpg"><img src="../h/img/dummy/w01.jpg" alt="" width="2400" height="1920" decoding="async"></picture></div>
+      <div class="sl1-s" data-k="2"><picture><source media="(max-width:767px)" srcset="../h/img/dummy/p/c01.jpg"><img src="../h/img/dummy/c01.jpg" alt="" width="2400" height="1350" decoding="async"></picture></div>
       <i class="hr-filter" aria-hidden="true"></i>
-      <div class="hr-txt">
-        <p class="kick hr-in" style="--i:0"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
-        <h1 id="h1" class="hr-in" style="--i:1">המיתוג, האתר והקמפיין שלכם, במשרד אחד.</h1>
-        <div class="hr-cta hr-in" style="--i:2"><a class="btn btn-light" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
+      <div class="sl1-foot">
+        <div class="hr-txt">
+          <p class="kick hr-in" style="--i:0"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
+          <h1 id="h1" class="hr-in" style="--i:1">המיתוג, האתר והקמפיין שלכם, במשרד אחד.</h1>
+          <div class="hr-cta hr-in" style="--i:2"><a class="btn btn-light" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
+        </div>
+        <div class="sl1-nav hr-in" style="--i:3"><button class="sl1-tab" type="button" aria-current="true"><span>מיתוג ועיצוב</span><span class="sl1-bar"><i></i></span></button><button class="sl1-tab" type="button" aria-current="false"><span>בניית אתרים</span><span class="sl1-bar"><i></i></span></button><button class="sl1-tab" type="button" aria-current="false"><span>שיווק דיגיטלי</span><span class="sl1-bar"><i></i></span></button><button class="sl1-pp" type="button" aria-pressed="false" aria-label="עצירת המצגת"><svg class="ic-pause" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3.4" height="12" rx="1"/><rect x="11.6" y="4" width="3.4" height="12" rx="1"/></svg><svg class="ic-play" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M14.5 10 7 15V5z"/></svg></button></div>
       </div>
     </div>
   </template>
 
-  <!-- 2 · פסיפס של חמש עבודות גדולות על שחור, פילטר אחיד, והכותרת במרכז -->
+  <!-- 2 · סנדוויץ': חצי הכותרת, רצועת עבודות שנפתחת מהאמצע וזזה בגלילה, והחצי השני (MV:h12) -->
   <template id="hr2">
-    <div class="m2">
-      <div class="m2-g" aria-hidden="true">
-        <figure class="m2-t" style="grid-area:a"><img src="../h/img/dummy/b05.jpg" srcset="../h/img/dummy/t/b05.jpg 900w, ../h/img/dummy/b05.jpg 2400w" sizes="(max-width:767px) 100vw, 40vw" alt="" width="2400" height="1350" fetchpriority="high" decoding="async"></figure>
-        <figure class="m2-t" style="grid-area:b"><img src="../h/img/dummy/c03.jpg" srcset="../h/img/dummy/t/c03.jpg 900w, ../h/img/dummy/c03.jpg 2400w" sizes="(max-width:767px) 50vw, 30vw" alt="" width="2400" height="1600" decoding="async"></figure>
-        <figure class="m2-t" style="grid-area:c"><img src="../h/img/dummy/w05.jpg" srcset="../h/img/dummy/t/w05.jpg 900w, ../h/img/dummy/w05.jpg 2400w" sizes="(max-width:767px) 50vw, 30vw" alt="" width="2400" height="1447" decoding="async"></figure>
-        <figure class="m2-t" style="grid-area:d"><img src="../h/img/dummy/b12.jpg" srcset="../h/img/dummy/t/b12.jpg 900w, ../h/img/dummy/b12.jpg 2400w" sizes="(max-width:767px) 50vw, 30vw" alt="" width="2400" height="1600" decoding="async"></figure>
-        <figure class="m2-t" style="grid-area:e"><img src="../h/img/dummy/c06.jpg" srcset="../h/img/dummy/t/c06.jpg 900w, ../h/img/dummy/c06.jpg 2400w" sizes="(max-width:767px) 50vw, 30vw" alt="" width="2400" height="1800" decoding="async"></figure>
-      </div>
-      <i class="hr-filter" aria-hidden="true"></i>
-      <div class="hr-txt">
-        <p class="kick hr-in" style="--i:0"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
-        <h1 id="h1" class="hr-in" style="--i:1">המיתוג, האתר והקמפיין שלכם, במשרד אחד.</h1>
-        <div class="hr-cta hr-in" style="--i:2"><a class="btn btn-light" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
-      </div>
+    <div class="sw2">
+      <p class="kick hr-in" style="--i:0"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
+      <h1 id="h1"><span class="sw2-l sw2-l1"><span style="--i:1">המיתוג, האתר והקמפיין</span></span> <span class="sw2-strip" aria-hidden="true"><span class="sw2-tr"><figure><img src="../h/img/dummy/t/p06.jpg" srcset="../h/img/dummy/t/p06.jpg 900w, ../h/img/dummy/p06.jpg 2400w" sizes="(max-width:767px) 70vw, 36vw" alt="" width="900" height="596" decoding="async"></figure><figure><img src="../h/img/dummy/t/b08.jpg" srcset="../h/img/dummy/t/b08.jpg 900w, ../h/img/dummy/b08.jpg 2400w" sizes="(max-width:767px) 70vw, 36vw" alt="" width="900" height="675" decoding="async"></figure><figure><img src="../h/img/dummy/t/w03.jpg" srcset="../h/img/dummy/t/w03.jpg 900w, ../h/img/dummy/w03.jpg 2400w" sizes="(max-width:767px) 70vw, 36vw" alt="" width="900" height="600" decoding="async"></figure><figure><img src="../h/img/dummy/t/c03.jpg" srcset="../h/img/dummy/t/c03.jpg 900w, ../h/img/dummy/c03.jpg 2400w" sizes="(max-width:767px) 70vw, 36vw" alt="" width="900" height="600" decoding="async"></figure><figure><img src="../h/img/dummy/t/b15.jpg" srcset="../h/img/dummy/t/b15.jpg 900w, ../h/img/dummy/b15.jpg 2400w" sizes="(max-width:767px) 70vw, 36vw" alt="" width="900" height="600" decoding="async"></figure><figure><img src="../h/img/dummy/t/c07.jpg" srcset="../h/img/dummy/t/c07.jpg 900w, ../h/img/dummy/c07.jpg 2400w" sizes="(max-width:767px) 70vw, 36vw" alt="" width="900" height="600" decoding="async"></figure></span></span> <span class="sw2-l sw2-l2"><span style="--i:2">שלכם, במשרד אחד.</span></span></h1>
+      <div class="hr-cta hr-in" style="--i:3"><a class="btn btn-ink" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
     </div>
   </template>
 
@@ -113,22 +108,21 @@
     </div>
   </template>
 
-  <!-- 4 · העדשה מהלוגו: שלוש המילים בכותרת מחליפות את העבודה שבתוך העדשה, והאישון הירוק מסתכל עליהן -->
+  <!-- 4 · מניפה: חמש עבודות עולות ונפרשות מתחת לכותרת, וריחוף מרים את העבודה שמתחת לעכבר (MV:h22) -->
   <template id="hr4">
-    <div class="l4">
+    <div class="fn4">
       <div class="hr-txt">
         <p class="kick hr-in" style="--i:0"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
-        <h1 id="h1" class="hr-in" style="--i:1"><span class="hw" data-k="0">המיתוג</span>, <span class="hw" data-k="1">האתר</span> ו<span class="hw" data-k="2">הקמפיין</span> שלכם, במשרד אחד.</h1>
+        <h1 id="h1" class="hr-in" style="--i:1">המיתוג, האתר והקמפיין שלכם, במשרד אחד.</h1>
         <div class="hr-cta hr-in" style="--i:2"><a class="btn btn-ink" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
       </div>
-      <div class="l4-lens" aria-hidden="true">
-        <span class="l4-view">
-          <img class="on" data-k="0" src="../h/img/dummy/b12.jpg" alt="" width="2400" height="1600" fetchpriority="high" decoding="async">
-          <img data-k="1" src="../h/img/dummy/w03.jpg" alt="" width="2400" height="1600" loading="lazy" decoding="async">
-          <img data-k="2" src="../h/img/dummy/c04.jpg" alt="" width="2400" height="1800" loading="lazy" decoding="async">
-        </span>
-        <span class="l4-ring"></span><span class="l4-sat"></span><span class="l4-pupil"></span>
-      </div>
+      <ul class="fn4-fan" aria-hidden="true">
+        <li class="fn4-c out" style="--r:24deg;--z:1;--d:2"><img src="../h/img/dummy/t/b11.jpg" srcset="../h/img/dummy/t/b11.jpg 900w, ../h/img/dummy/b11.jpg 2400w" sizes="(max-width:767px) 46vw, 24vw" alt="" width="900" height="600" decoding="async"><span class="fn4-lab">מיתוג</span></li>
+        <li class="fn4-c" style="--r:12deg;--z:2;--d:1"><img src="../h/img/dummy/t/c07.jpg" srcset="../h/img/dummy/t/c07.jpg 900w, ../h/img/dummy/c07.jpg 2400w" sizes="(max-width:767px) 46vw, 24vw" alt="" width="900" height="600" decoding="async"><span class="fn4-lab">שיווק</span></li>
+        <li class="fn4-c" style="--r:0deg;--z:3;--d:0"><img src="../h/img/dummy/t/w07.jpg" srcset="../h/img/dummy/t/w07.jpg 900w, ../h/img/dummy/w07.jpg 2400w" sizes="(max-width:767px) 46vw, 24vw" alt="" width="900" height="580" decoding="async"><span class="fn4-lab">אתרים</span></li>
+        <li class="fn4-c lft" style="--r:-12deg;--z:2;--d:1"><img src="../h/img/dummy/t/b03.jpg" srcset="../h/img/dummy/t/b03.jpg 900w, ../h/img/dummy/b03.jpg 2400w" sizes="(max-width:767px) 46vw, 24vw" alt="" width="900" height="600" decoding="async"><span class="fn4-lab">מיתוג</span></li>
+        <li class="fn4-c out lft" style="--r:-24deg;--z:1;--d:2"><img src="../h/img/dummy/t/p07.jpg" srcset="../h/img/dummy/t/p07.jpg 900w, ../h/img/dummy/p07.jpg 2400w" sizes="(max-width:767px) 46vw, 24vw" alt="" width="900" height="600" decoding="async"><span class="fn4-lab">דפוס</span></li>
+      </ul>
     </div>
   </template>
 
@@ -153,10 +147,10 @@
   </template>
 
   <script>(function(){
-    // ההירו שנבחר נכנס לסקשן, והשאר נשארים בתבניות. צבע ההדר: 1 ו-2 על כהה, 3 עד 5 על לבן
+    // ההירו שנבחר נכנס לסקשן, והשאר נשארים בתבניות. צבע ההדר: 1 על כהה, 2 עד 5 על לבן
     var d=document.documentElement,n=+d.getAttribute("data-hero")||1,top=document.getElementById("top");
     top.appendChild(document.getElementById("hr"+n).content.cloneNode(true));
-    top.classList.add("hr-"+n);top.setAttribute("data-hd",n<3?"dark":"light");
+    top.classList.add("hr-"+n);top.setAttribute("data-hd",n===1?"dark":"light");
   })()</script>
 
   <!-- בורר ההירו להשוואה: מופיע רק כשההירו במסך -->

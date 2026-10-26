@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-motion="expressive" data-sk="i">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ויזואל · סקיצה ט</title>
+<meta name="description" content="ויזואל אינטראקטיב: מיתוג ועיצוב, בניית אתרים ושיווק דיגיטלי, במשרד אחד. קרוב לעשרים שנה של עבודה לרשויות, לגופים ציבוריים ולעסקים מכל הארץ.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="../h/img/lens.svg" type="image/svg+xml">
+<link rel="preload" href="../shared/fonts/GoogleSans-Medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../shared/base.css">
+<link rel="stylesheet" href="../h/h.css">
+<link rel="stylesheet" href="i.css">
+<script>(function(d){
+  var q=new URLSearchParams(location.search),b=q.get("bg");
+  // הרקע הכהה לבחירה בקישור: ?bg=night (כחול לילה), olive (זית), plum (שזיף). ברירת המחדל שחור רך
+  if(b==="night"||b==="olive"||b==="plum")d.setAttribute("data-bg",b);
+  // חמש פריסות הירו להשוואה (פגישת 26.10: "חמישה hero שונים בפריסה ונבחר מביניהם"): ?hero=1 עד 5
+  var h=+q.get("hero");d.setAttribute("data-hero",h>=1&&h<=5?h:(d.getAttribute("data-sk")==="i"?3:1));
+  if(matchMedia("(prefers-reduced-motion:no-preference)").matches){
+    d.classList.add("open-anim","rv-js","pl-on","hr-intro");
+    // רשת ביטחון: אם הסקריפט לא עלה, מסך הטעינה לא נשאר תקוע
+    setTimeout(function(){if(d.classList.contains("pl-on")){d.classList.remove("pl-on");var p=document.getElementById("pl");if(p)p.remove();window.__plDone=true;dispatchEvent(new Event("pl-done"));}},6000);
+  }
+})(document.documentElement)</script>
+</head>
+<body>
+<a class="skip" href="#main">דלג לתוכן</a>
+
+<!-- מסך טעינה: הסימן מהלוגו מצטייר, האישון מסתכל סביב, "visual" נכתב, והעדשה נפתחת אל האתר -->
+<div class="pl" id="pl" aria-hidden="true">
+  <div class="pl-logo">
+    <img class="pl-word" src="../h/img/logo.svg" alt="" width="2726" height="610">
+    <svg class="pl-mark" viewBox="0 0 812 610" overflow="visible">
+      <circle class="pl-ring" cx="300" cy="285" r="240" fill="none" stroke="#444444" stroke-width="120"/>
+      <circle class="pl-sat" cx="688" cy="444" r="97" fill="none" stroke="#444444" stroke-width="80"/>
+      <circle class="pl-pupil" cx="258" cy="243" r="138" fill="#8CC63F"/>
+    </svg>
+  </div>
+</div>
+
+<!-- הלוגו בצבע של מה שמתחתיו: כהה על לבן, לבן על שחור, כהה על הירוק. הנקודות ירוקות, ולבנות על הירוק -->
+<a class="flogo" href="#top" aria-label="ויזואל, לראש העמוד"><span class="flogo-i" aria-hidden="true"></span><span class="flogo-d" aria-hidden="true"></span></a>
+<header class="hx hd" id="hd">
+  <button class="hx-menu" id="fs-open" type="button" aria-expanded="false" aria-controls="fs"><span>תפריט</span><i aria-hidden="true"></i></button>
+</header>
+
+<div class="fs" id="fs" role="dialog" aria-modal="true" aria-label="תפריט" inert>
+  <div class="fs-top">
+    <a class="fs-logo" href="#top" aria-label="ויזואל, לראש העמוד"><img src="../h/img/logo-light.svg" alt="" width="134" height="30"></a>
+    <button class="fs-close" type="button"><span>סגירה</span><i aria-hidden="true"></i></button>
+  </div>
+  <div class="fs-eye" aria-hidden="true"><div class="fs-view"></div><i class="fs-pupil"></i><i class="fs-sat"></i></div>
+  <ul class="fs-links">
+    <li><a href="work.html" style="--i:0">פרויקטים</a></li>
+    <li><a href="#depts" style="--i:1">מחלקות</a></li>
+    <li><a href="#clients" style="--i:2">לקוחות</a></li>
+    <li><a href="#contact" style="--i:3">צור קשר</a></li>
+  </ul>
+  <div class="fs-side" id="fs-side"></div>
+</div>
+
+<main id="main">
+  <!-- ================= ההירו: אחת מחמש פריסות, בלי פייד לבן. הבחירה בקישור (?hero=1 עד 5) או בבורר שבתחתית ההירו ================= -->
+  <section class="hr" id="top" aria-labelledby="h1"></section>
+
+  <!-- 1 · עבודה אחת על כל המסך, עם פילטר כהה אחיד במקום פייד (לילך: "hero שהוא על הכל... עם פילטר עליו") -->
+  <template id="hr1">
+    <div class="h1x">
+      <picture class="h1x-m"><source media="(max-width:767px)" srcset="../h/img/dummy/p/c01.jpg"><img src="../h/img/dummy/c01.jpg" alt="" width="2400" height="1350" fetchpriority="high" decoding="async"></picture>
+      <i class="hr-filter" aria-hidden="true"></i>
+      <div class="hr-txt">
+        <p class="kick hr-in" style="--i:0"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
+        <h1 id="h1" class="hr-in" style="--i:1">המיתוג, האתר והקמפיין שלכם, במשרד אחד.</h1>
+        <div class="hr-cta hr-in" style="--i:2"><a class="btn btn-light" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
+      </div>
+    </div>
+  </template>
+
+  <!-- 2 · פסיפס של חמש עבודות גדולות על שחור, פילטר אחיד, והכותרת במרכז -->
+  <template id="hr2">
+    <div class="m2">
+      <div class="m2-g" aria-hidden="true">
+        <figure class="m2-t" style="grid-area:a"><img src="../h/img/dummy/b05.jpg" srcset="../h/img/dummy/t/b05.jpg 900w, ../h/img/dummy/b05.jpg 2400w" sizes="(max-width:767px) 100vw, 40vw" alt="" width="2400" height="1350" fetchpriority="high" decoding="async"></figure>
+        <figure class="m2-t" style="grid-area:b"><img src="../h/img/dummy/c03.jpg" srcset="../h/img/dummy/t/c03.jpg 900w, ../h/img/dummy/c03.jpg 2400w" sizes="(max-width:767px) 50vw, 30vw" alt="" width="2400" height="1600" decoding="async"></figure>
+        <figure class="m2-t" style="grid-area:c"><img src="../h/img/dummy/w05.jpg" srcset="../h/img/dummy/t/w05.jpg 900w, ../h/img/dummy/w05.jpg 2400w" sizes="(max-width:767px) 50vw, 30vw" alt="" width="2400" height="1447" decoding="async"></figure>
+        <figure class="m2-t" style="grid-area:d"><img src="../h/img/dummy/b12.jpg" srcset="../h/img/dummy/t/b12.jpg 900w, ../h/img/dummy/b12.jpg 2400w" sizes="(max-width:767px) 50vw, 30vw" alt="" width="2400" height="1600" decoding="async"></figure>
+        <figure class="m2-t" style="grid-area:e"><img src="../h/img/dummy/c06.jpg" srcset="../h/img/dummy/t/c06.jpg 900w, ../h/img/dummy/c06.jpg 2400w" sizes="(max-width:767px) 50vw, 30vw" alt="" width="2400" height="1800" decoding="async"></figure>
+      </div>
+      <i class="hr-filter" aria-hidden="true"></i>
+      <div class="hr-txt">
+        <p class="kick hr-in" style="--i:0"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
+        <h1 id="h1" class="hr-in" style="--i:1">המיתוג, האתר והקמפיין שלכם, במשרד אחד.</h1>
+        <div class="hr-cta hr-in" style="--i:2"><a class="btn btn-light" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
+      </div>
+    </div>
+  </template>
+
+  <!-- 3 · מפוצל: הטקסט על לבן, ובצד שני טורים של עבודות שנעים בכיוונים הפוכים, בחיתוך חד (ליאב: "כותרות וטקסט בצד ימין ועבודות בצד שמאל") -->
+  <template id="hr3">
+    <div class="s3">
+      <div class="hr-txt">
+        <p class="kick hr-in" style="--i:0"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
+        <h1 id="h1" class="hr-in" style="--i:1">המיתוג, האתר והקמפיין שלכם, במשרד אחד.</h1>
+        <div class="hr-cta hr-in" style="--i:2"><a class="btn btn-ink" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
+      </div>
+      <div class="s3-mq" aria-hidden="true">
+        <div class="s3-col"><div class="s3-tr" data-imgs="b06 w04 c05 b13"></div></div>
+        <div class="s3-col s3-rev"><div class="s3-tr" data-imgs="p05 w09 b02 c08"></div></div>
+      </div>
+      <button class="s3-pause" type="button" aria-pressed="false" aria-label="עצירת העבודות שזזות"><svg class="ic-pause" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3.4" height="12" rx="1"/><rect x="11.6" y="4" width="3.4" height="12" rx="1"/></svg><svg class="ic-play" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M14.5 10 7 15V5z"/></svg></button>
+    </div>
+  </template>
+
+  <!-- 4 · העדשה מהלוגו: שלוש המילים בכותרת מחליפות את העבודה שבתוך העדשה, והאישון הירוק מסתכל עליהן -->
+  <template id="hr4">
+    <div class="l4">
+      <div class="hr-txt">
+        <p class="kick hr-in" style="--i:0"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
+        <h1 id="h1" class="hr-in" style="--i:1"><span class="hw" data-k="0">המיתוג</span>, <span class="hw" data-k="1">האתר</span> ו<span class="hw" data-k="2">הקמפיין</span> שלכם, במשרד אחד.</h1>
+        <div class="hr-cta hr-in" style="--i:2"><a class="btn btn-ink" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
+      </div>
+      <div class="l4-lens" aria-hidden="true">
+        <span class="l4-view">
+          <img class="on" data-k="0" src="../h/img/dummy/b12.jpg" alt="" width="2400" height="1600" fetchpriority="high" decoding="async">
+          <img data-k="1" src="../h/img/dummy/w03.jpg" alt="" width="2400" height="1600" loading="lazy" decoding="async">
+          <img data-k="2" src="../h/img/dummy/c04.jpg" alt="" width="2400" height="1800" loading="lazy" decoding="async">
+        </span>
+        <span class="l4-ring"></span><span class="l4-sat"></span><span class="l4-pupil"></span>
+      </div>
+    </div>
+  </template>
+
+  <!-- 5 · כותרת ענקית ועבודה אחת בחלון 16:9. בגלילה החלון נפתח למסך מלא, מחשיך, ומוסר את המסך לעבודות שעל השחור -->
+  <template id="hr5">
+    <div class="x5">
+      <div class="x5-pin">
+        <div class="hr-txt">
+          <h1 id="h1" class="hr-in" style="--i:0">המיתוג, האתר והקמפיין שלכם, במשרד אחד.</h1>
+          <div class="x5-row">
+            <div class="x5-side">
+              <p class="kick hr-in" style="--i:1"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
+              <div class="hr-cta hr-in" style="--i:2"><a class="btn btn-ink" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
+            </div>
+            <div class="x5-slot hr-in" style="--i:1">
+              <div class="x5-m" aria-hidden="true"><picture><source media="(max-width:767px)" srcset="../h/img/dummy/p/b06.jpg"><img src="../h/img/dummy/b06.jpg" alt="" width="2400" height="1601" fetchpriority="high" decoding="async"></picture><i class="x5-o"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>(function(){
+    // ההירו שנבחר נכנס לסקשן, והשאר נשארים בתבניות. צבע ההדר: 1 ו-2 על כהה, 3 עד 5 על לבן
+    var d=document.documentElement,n=+d.getAttribute("data-hero")||1,top=document.getElementById("top");
+    top.appendChild(document.getElementById("hr"+n).content.cloneNode(true));
+    top.classList.add("hr-"+n);top.setAttribute("data-hd",n<3?"dark":"light");
+  })()</script>
+
+  <!-- בורר ההירו להשוואה: מופיע רק כשההירו במסך -->
+  <nav class="hrp" id="hrp" aria-label="פריסות ההירו להשוואה"></nav>
+
+  <!-- ================= עבודות נבחרות: העמוד מחשיך כשמגיעים אליהן. עבודה אחת לכל מסך, שנפתחת ונערמת על הקודמת. בלי כותרות: מספר ותיאור מוצנעים,
+       ופס גדול עם שם הלקוח שנשאר בתחתית ומתחלף בגלגול ================= -->
+  <section class="work" id="work" aria-labelledby="work-h">
+    <h2 class="sr" id="work-h">עבודות נבחרות</h2>
+    <div class="feat" id="feat"></div>
+    <div class="wk-strip" id="wk-strip" aria-hidden="true"><span class="wk-in"><span class="wk-nm"><b class="wk-n" id="wk-n"></b></span><span class="wk-go">לפרויקט<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5m4-4-4 4 4 4"/></svg></span></span></div>
+  </section>
+
+  <!-- ================= עצירה: מסך משלו אחרי העבודות, עם התג המסתובב שמפנה לכל העבודות (נוסח זמני, עד הניסוחים של לילך) ================= -->
+  <section class="stop" id="more" aria-labelledby="more-h">
+    <div class="stop-in">
+      <h2 class="stop-h" id="more-h" data-rv>יש עוד הרבה מאיפה שזה הגיע.</h2>
+      <a class="badge" id="badge" href="work.html" aria-label="לכל העבודות" data-rv style="--i:1">
+        <span class="badge-ring" aria-hidden="true"></span>
+        <svg class="badge-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ================= שלוש מחלקות על לבן: שמות גדולים ברשימה, ותמונה קבועה לכל מחלקה שמתחלפת לשם הפעיל, עם פילטר שחור עדין ================= -->
+  <section class="depts" id="depts" aria-labelledby="dp-h">
+    <div class="sec-head">
+      <h2 id="dp-h" data-rv>שלוש מחלקות, צוות אחד.</h2>
+    </div>
+    <div class="dpb" id="dpb"></div>
+  </section>
+
+  <!-- ================= העמוד מחשיך שוב: הציטוט הנקי, שעולה בשורות, ו"ככה עוטפים זהב" ================= -->
+  <div class="dz">
+    <section class="quote" id="quote" aria-label="ציטוט">
+      <figure class="qt">
+        <blockquote><p class="qt-p" id="qt-p">״אם אתם מוכרים <span class="gold">זהב</span>, ודאו שאתם לא עוטפים אותו בנייר עיתון.״</p></blockquote>
+        <figcaption data-rv>לילך סגל, מנכ״לית ויזואל</figcaption>
+      </figure>
+    </section>
+
+    <!-- ענן עבודות (MV:g37): שבע עבודות גדולות בשני צדי הכותרת, שעולות בעומק בקצב שונה. המרכז נשאר פנוי לטקסט -->
+    <section class="cloud" id="cloud" aria-labelledby="cd-h">
+      <div class="cd-imgs" id="cd-imgs" data-crop-ok></div>
+      <div class="cd-txt">
+        <h2 id="cd-h" data-rv>ככה עוטפים <span class="gold">זהב.</span></h2>
+        <a class="btn btn-line" href="work.html" data-rv style="--i:1">לכל העבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= לקוחות: קיר הלוגואים, והעדשה מהלוגו נוסעת עליו ומגדילה בצבע (MV:g101). הכותרת במרכז ================= -->
+  <section class="clients" id="clients" aria-labelledby="cl-h">
+    <div class="sec-head">
+      <h2 id="cl-h" data-rv>רשויות, גופים&nbsp;ציבוריים ועסקים, מכל הארץ ועד אילת.</h2>
+    </div>
+    <div class="xw" id="xw">
+      <div class="xw-pin">
+        <div class="xw-fig" id="xw-fig">
+          <ul class="lgw" id="ctab"></ul>
+          <div class="xw-ink" id="xw-ink" aria-hidden="true"></div>
+          <div class="xw-lens" id="xw-lens" aria-hidden="true"><span class="xw-view" id="xw-view"></span><span class="pk-ring"></span><span class="pk-sat"></span><span class="pk-pupil"></span></div>
+        </div>
+        <p class="xw-tag" id="xw-tag" aria-hidden="true"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= צור קשר: העמוד נצבע בירוק החדש. הכותרת, הטופס ודרכי הקשר הם אזור אחד, והמילה בכותרת מתחלפת (כיוון Firma) ================= -->
+  <section class="close" id="contact" aria-labelledby="ct-h">
+    <h2 id="ct-h" class="ct-giant" data-rv><span class="sr">בואו נדבר על המיתוג, האתר או הקמפיין שלכם.</span><span aria-hidden="true">בואו נדבר על <span class="ct-rot" id="ct-rot"><span class="on">המיתוג</span><span>האתר</span><span>הקמפיין</span></span> שלכם.</span></h2>
+    <div class="ct-area">
+      <div class="ct-form" data-rv>
+        <p class="ct-lead" id="w-form-h">השאירו פרטים, ונחזור אליכם.</p>
+        <div class="cl-form"><div class="cf" id="cf-g"></div></div>
+      </div>
+      <ul class="ways-l" aria-label="או דברו איתנו ישירות">
+        <li class="way" data-rv style="--i:1">
+          <a class="way-a" id="w-call" href="tel:+972547772388"><span class="way-t">התקשרו</span><svg class="way-arr" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M38 24H10m12-12L10 24l12 12"/></svg></a>
+          <span class="way-m" id="w-call-m">תדברו ישירות עם אלעד, מנהל המכירות.</span>
+        </li>
+        <li class="way" data-rv style="--i:2">
+          <a class="way-a" id="w-wa" href="#" target="_blank" rel="noopener"><span class="way-t">וואטסאפ</span><svg class="way-arr" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M38 24H10m12-12L10 24l12 12"/></svg></a>
+          <span class="way-m">ההודעה הראשונה כבר כתובה, נשאר רק לשלוח.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<!-- ================= העמוד מחשיך לפוטר, ובסופו "תמשיכו לגלול": הטבעת מהלוגו מתמלאת עם הגלילה, ומעבירה לעמוד העבודות ================= -->
+<footer class="ftw ftg" id="ft">
+  <div class="ftg-in">
+    <div class="ftg-top">
+      <a class="ftg-logo" href="#top" aria-label="ויזואל, לראש העמוד"><img src="../h/img/logo-light.svg" alt="" width="2726" height="610"></a>
+      <p class="ftg-about">מיתוג ועיצוב, בניית אתרים ושיווק דיגיטלי, במשרד אחד. קרוב לעשרים שנה של עבודה לרשויות, לגופים ציבוריים ולעסקים מכל הארץ.</p>
+      <ul class="ftg-soc" id="ft-soc"></ul>
+    </div>
+    <div class="ftg-cols" id="ft-cols"></div>
+    <div class="ft-legal">
+      <p>© <span data-year>2026</span> ויזואל אינטראקטיב בע״מ</p>
+      <nav aria-label="מסמכים"><a href="#privacy">מדיניות פרטיות</a><a href="#accessibility">הצהרת נגישות</a></nav>
+    </div>
+  </div>
+  <div class="nx" id="nx">
+    <a class="nx-a" id="nx-a" href="work.html">
+      <span class="nx-ring" aria-hidden="true"><svg viewBox="0 0 120 120"><circle class="nx-bg" cx="60" cy="60" r="50"/><circle class="nx-fg" id="nx-fg" cx="60" cy="60" r="50"/></svg><i class="nx-pupil"></i></span>
+      <span class="nx-t"><b>תמשיכו לגלול</b><span>לכל העבודות</span></span>
+    </a>
+  </div>
+</footer>
+
+<!-- בורר הרקע הכהה, רק להשוואה בסקיצה. מופיע כשהרקע כהה -->
+<div class="bgp" id="bgp" role="group" aria-label="צבע הרקע הכהה, להשוואה">
+  <span class="bgp-l" aria-hidden="true">רקע כהה</span>
+</div>
+
+<!-- עיגול לבן מעל העבודות: "לפרויקט" -->
+<div class="pc" id="pc" aria-hidden="true"><span>לפרויקט</span></div>
+
+<script src="../h/works-g.js"></script>
+<script src="../h/dummy.js"></script>
+<script src="../shared/content.js"></script>
+<script src="../shared/vendor/gsap/gsap.min.js"></script>
+<script src="../shared/vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="../shared/vendor/gsap/Flip.min.js"></script>
+<script src="../shared/site.js"></script>
+<script src="../h/common.js"></script>
+<script src="../h/h.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+/* סקיצה ט · אותו בסיס כמו ח (../h/h.css), עם אלמנטים אחרים:
+   כל העמוד מחליף צבע כשמגיעים לאזור כהה או ירוק (במקום סקשנים שנחתכים), קווי עמודות עדינים,
+   פס שם לקוח גדול שמתחלף בגלגול, המחלקות כשמות גדולים עם תמונה דביקה, הציטוט עולה בשורות מתוך מסכה,
+   והכותרת של צור קשר עם מילה שמתחלפת. ההירו של ברירת המחדל: 3 */
+
+/* ================= העמוד מחליף צבע ================= */
+html[data-sk=i]{--cl:color-mix(in srgb,var(--ink) 7%,transparent);transition:--bg .8s var(--ease-io),--ink .8s var(--ease-io)}
+html[data-sk=i].is-dark{--bg:var(--dark);--ink:#F3F1EC;--lime-t:var(--lime);--char:#F3F1EC;--err:#FF8A7A;--focus:var(--lime)}
+html[data-sk=i].is-green{--bg:var(--lime);--ink:#1F1D20;--lime-t:#1F1D20;--focus:#1F1D20;--err:#7A1010;--hdd:#fff}
+/* ההדר הולך אחרי צבע העמוד, ומעל הירו כהה (1, 2, והפתיחה של 5) הוא בהיר */
+html[data-sk=i][data-hd=dark]:not(.is-dark):not(.is-green){--hdc:#F3F1EC}
+
+/* קווי עמודות: ארבע עמודות בין השוליים, בצבע הטקסט בעוצמה נמוכה מאוד */
+html[data-sk=i] body::before{content:"";position:fixed;inset-block:0;inset-inline:var(--gutter);z-index:0;pointer-events:none;
+  background:linear-gradient(to left,var(--cl) 1px,transparent 1px) 100% 0/25% 100%;box-shadow:inset 1px 0 0 var(--cl)}
+@media (max-width:767px){html[data-sk=i] body::before{background-size:50% 100%}}
+
+/* העבודות יושבות על שחור קבוע, כדי שהמעבר מהלבן לא יבהב מאחוריהן */
+html[data-sk=i] .fp{background:var(--dark)}
+
+/* ================= פס שם הלקוח: גדול, נשאר במסך, והשם מתחלף בגלגול ================= */
+html[data-sk=i] .wk-in{align-items:flex-end}
+.wk-nm{flex:1;min-width:0;overflow:hidden;padding-block:.08em;margin-block:-.08em}
+html[data-sk=i] .wk-n{display:block;font-size:clamp(28px,5.2vw + .2rem,128px);line-height:1.04;letter-spacing:-.04em}
+html[data-sk=i] .wk-go{padding-bottom:.6em}
+html[data-sk=i] .fp-txt{bottom:calc(clamp(20px,3.4vh,40px) + clamp(12px,1.2vw,18px) + clamp(28px,5.2vw + .2rem,128px) * 1.12 + 24px)}
+
+/* ================= שלוש מחלקות: שמות גדולים, ותמונה דביקה שמתחלפת לשם הפעיל ================= */
+.dpb{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(32px,5vw,112px);margin-top:clamp(40px,3.6vw,72px)}
+.dpb-l{grid-column:1;grid-row:1;list-style:none;margin:0;padding:0}
+.dpb-media{grid-column:2;grid-row:1;position:sticky;top:calc(var(--hx-h) + 16px);align-self:start}
+.dpb-frame{position:relative;height:min(72svh,56vw);overflow:hidden;border-radius:4px;background:var(--bg-2)}
+.dpb-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;scale:1.06;transition:opacity .7s var(--ease-io),scale 1.2s var(--ease)}
+.dpb-frame img.on{opacity:1;scale:1}
+/* פילטר שחור עדין ואחיד, כמו בח */
+.dpb-frame::after,.dpb-im::after{content:"";position:absolute;inset:0;pointer-events:none;background:#000;opacity:.16}
+.dpb-i{min-height:min(30svh,320px);display:flex}
+.dpb-a{flex:1;display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;column-gap:24px;row-gap:clamp(10px,1vw,16px);padding-block:clamp(28px,3vw,56px);border-top:1px solid var(--line);color:var(--ink)}
+.dpb-i:last-child .dpb-a{border-bottom:1px solid var(--line)}
+.dpb-im{display:none}
+.dpb-n{grid-column:1;font-family:var(--f-display);font-weight:500;font-size:clamp(40px,5.4vw + .2rem,132px);line-height:1.02;letter-spacing:-.04em;color:var(--dim);transition:color .5s var(--ease-io)}
+.dpb-s{grid-column:1;font-size:var(--fs-body);color:var(--muted)}
+.dpb-go{grid-column:2;grid-row:1/3;align-self:center;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink);
+  transition:background-color .4s,color .4s,box-shadow .4s}
+.dpb-go .arr{width:20px;height:20px}
+.dpb-i.on .dpb-n{color:var(--ink)}
+.dpb-i.on .dpb-go{background:var(--lime);color:var(--on-lime);box-shadow:none}
+.dpb-a:focus-visible{outline-offset:4px}
+@media (max-width:767px){
+  .dpb{grid-template-columns:minmax(0,1fr)}
+  .dpb-media{display:none}
+  .dpb-i{min-height:0}
+  .dpb-a{padding-block:20px 28px;border-top:0}
+  .dpb-i:last-child .dpb-a{border-bottom:0}
+  .dpb-im{position:relative;display:block;grid-column:1/-1;aspect-ratio:16/10;overflow:hidden;border-radius:4px;margin-bottom:8px;background:var(--bg-2)}
+  .dpb-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .dpb-n{font-size:clamp(34px,10vw,52px);color:var(--ink)}
+  .dpb-go{grid-row:2/4;width:48px;height:48px;background:var(--lime);color:var(--on-lime);box-shadow:none}
+}
+
+/* ================= הציטוט: השורות עולות מתוך מסכה ================= */
+html[data-sk=i] .qt-p .wm{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.12em;margin-bottom:-.12em}
+html[data-sk=i] .qt-p .wm .w{display:inline-block}
+
+/* ================= צור קשר: "בואו נדבר על ___ שלכם", והמילה מתחלפת ================= */
+/* הרוחב זז כדי ש"שלכם" יחליק עם המילה; מילה אחת, פעם בכמה שניות. qa-allow: layout */
+.ct-rot{display:inline-grid;justify-items:start;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em;transition:width .7s var(--ease)}
+.ct-rot>span{grid-area:1/1;white-space:nowrap;translate:0 110%;transition:translate .8s var(--ease)}
+.ct-rot>span.on{translate:0 0}
+.ct-rot>span.out{translate:0 -110%}
+
+/* ================= הפחתת תנועה ================= */
+@media (prefers-reduced-motion: reduce){
+  html[data-sk=i]{transition:none}
+  .dpb-frame img,.dpb-n,.ct-rot>span{transition:none}
+  .ct-rot>span:not(.on){visibility:hidden}
+}

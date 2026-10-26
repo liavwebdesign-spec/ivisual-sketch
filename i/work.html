@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-motion="expressive" data-sk="i">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>פרויקטים · ויזואל · סקיצה ט</title>
+<meta name="description" content="תיק העבודות של ויזואל: מיתוג ועיצוב, אתרים ושיווק דיגיטלי.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="../h/img/lens.svg" type="image/svg+xml">
+<link rel="preload" href="../shared/fonts/GoogleSans-Medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../shared/base.css">
+<link rel="stylesheet" href="../h/h.css">
+<link rel="stylesheet" href="i.css">
+<script>(function(d){
+  var b=new URLSearchParams(location.search).get("bg");if(b==="night"||b==="olive"||b==="plum")d.setAttribute("data-bg",b);
+  if(matchMedia("(prefers-reduced-motion:no-preference)").matches)d.classList.add("open-anim","rv-js");
+})(document.documentElement)</script>
+</head>
+<body>
+<a class="skip" href="#main">דלג לתוכן</a>
+
+<a class="flogo" href="./" aria-label="ויזואל, לעמוד הבית"><span class="flogo-i" aria-hidden="true"></span><span class="flogo-d" aria-hidden="true"></span></a>
+<header class="hx hd" id="hd">
+  <button class="hx-menu" id="fs-open" type="button" aria-expanded="false" aria-controls="fs"><span>תפריט</span><i aria-hidden="true"></i></button>
+</header>
+
+<div class="fs" id="fs" role="dialog" aria-modal="true" aria-label="תפריט" inert>
+  <div class="fs-top">
+    <a class="fs-logo" href="./" aria-label="ויזואל, לעמוד הבית"><img src="../h/img/logo-light.svg" alt="" width="134" height="30"></a>
+    <button class="fs-close" type="button"><span>סגירה</span><i aria-hidden="true"></i></button>
+  </div>
+  <div class="fs-eye" aria-hidden="true"><div class="fs-view"></div><i class="fs-pupil"></i><i class="fs-sat"></i></div>
+  <ul class="fs-links">
+    <li><a href="work.html" style="--i:0" aria-current="page">פרויקטים</a></li>
+    <li><a href="./#depts" style="--i:1">מחלקות</a></li>
+    <li><a href="./#clients" style="--i:2">לקוחות</a></li>
+    <li><a href="./#contact" style="--i:3">צור קשר</a></li>
+  </ul>
+  <div class="fs-side" id="fs-side"></div>
+</div>
+
+<main id="main">
+  <section class="ar" aria-labelledby="ar-h">
+    <div class="ar-head">
+      <h1 id="ar-h" data-rv>פרויקטים</h1>
+    </div>
+    <nav class="af is-off" id="af" aria-label="סינון פרויקטים">
+      <svg class="af-ic" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="7" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="17" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      <div class="af-g" id="ar-tabs" role="group" aria-label="סינון לפי מחלקה"><i class="af-on" aria-hidden="true"></i></div>
+    </nav>
+    <p class="sr" id="ar-status" aria-live="polite"></p>
+    <ul class="ar-grid" id="ar-grid"></ul>
+    <div class="ar-more" id="ar-more" hidden><button type="button">עוד פרויקטים<i aria-hidden="true"></i></button></div>
+  </section>
+</main>
+
+<footer class="ftw ftg" id="ft">
+  <div class="ftg-in">
+    <div class="ftg-top">
+      <a class="ftg-logo" href="./" aria-label="ויזואל, לעמוד הבית"><img src="../h/img/logo-light.svg" alt="" width="2726" height="610"></a>
+      <p class="ftg-about">מיתוג ועיצוב, בניית אתרים ושיווק דיגיטלי, במשרד אחד. קרוב לעשרים שנה של עבודה לרשויות, לגופים ציבוריים ולעסקים מכל הארץ.</p>
+      <ul class="ftg-soc" id="ft-soc"></ul>
+    </div>
+    <div class="ftg-cols" id="ft-cols"></div>
+    <div class="ft-legal">
+      <p>© <span data-year>2026</span> ויזואל אינטראקטיב בע״מ</p>
+      <nav aria-label="מסמכים"><a href="#privacy">מדיניות פרטיות</a><a href="#accessibility">הצהרת נגישות</a></nav>
+    </div>
+  </div>
+</footer>
+
+<div class="pc" id="pc" aria-hidden="true"><span>לפרויקט</span></div>
+
+<script src="../h/works-g.js"></script>
+<script src="../h/dummy.js"></script>
+<script src="../shared/content.js"></script>
+<script src="../shared/vendor/gsap/gsap.min.js"></script>
+<script src="../shared/vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="../shared/vendor/gsap/Flip.min.js"></script>
+<script src="../shared/site.js"></script>
+<script src="../h/common.js"></script>
+<script src="../h/work.js"></script>
+</body>
+</html>

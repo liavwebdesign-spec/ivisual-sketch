@@ -116,22 +116,23 @@ strong,b{font-weight:var(--w-strong)}
 @media (max-width:640px){.cf-grid{grid-template-columns:1fr}.cf-end .btn{width:100%}}
 
 /* ---------- הגדלת צילום מסך ---------- */
-.lb{--focus:#B8D43A;position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:#F3F1EC;overflow:hidden}
+.lb{--focus:#B8D43A;position:fixed;inset:0 auto 0 0;/* qa-allow: physical, covers the scrollbar gutter */width:100vw;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:#F3F1EC;overflow:hidden}
 .lb[open]{display:block}
-.lb::backdrop{background:rgba(12,11,13,.9)}
-.lb-in{display:grid;grid-template-rows:minmax(0,1fr) auto;justify-items:center;gap:14px;height:100%;padding:clamp(16px,3vw,40px)}
-.lb-fig{align-self:center;margin:0;width:min(var(--lbw,900px),100%);max-height:100%;overflow:auto;overscroll-behavior:contain;border-radius:14px;background:#fff}
-.lb-fig img{width:100%;height:auto}
-.lb-bar{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;width:min(1100px,100%)}
-.lb-cap{font-size:15px;opacity:.86}
-.lb-ctl{display:flex;align-items:center;gap:8px;flex:none}
-.lb-btn{display:grid;place-items:center;width:48px;height:48px;border:0;border-radius:999px;background:rgba(243,241,236,.12);color:inherit;cursor:pointer;transition:background-color .18s var(--ease)}
-.lb-btn[hidden]{display:none}
-.lb-btn svg{width:20px;height:20px}
-.lb-prev svg{transform:scaleX(-1)}
-.lb-n{min-width:8ch;text-align:center;font-size:14px;opacity:.8;font-variant-numeric:tabular-nums}
-@media (hover:hover) and (pointer:fine){.lb-btn:hover{background:rgba(243,241,236,.22)}}
-@media (max-width:640px){.lb-bar{flex-wrap:wrap}.lb-ctl{width:100%;justify-content:space-between}}
+.lb::backdrop{background:transparent}
+.lb-bg{position:absolute;inset:0;background:var(--dark,#1B2013)}
+.lb-in{position:relative;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:clamp(12px,1.6vw,24px);height:100%;padding:clamp(14px,2vw,32px) var(--gutter,clamp(16px,3vw,40px))}
+.lb-top{display:flex;align-items:center;justify-content:space-between;gap:16px 32px}
+.lb-cap{margin:0;font-size:clamp(16px,.4vw + 12px,20px);line-height:1.35;color:#F3F1EC}
+.lb-stage{display:grid;place-items:center;min-height:0;min-width:0}
+.lb-fig{margin:0;max-width:100%;max-height:100%;overflow:hidden;border-radius:4px;background:rgba(243,241,236,.06) center/cover no-repeat;will-change:transform}
+.lb-fig.tall{overflow:auto;overscroll-behavior:contain;height:100%}
+.lb-fig img{display:block;width:100%;height:auto}
+.lb-nav{display:flex;align-items:center;justify-content:center;gap:clamp(8px,1vw,16px)}
+.lb-nav[hidden]{display:none}
+.lb-n{min-width:9ch;text-align:center;font-size:15px;color:rgba(243,241,236,.78);font-variant-numeric:tabular-nums}
+.lb .btn-lb{flex:none;min-height:48px;padding:0 16px;font-size:16px;background:transparent;color:#F3F1EC;box-shadow:inset 0 0 0 1.5px rgba(243,241,236,.34)}
+.lb .lb-prev,.lb .lb-next{width:56px;padding:0}
+.lb .lb-prev .arr{--ad:1}
 
 /* ---------- פס רץ C10: שני סטים זהים, כל אחד לפחות ברוחב המסך, ולכן הלולאה רציפה ---------- */
 .mq{position:relative;overflow:hidden}

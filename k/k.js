@@ -5,7 +5,6 @@
   var G=window.G,doc=G.doc,still=G.still,fine=G.fine,hasGsap=G.hasGsap,C=G.C,lb=G.lb,W=G.W,lbItem=G.lbItem,ARR=G.ARR;
   var motion=hasGsap&&!still.matches;
   function $(id){return document.getElementById(id);}
-  function pad(n){return n<10?"0"+n:""+n;}
 
   /* ================= גלילה רכה: Lenis, רק בעכבר. במגע הגלילה של המכשיר ================= */
   var lenis=null;
@@ -142,11 +141,11 @@
     ["wheel","touchmove","keydown"].forEach(function(t){addEventListener(t,hurry,{passive:true});});
   })();
 
-  /* ================= הירו 1: הפס של העבודה הנוכחית הוא השעון, וכשהוא מתמלא באה הבאה. לחיצה על מחלקה קופצת אליה, וכפתור עוצר.
-     בהפחתת תנועה אין החלפה לבד: המחלקות עדיין מחליפות, ואין מה לעצור ================= */
+  /* ================= הירו 1: הפס של העבודה הנוכחית הוא השעון, וכשהוא מתמלא באה הבאה. לחיצה על מחלקה קופצת אליה.
+     בלי כפתור עצירה על העמוד (ליאב, 4.11): בפיתוח העצירה נמצאת בסרגל הנגישות. בהפחתת תנועה אין החלפה לבד ================= */
   (function(){
-    var s1=$("hk-win"),sl1=[].slice.call(s1.querySelectorAll(".sl1-s")),tb1=[].slice.call(s1.querySelectorAll(".sl1-tab")),pp1=s1.querySelector(".sl1-pp"),c1=0,auto1=!still.matches;
-    if(!auto1){s1.classList.add("still");pp1.hidden=true;}
+    var s1=$("hk-win"),sl1=[].slice.call(s1.querySelectorAll(".sl1-s")),tb1=[].slice.call(s1.querySelectorAll(".sl1-tab")),c1=0,auto1=!still.matches;
+    if(!auto1)s1.classList.add("still");
     function go1(n){
       c1=(n+sl1.length)%sl1.length;
       sl1.forEach(function(s,k){s.classList.toggle("on",k===c1);});
@@ -158,10 +157,6 @@
     tb1.forEach(function(t,k){
       t.addEventListener("click",function(){go1(k);});
       t.querySelector("i").addEventListener("animationend",function(){if(auto1&&k===c1)go1(c1+1);});
-    });
-    pp1.addEventListener("click",function(){
-      var on=!s1.classList.contains("paused");s1.classList.toggle("paused",on);
-      pp1.setAttribute("aria-pressed",String(on));pp1.setAttribute("aria-label",on?"המשך המצגת":"עצירת המצגת");
     });
   })();
 
@@ -184,7 +179,7 @@
     FEAT.forEach(function(s,i){
       if(!i)return;
       var w=BYID[s.ws[0]];
-      html+='<article class="fp" data-hd="dark" aria-labelledby="fp-'+i+'"><h3 class="sr" id="fp-'+i+'">'+s.n+'</h3><figure class="fp-media"><picture>'+(w.port?'<source media="(max-width:767px)" srcset="'+w.port+'">':'')+'<img src="'+w.src+'" alt="" width="'+w.w+'" height="'+w.h+'" loading="lazy" decoding="async"></picture></figure><p class="fp-txt" aria-hidden="true"><span class="fp-n">'+pad(i+1)+' / '+pad(N)+'</span><span class="fp-d">'+s.d+'</span></p><button class="fp-hit" type="button" data-k="'+i+'" aria-label="'+s.n+": "+s.d+', פתיחת העבודות"></button></article>';
+      html+='<article class="fp" data-hd="dark" aria-labelledby="fp-'+i+'"><h3 class="sr" id="fp-'+i+'">'+s.n+'</h3><figure class="fp-media"><picture>'+(w.port?'<source media="(max-width:767px)" srcset="'+w.port+'">':'')+'<img src="'+w.src+'" alt="" width="'+w.w+'" height="'+w.h+'" loading="lazy" decoding="async"></picture></figure><p class="fp-txt" aria-hidden="true"><span class="fp-d">'+s.d+'</span></p><button class="fp-hit" type="button" data-k="'+i+'" aria-label="'+s.n+": "+s.d+', פתיחת העבודות"></button></article>';
     });
     featEl.insertAdjacentHTML("beforeend",html);
     var fps=[].slice.call(featEl.querySelectorAll(".fp"));
@@ -207,20 +202,20 @@
       var dark=false;
       function hd5(v){if(v===dark)return;dark=v;x5.setAttribute("data-hd",v?"dark":"light");G.hdCheck();}
       // עד שהחלון נפתח לגמרי הלוגו יכול עדיין לשבת על הלבן. מעל החלון הוא נדגם מהתמונה (tone.js), ולכן דוגמים גם בזמן שהחלון נפתח
-      function st5(s){hd5(s.progress>.98);opened=s.progress>.9;if(window.__toneTick)window.__toneTick();}
+      function st5(s){hd5(s.progress>.98);opened=s.progress>.92;if(window.__toneTick)window.__toneTick();}
       gsap.timeline({scrollTrigger:{trigger:sp,start:"top bottom",end:"bottom bottom",scrub:.6,invalidateOnRefresh:true,onUpdate:st5,onRefresh:st5}})
         .fromTo([m5,hit],{clipPath:ins},{clipPath:"inset(0px 0px 0px 0px round 0px)",ease:"power2.inOut",duration:1},0)
         .fromTo(m5.querySelector("img"),{x:fit("x"),y:fit("y"),scale:fit("s")},{x:0,y:0,scale:1,ease:"power2.inOut",duration:1},0)
         .to(x5.querySelector(".hr-txt"),{autoAlpha:0,ease:"none",duration:.35},.1)
         .fromTo(o5,{opacity:0},{opacity:1,ease:"none",duration:.2},.8)
-        .fromTo(txt5,{opacity:0,y:24},{opacity:1,y:0,ease:"none",duration:.2},.8);
+        .fromTo(txt5,{opacity:0,y:24},{opacity:1,y:0,ease:"none",duration:.16},.76);
       fps.forEach(function(fp,i){
         if(!i)return;
         var media=fp.querySelector(".fp-media"),img=media.querySelector("img"),txt=fp.querySelector(".fp-txt");
         var st={trigger:fp,start:"top bottom",end:"top top",scrub:.5,invalidateOnRefresh:true};
         gsap.fromTo(media,{clipPath:function(){return innerWidth<768?"inset(8% 6% 8% 6% round 4px)":"inset(14% 12% 14% 12% round 4px)";}},{clipPath:"inset(0% 0% 0% 0% round 0px)",ease:"none",scrollTrigger:st});
         gsap.fromTo(img,{scale:1.22},{scale:1,ease:"none",scrollTrigger:{trigger:fp,start:"top bottom",end:"bottom top",scrub:.5}});
-        gsap.fromTo(txt,{opacity:0,y:24},{opacity:1,y:0,ease:"none",scrollTrigger:{trigger:fp,start:"top 40%",end:"top 5%",scrub:.5}});
+        gsap.fromTo(txt,{opacity:0,y:24},{opacity:1,y:0,ease:"none",scrollTrigger:{trigger:fp,start:"top 52%",end:"top 26%",scrub:.2}});
         gsap.to(fps[i-1],{scale:.94,ease:"none",scrollTrigger:st});
       });
       return function(){
@@ -228,13 +223,20 @@
         slot.appendChild(m5);slot.appendChild(hit);hd5(false);opened=false;
       };
     });
-    /* פס שם הלקוח: נעלם בזמן הגלילה וחוזר כשעוצרים. על הירו 5 הוא מחכה עד שהחלון נפתח */
-    var strip=$("wk-strip"),sn=$("wk-n"),work=$("work"),curK=-1,idle=0;
-    function which(){var h=innerHeight*.5,k=0;for(var i=0;i<fps.length;i++)if(fps[i].getBoundingClientRect().top<=h)k=i;return k;}
-    function name(k){if(k===curK)return;curK=k;sn.textContent=FEAT[k].n;}
+    /* פס שם הלקוח: נשאר במסך לאורך העבודות, ושם הלקוח מתחלף מיד אחרי הכותרת הקטנה של העבודה הבאה.
+       על הירו 5 הוא מחכה עד שהחלון נפתח */
+    var strip=$("wk-strip"),sn=$("wk-n"),work=$("work"),curK=-1,swapT=0,tick=0;
+    function which(){var h=innerHeight*.42,k=0;for(var i=0;i<fps.length;i++)if(fps[i].getBoundingClientRect().top<=h)k=i;return k;}
     function inWork(){var r=work.getBoundingClientRect();return r.top<innerHeight*.35&&r.bottom>innerHeight*.75&&(opened||which()>0);}
-    function show(){var v=inWork();if(v)name(which());strip.classList.toggle("on",v);}
-    addEventListener("scroll",function(){strip.classList.remove("on");clearTimeout(idle);idle=setTimeout(show,600);},{passive:true});
+    function name(k){
+      if(k===curK)return;
+      var was=strip.classList.contains("on")&&curK>=0;curK=k;clearTimeout(swapT);
+      if(!was){sn.textContent=FEAT[k].n;strip.classList.remove("swap");return;}
+      strip.classList.add("swap");
+      swapT=setTimeout(function(){sn.textContent=FEAT[curK].n;strip.classList.remove("swap");},170);
+    }
+    function show(){tick=0;var v=inWork();if(v)name(which());strip.classList.toggle("on",v);}
+    addEventListener("scroll",function(){if(!tick)tick=requestAnimationFrame(show);},{passive:true});
     addEventListener("resize",show);show();
   })();
 
@@ -518,7 +520,7 @@
       // כשהתפריט או המציג פתוחים הגלגלת שלהם, והעמוד לא מתקדם
       if(go||!atEnd()||doc.classList.contains("fs-lock")||doc.style.overflow==="hidden")return;
       set(p+d);last=performance.now();
-      if(p>=1){go=true;nx.classList.add("done");setTimeout(function(){location.href=a.href;},420);return;}
+      if(p>=1){go=true;nx.classList.add("done");setTimeout(function(){G.go(a.href);},300);return;}
       if(!raf)raf=requestAnimationFrame(drain);
     }
     addEventListener("wheel",function(e){if(e.deltaY>0)push(Math.min(.07,e.deltaY/1800));},{passive:true});

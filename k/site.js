@@ -143,51 +143,119 @@ function inView(el,f){
   addEventListener("scroll",chk,{passive:true});addEventListener("resize",chk);requestAnimationFrame(chk);setTimeout(chk,300);
 }
 
-/* ---------- הגדלה של צילום מסך מהקיר ----------
-   dialog אמיתי: הפוקוס נלכד בפנים, Esc סוגר, והפוקוס חוזר לכרטיס שנלחץ. חצים במקלדת עוברים בין הצילומים.
-   צילום גבוה (וואטסאפ ארוך) נגלל בתוך החלון ולא מתכווץ עד שאי אפשר לקרוא. */
+/* ---------- חלון העבודה ----------
+   dialog אמיתי: הפוקוס נלכד בפנים, Esc סוגר, והפוקוס חוזר למה שנלחץ. חצים במקלדת והחלקה באצבע עוברים בין העבודות.
+   התמונה גדלה בדיוק מהמקום שלה בעמוד וחוזרת אליו בסגירה (Flip), והרקע הוא הזית של האתר. עבודה ארוכה מאוד נגללת בתוך החלון. */
 function lightbox(){
-  var dlg=document.createElement("dialog");
-  dlg.className="lb";dlg.setAttribute("aria-label","צילום מסך מהקיר");
-  var ARR='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg>';
-  dlg.innerHTML='<div class="lb-in"><figure class="lb-fig"><img alt="" decoding="async"></figure>'+
-    '<div class="lb-bar"><p class="lb-cap"></p><div class="lb-ctl">'+
-    '<button class="lb-btn lb-prev" type="button" aria-label="הצילום הקודם">'+ARR+'</button>'+
+  var dlg=document.createElement("dialog"),root=document.documentElement;
+  dlg.className="lb";dlg.setAttribute("aria-label","עבודה מתיק העבודות");
+  function arr(d){return '<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+d+'"/></svg>';}
+  dlg.innerHTML='<div class="lb-bg"></div><div class="lb-in">'+
+    '<div class="lb-top"><p class="lb-cap"></p><button class="btn btn-lb lb-close" type="button"><span>סגירה</span><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button></div>'+
+    '<div class="lb-stage"><figure class="lb-fig"><img alt="" decoding="async"></figure></div>'+
+    '<div class="lb-nav"><button class="btn btn-lb lb-prev" type="button" aria-label="העבודה הקודמת">'+arr("M5 10h10m-4-4 4 4-4 4")+'</button>'+
     '<span class="lb-n" aria-live="polite"></span>'+
-    '<button class="lb-btn lb-next" type="button" aria-label="הצילום הבא">'+ARR+'</button>'+
-    '<button class="lb-btn lb-close" type="button" aria-label="סגירה"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>'+
-    '</div></div></div>';
+    '<button class="btn btn-lb lb-next" type="button" aria-label="העבודה הבאה">'+arr("M15 10H5m4-4-4 4 4 4")+'</button></div>'+
+    '</div>';
   document.body.appendChild(dlg);
-  var fig=dlg.querySelector(".lb-fig"),img=fig.querySelector("img"),cap=dlg.querySelector(".lb-cap"),n=dlg.querySelector(".lb-n");
-  var prev=dlg.querySelector(".lb-prev"),next=dlg.querySelector(".lb-next"),list=[],i=0,back=null;
+  var bg=dlg.querySelector(".lb-bg"),stage=dlg.querySelector(".lb-stage"),fig=dlg.querySelector(".lb-fig"),img=fig.querySelector("img"),cap=dlg.querySelector(".lb-cap"),n=dlg.querySelector(".lb-n");
+  var top=dlg.querySelector(".lb-top"),nav=dlg.querySelector(".lb-nav"),closeB=dlg.querySelector(".lb-close");
+  var prev=dlg.querySelector(".lb-prev"),next=dlg.querySelector(".lb-next"),list=[],i=0,i0=0,back=null,src=null,closing=false,moving=false;
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)");
+  function motion(){return !!window.gsap&&!reduce.matches;}
+  function fit(){
+    var it=list[i];if(!it)return;
+    var aw=stage.clientWidth,ah=stage.clientHeight,r=it.fh/it.fw,tall=r>2.2,w;
+    fig.classList.toggle("tall",tall);
+    w=tall?Math.min(620,it.fw,aw):Math.min(it.fw,aw,ah/r);
+    fig.style.width=Math.round(w)+"px";
+    img.width=it.fw;img.height=it.fh;
+  }
   function show(k){
     i=(k+list.length)%list.length;var it=list[i];
-    var tall=it.fh/it.fw>1.25;
-    fig.classList.toggle("tall",tall);
-    fig.style.setProperty("--lbw",(tall?Math.min(560,it.fw):Math.min(1100,it.fw))+"px");
-    img.width=it.fw;img.height=it.fh;img.src=it.full;img.alt=it.alt||"";
+    fit();
+    img.src=it.full;img.alt=it.alt||"";
     cap.textContent=it.cap||"";fig.scrollTop=0;
     n.textContent=list.length>1?(i+1)+" מתוך "+list.length:"";
+    [i+1,i-1].forEach(function(q){var o=list[(q+list.length)%list.length];if(o&&list.length>1)new Image().src=o.full;});
   }
-  function open(items,k,from){
-    list=items;back=from||document.activeElement;
-    prev.hidden=next.hidden=items.length<2;
-    show(k||0);
-    document.documentElement.style.overflow="hidden";
+  function srcImg(el){for(var d=0;el&&d<5;d++,el=el.parentElement){var m=el.querySelector&&el.querySelector("img");if(m)return m;}return null;}
+  // מאיפה התמונה גדלה: רק מתמונה שרואים ושהיא באמת גדולה. לוגו קטן בקיר הלקוחות הוא לא אותה תמונה, ושם החלון פשוט נפתח
+  function from(){
+    if(!src)return null;
+    var r=src.getBoundingClientRect();
+    if(r.width<160||r.height<100||r.bottom<0||r.top>innerHeight||r.right<0||r.left>innerWidth)return null;
+    var t=fig.getBoundingClientRect();
+    var fw=fig.offsetWidth,fh=fig.offsetHeight,s=Math.max(r.width/fw,r.height/fh),vw=r.width/s,vh=r.height/s,ix=Math.max(0,(fw-vw)/2),iy=Math.max(0,(fh-vh)/2);
+    return {x:r.left+r.width/2-(t.left+t.width/2),y:r.top+r.height/2-(t.top+t.height/2),scale:s,clipPath:"inset("+iy.toFixed(1)+"px "+ix.toFixed(1)+"px round "+(4/s).toFixed(1)+"px)"};
+  }
+  function open(items,k,fromEl){
+    list=items;back=fromEl||document.activeElement;src=srcImg(fromEl);closing=false;moving=false;
+    nav.hidden=items.length<2;
+    if(innerWidth>root.clientWidth)root.style.scrollbarGutter="stable";root.style.overflow="hidden";
     dlg.showModal();
-    dlg.querySelector(".lb-close").focus({preventScroll:true});
+    i=(k||0);
+    show(i);i0=i;
+    closeB.focus({preventScroll:true});
+    if(!motion())return;
+    var a=from();
+    gsap.killTweensOf([fig,bg,top,nav]);
+    gsap.set(bg,{opacity:0});gsap.to(bg,{opacity:1,duration:.55,ease:"power2.out"});
+    gsap.fromTo([top,nav],{opacity:0},{opacity:1,duration:.4,delay:.34,ease:"power2.out"});
+    if(a){
+      // בזמן שהקובץ הגדול יורד, רואים את התמונה שכבר נמצאת בעמוד
+      fig.style.backgroundImage=src.currentSrc?"url("+JSON.stringify(src.currentSrc)+")":"";
+      gsap.fromTo(fig,a,{x:0,y:0,scale:1,clipPath:"inset(0px 0px round 4px)",duration:.78,ease:"power3.inOut",clearProps:"clipPath,transform"});
+    }else gsap.fromTo(fig,{opacity:0,scale:.95},{opacity:1,scale:1,duration:.5,ease:"power3.out",clearProps:"opacity,transform"});
   }
-  prev.addEventListener("click",function(){show(i-1);});
-  next.addEventListener("click",function(){show(i+1);});
-  dlg.querySelector(".lb-close").addEventListener("click",function(){dlg.close();});
-  dlg.addEventListener("click",function(e){if(e.target===dlg||e.target.classList.contains("lb-in"))dlg.close();});
-  // ב-RTL "הבא" הוא שמאלה, כמו כיוון הקריאה
+  function shut(){
+    if(!dlg.open||closing)return;
+    closing=true;
+    if(!motion()){dlg.close();return;}
+    var a=i===i0&&!fig.scrollTop?from():null;
+    gsap.killTweensOf([fig,bg,top,nav]);
+    gsap.to([top,nav],{opacity:0,duration:.16,ease:"power2.in"});
+    gsap.to(bg,{opacity:0,duration:a?.58:.34,delay:a?.06:0,ease:"power2.inOut"});
+    if(a)gsap.to(fig,{x:a.x,y:a.y,scale:a.scale,clipPath:a.clipPath,duration:.62,ease:"power3.inOut",onComplete:function(){dlg.close();}});
+    else gsap.to(fig,{opacity:0,scale:.96,duration:.3,ease:"power2.in",onComplete:function(){dlg.close();}});
+  }
+  // ב-RTL "הבא" הוא שמאלה: העבודה הנוכחית יוצאת ימינה, והבאה נכנסת משמאל
+  function step(d){
+    if(list.length<2||closing||moving)return;
+    fig.style.backgroundImage="";
+    if(!motion()){show(i+d);return;}
+    moving=true;
+    gsap.to(fig,{opacity:0,x:d*28,duration:.2,ease:"power2.in",onComplete:function(){
+      show(i+d);
+      var shown=false;
+      function come(){if(shown)return;shown=true;gsap.fromTo(fig,{opacity:0,x:-d*28},{opacity:1,x:0,duration:.46,ease:"power3.out",clearProps:"opacity,transform",onComplete:function(){moving=false;}});}
+      if(img.decode)img.decode().then(come,come);else come();
+      setTimeout(come,700);
+    }});
+  }
+  prev.addEventListener("click",function(){step(-1);});
+  next.addEventListener("click",function(){step(1);});
+  closeB.addEventListener("click",shut);
+  dlg.addEventListener("click",function(e){if(e.target===stage||e.target.classList.contains("lb-in")||e.target===bg)shut();});
+  dlg.addEventListener("cancel",function(e){e.preventDefault();shut();});
   dlg.addEventListener("keydown",function(e){
-    if(list.length<2)return;
-    if(e.key==="ArrowLeft"){e.preventDefault();show(i+1);}
-    if(e.key==="ArrowRight"){e.preventDefault();show(i-1);}
+    if(e.key==="ArrowLeft"){e.preventDefault();step(1);}
+    if(e.key==="ArrowRight"){e.preventDefault();step(-1);}
   });
-  dlg.addEventListener("close",function(){document.documentElement.style.overflow="";if(back&&back.focus)back.focus({preventScroll:true});});
+  var tx=null,ty=null;
+  fig.addEventListener("touchstart",function(e){tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+  fig.addEventListener("touchend",function(e){
+    if(tx==null)return;
+    var dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;tx=null;
+    if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.5)step(dx>0?1:-1);
+  },{passive:true});
+  addEventListener("resize",function(){if(dlg.open)fit();});
+  dlg.addEventListener("close",function(){
+    if(window.gsap){gsap.killTweensOf([fig,bg,top,nav]);gsap.set([fig,bg,top,nav],{clearProps:"all"});}
+    fig.style.backgroundImage="";img.removeAttribute("src");
+    root.style.overflow="";root.style.scrollbarGutter="";closing=false;moving=false;
+    if(back&&back.focus)back.focus({preventScroll:true});
+  });
   return {open:open};
 }
 /* פריט לקיר: ציטוט או צילום, יחד עם המידות של הצילום */

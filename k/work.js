@@ -23,9 +23,10 @@
   var by={},list=[];
   W.filter(function(w){return w.w>=560;}).forEach(function(w){
     var c=by[w.client_he];
-    if(!c){c=by[w.client_he]={name:w.client_he,works:[],deps:{},pub:false};list.push(c);}
+    if(!c){c=by[w.client_he]={name:w.client_he,works:[],deps:{},pub:false,f:{}};list.push(c);}
     c.works.push(w);if(w.public_body)c.pub=true;
     w.departments.forEach(function(d){c.deps[d]=1;});
+    FILTERS.forEach(function(g){var m=c.f[g.key]=c.f[g.key]||{};[].concat(w[g.field]||[]).forEach(function(v){m[v]=1;});});
   });
   list.sort(function(a,b){return (b.pub?1:0)-(a.pub?1:0)||b.works.length-a.works.length;});
   function short(c){return SHORT[c.name]||c.works[0].title_he;}
@@ -69,7 +70,7 @@
   WIDE.concat(TALL).forEach(function(id){W.forEach(function(w){var c=by[w.client_he];if(w.id===id&&c&&!c.img&&FREE[w.dm]){c.img=w.dm;delete FREE[w.dm];}});});
   list.slice().sort(function(a,b){return rank(a)-rank(b);}).forEach(function(c){if(!c.img)c.img=grab(c,["wcbp","cwbp","bpcw"][rank(c)]);});
   /* בסינון מחלקה, כל כרטיס מראה עבודה של אותה מחלקה */
-  function inDep(w){return !cur||w.departments.indexOf(cur)>-1;}
+  function inDep(w){return !sel.d||w.departments.indexOf(sel.d)>-1;}
   /* כרטיס רגיל (3:2): העבודה הראשונה שממלאת אותו בלי להימתח, ואם אין, זו שנמתחת הכי מעט */
   function fill(w){return Math.min(w.w,w.h*1.5);}
   function first(c){var d=c.works.filter(inDep);if(!d.length)d=c.works;for(var i=0;i<d.length;i++){if(fill(d[i])>=900)return d[i];}return d.slice().sort(function(x,y){return fill(y)-fill(x);})[0];}
@@ -154,48 +155,93 @@
   moreBtn.addEventListener("click",function(){reveal(true);});
   if("IntersectionObserver" in window)new IntersectionObserver(function(es){if(es[0].isIntersecting&&!busy)reveal(false);},{rootMargin:"0px 0px 600px 0px"}).observe(more);
 
-  /* הסינון: סרגל שצף בתחתית המסך (ברוח פירמה). הכול, מיתוג, אתרים, שיווק, עם מספר הלקוחות בכל אחד,
-     וגלולה כהה שמחליקה אל המחלקה שנבחרה */
+  /* הסינון: סרגל שצף בתחתית המסך (ברוח פירמה). הקבוצה הראשונה (סוג הפרויקט) פרושה בסרגל, עם גלולה כהה שמחליקה אליה.
+     כל קבוצה נוספת (תחום הלקוח) נפתחת מעל הסרגל. הכול נבנה מ-FILTERS, ולכן קבוצה או ערך חדשים מפאנל הניהול לא דורשים שינוי בקוד.
+     המספר ליד כל ערך מתחשב בבחירה בקבוצות האחרות, וערך בלי לקוחות לא ניתן לבחירה */
   var bar=document.getElementById("af"),tabs=document.getElementById("ar-tabs"),pill=tabs.querySelector(".af-on"),stat=document.getElementById("ar-status");
-  var KEYS=["","branding","web","digital"],NAMES={"":"הכול",branding:"מיתוג",web:"אתרים",digital:"שיווק"};
-  function count(k){return k?list.filter(function(c){return c.deps[k];}).length:list.length;}
-  tabs.insertAdjacentHTML("beforeend",KEYS.map(function(k){return '<button type="button" data-d="'+k+'" aria-pressed="false">'+NAMES[k]+'<sup>'+count(k)+'</sup></button>';}).join(""));
+  var ALL=FILTERS[0],MORE=FILTERS.slice(1),sel={},cur=false;
+  FILTERS.forEach(function(g){sel[g.key]="";});
+  function has(c,g,v){return !v||!!(c.f[g.key]&&c.f[g.key][v]);}
+  function match(c,skip){return FILTERS.every(function(g){return g===skip||has(c,g,sel[g.key]);});}
+  function count(g,v){return list.filter(function(c){return match(c,g)&&has(c,g,v);}).length;}
+  function btn(g,v,t){return '<button type="button" data-g="'+g.key+'" data-v="'+v+'" aria-pressed="false">'+t+'<sup></sup></button>';}
+  tabs.insertAdjacentHTML("beforeend",btn(ALL,"",ALL.all)+ALL.values.map(function(x){return btn(ALL,x.id,x.name);}).join(""));
+  tabs.setAttribute("aria-label",ALL.label);
+  var CHEV='<svg class="af-chev" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 7.5l5 5"/></svg>';
+  bar.insertAdjacentHTML("beforeend",MORE.map(function(g){
+    return '<div class="af-m" data-g="'+g.key+'"><button class="af-t" type="button" aria-expanded="false" aria-controls="af-p-'+g.key+'" aria-label="'+g.label+'">'+
+      '<svg class="af-t-i" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>'+
+      '<span class="af-t-l">'+g.short+'</span>'+CHEV+'</button>'+
+      '<div class="af-p" id="af-p-'+g.key+'" role="group" aria-label="'+g.label+'">'+btn(g,"",g.all)+g.values.map(function(x){return btn(g,x.id,x.name);}).join("")+'</div></div>';
+  }).join(""));
+  var allBtns=[].slice.call(bar.querySelectorAll("button[data-g]")),menus=[].slice.call(bar.querySelectorAll(".af-m"));
+  function group(k){return FILTERS.filter(function(g){return g.key===k;})[0];}
+  function nameOf(g,v){for(var i=0;i<g.values.length;i++){if(g.values[i].id===v)return g.values[i].name;}return "";}
+  function paint(){
+    allBtns.forEach(function(b){
+      var g=group(b.dataset.g),n=count(g,b.dataset.v),on=sel[g.key]===b.dataset.v;
+      b.setAttribute("aria-pressed",String(on));b.querySelector("sup").textContent=n;
+      b.disabled=!n&&!on;
+    });
+    menus.forEach(function(m){
+      var g=group(m.dataset.g),v=sel[g.key],t=m.querySelector(".af-t");
+      t.classList.toggle("is-set",!!v);m.querySelector(".af-t-l").textContent=v?nameOf(g,v):g.short;
+      t.setAttribute("aria-label",g.label+(v?": "+nameOf(g,v):""));
+    });
+  }
   function slide(){var b=tabs.querySelector('[aria-pressed="true"]');if(!b)return;pill.style.width=b.offsetWidth+"px";pill.style.transform="translateX("+b.offsetLeft+"px)";}
   addEventListener("resize",slide);if(document.fonts)document.fonts.ready.then(slide);
-  var cur=null,flip=null;
-  function apply(k,anim){
-    if(KEYS.indexOf(k)<0)k="";
-    if(k===cur)return;
+  function openMenu(m,on,back){
+    var t=m.querySelector(".af-t");m.classList.toggle("open",on);t.setAttribute("aria-expanded",String(on));
+    if(!on&&back)t.focus({preventScroll:true});
+  }
+  function closeMenus(back){menus.forEach(function(m){if(m.classList.contains("open"))openMenu(m,false,back);});}
+  bar.addEventListener("click",function(e){var t=e.target.closest(".af-t");if(!t)return;var m=t.parentNode,on=!m.classList.contains("open");closeMenus();openMenu(m,on);});
+  document.addEventListener("pointerdown",function(e){if(!e.target.closest||!e.target.closest(".af-m"))closeMenus();});
+  addEventListener("keydown",function(e){if(e.key==="Escape")closeMenus(true);});
+  var flip=null;
+  function apply(next,anim){
+    FILTERS.forEach(function(g){
+      if(!(g.key in next))return;
+      var v=next[g.key]||"";
+      sel[g.key]=g.values.some(function(x){return x.id===v;})?v:"";
+    });
+    var key=FILTERS.map(function(g){return sel[g.key];}).join("|");
+    if(key===cur)return;
     if(flip)flip.progress(1); /* לחיצה מהירה: המעבר הקודם נסגר לפני שמתחיל הבא */
-    cur=k;
-    tabs.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.d===k));});
-    slide();
+    cur=key;
+    paint();slide();
     var go=anim&&hasGsap&&window.Flip&&!still.matches;
     var state=go?Flip.getState(cards):null,h0=grid.offsetHeight;
-    cards.forEach(function(c){c.hidden=!!k&&c.dataset.d.split(" ").indexOf(k)<0;});
+    cards.forEach(function(c){c.hidden=!match(list[+c.querySelector(".ar-b").dataset.k]);});
     layout();shown=FIRST;var lim=cap();
     /* בזמן המעבר הכרטיסים יוצאים מהזרימה: הגובה נשמר, אחרת הפוטר קופץ למעלה והסרגל בורח מתחת לעכבר */
     if(go){busy=true;grid.style.minHeight=Math.max(h0,grid.offsetHeight)+"px";flip=Flip.from(state,{duration:.7,ease:"power3.inOut",scale:true,absolute:true,simple:true,
       onEnter:function(els){return gsap.fromTo(els,{opacity:0,scale:.94},{opacity:1,scale:1,duration:.55,delay:.15,ease:"power3.out"});},
       onLeave:function(els){return gsap.to(els,{opacity:0,scale:.94,duration:.35,ease:"power2.in"});},
       onComplete:function(){flip=null;busy=false;grid.style.minHeight="";ScrollTrigger.refresh();near();}});}
-    stat.textContent=(k?NAMES[k]+": ":"")+count(k)+" לקוחות"+(lim<vis.length?", מוצגים "+lim:"");
-    var p=new URLSearchParams(location.search);if(k)p.set("d",k);else p.delete("d");
+    var names=FILTERS.map(function(g){return nameOf(g,sel[g.key]);}).filter(Boolean).join(", ");
+    stat.textContent=(names?names+": ":"")+vis.length+" לקוחות"+(lim<vis.length?", מוצגים "+lim:"");
+    var p=new URLSearchParams(location.search);
+    FILTERS.forEach(function(g){if(sel[g.key])p.set(g.key,sel[g.key]);else p.delete(g.key);});
     history.replaceState(null,"",location.pathname+(p.toString()?"?"+p:"")+location.hash);
   }
   /* מי שמסנן מאמצע הרשימה חוזר לראש הגריד, כדי לראות את התוצאה מההתחלה */
-  tabs.addEventListener("click",function(e){
-    var b=e.target.closest("button");if(!b||b.dataset.d===cur)return;
-    var top=grid.getBoundingClientRect().top;
-    apply(b.dataset.d,true);
+  bar.addEventListener("click",function(e){
+    var b=e.target.closest("button[data-g]");if(!b||b.disabled)return;
+    var g=b.dataset.g,m=b.closest(".af-m");
+    if(m)openMenu(m,false,true);
+    if(sel[g]===b.dataset.v)return;
+    var top=grid.getBoundingClientRect().top,next={};next[g]=b.dataset.v;
+    apply(next,true);
     if(top<0)G.scrollToY(Math.max(0,top+scrollY-parseFloat(getComputedStyle(doc).getPropertyValue("--hx-h"))-24));
   });
   /* הסרגל עולה מלמטה אחרי שהעמוד נפתח, ויורד כשהפוטר נכנס, כדי לא לשבת על הקישורים שבו */
   var ft=document.getElementById("ft"),atFt=false;
-  function show(){bar.classList.toggle("is-off",atFt);}
+  function show(){bar.classList.toggle("is-off",atFt);if(atFt)closeMenus();}
   if("IntersectionObserver" in window)new IntersectionObserver(function(es){atFt=es[0].isIntersecting;show();},{rootMargin:"0px 0px -40px 0px"}).observe(ft);
   setTimeout(function(){slide();show();},still.matches?0:500);
-  apply(new URLSearchParams(location.search).get("d")||"",false);
+  (function(){var q=new URLSearchParams(location.search),o={};FILTERS.forEach(function(g){o[g.key]=q.get(g.key)||"";});apply(o,false);})();
 
   // ט: הפוטר צובע את כל העמוד. בח הוא כהה בעצמו
   if(G.sk==="i")G.zone(document.getElementById("ft"),"dark");

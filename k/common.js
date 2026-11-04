@@ -50,6 +50,62 @@
     t.focus({preventScroll:true});
   });
 
+  /* ================= מעבר בין עמודים: מסך לבן נפתח מהנקודה שנלחצה, ובעמוד הבא עדשה נפתחת מהמרכז. בהפחתת תנועה קישור רגיל ================= */
+  function go(href,x,y){
+    if(still.matches){location.href=href;return;}
+    if(doc.classList.contains("pt-leave"))return;
+    doc.style.setProperty("--px",(x==null?innerWidth/2:x)+"px");doc.style.setProperty("--py",(y==null?innerHeight/2:y)+"px");
+    try{sessionStorage.setItem("k-pt",String(Date.now()));}catch(e){}
+    doc.classList.add("pt-leave");
+    setTimeout(function(){location.href=href;},560);
+  }
+  document.addEventListener("click",function(e){
+    if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    var a=e.target.closest&&e.target.closest("a[href]");if(!a||a.target||a.hasAttribute("download"))return;
+    var u=new URL(a.href,location.href);
+    if(u.origin!==location.origin||(u.pathname===location.pathname&&u.search===location.search))return;
+    e.preventDefault();
+    var r=a.getBoundingClientRect();
+    go(u.href,e.detail?e.clientX:r.left+r.width/2,e.detail?e.clientY:r.top+r.height/2);
+  });
+  // חזרה בכפתור "אחורה" מהזיכרון של הדפדפן: העמוד מוחזר כמו שהיה, בלי המסך הלבן
+  addEventListener("pageshow",function(e){if(e.persisted)doc.classList.remove("pt-leave","pt-in","pt-out");});
+  if(doc.classList.contains("pt-in")){
+    var ptReady=function(){
+      var t0=performance.now(),im=document.querySelector(".sl1-s img,.ar-m img"),done=false;
+      function open(){
+        if(done)return;done=true;
+        setTimeout(function(){
+          doc.classList.add("pt-out","hr-go");
+          setTimeout(function(){doc.classList.remove("pt-in","pt-out");},860);
+        },Math.max(0,260-(performance.now()-t0)));
+      }
+      Promise.all([document.fonts&&document.fonts.ready,im&&im.decode&&im.decode().catch(function(){})]).then(open);
+      setTimeout(open,2400); // לא מחכים לאינטרנט איטי: עדיף עמוד שנטען מול העיניים על מסך לבן
+    };
+    if(document.readyState==="loading")addEventListener("DOMContentLoaded",ptReady);else ptReady();
+  }
+
+  /* ================= הכפתור: העיגול נפתח מהנקודה שהעכבר נכנס בה ונסגר אל הנקודה שיצא בה, והכפתור נמשך מעט לעכבר (MV:b61) ================= */
+  function btnAt(b,e){var r=b.getBoundingClientRect();b.style.setProperty("--bx",(e.clientX-r.left).toFixed(1)+"px");b.style.setProperty("--by",(e.clientY-r.top).toFixed(1)+"px");}
+  function btnOf(e){var t=e.target;return t&&t.classList&&t.classList.contains("btn")?t:null;}
+  document.addEventListener("pointerenter",function(e){var b=btnOf(e);if(b&&e.pointerType==="mouse"){btnAt(b,e);b.classList.add("is-on");}},true);
+  document.addEventListener("pointerleave",function(e){
+    var b=btnOf(e);if(!b||e.pointerType!=="mouse")return;
+    btnAt(b,e);b.classList.remove("is-on");b.style.removeProperty("--mx");b.style.removeProperty("--my");
+  },true);
+  document.addEventListener("pointermove",function(e){
+    if(e.pointerType!=="mouse"||still.matches||!e.target.closest)return;
+    var b=e.target.closest(".btn");if(!b)return;
+    var r=b.getBoundingClientRect();
+    b.style.setProperty("--mx",((e.clientX-r.left-r.width/2)*.14).toFixed(1)+"px");b.style.setProperty("--my",((e.clientY-r.top-r.height/2)*.28).toFixed(1)+"px");
+  },{passive:true});
+  document.addEventListener("pointerdown",function(e){
+    if(e.pointerType==="mouse"||!e.target.closest)return;
+    var b=e.target.closest(".btn");if(!b)return;
+    btnAt(b,e);b.classList.add("is-on");setTimeout(function(){b.classList.remove("is-on");},520);
+  },{passive:true});
+
   /* ================= הדר ותפריט מסך מלא שנפתח בעיגול מהכפתור (MV:hd4) ================= */
   var SOC={
     fb:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21h3Z"/></svg>',
@@ -193,7 +249,7 @@
 
   window.G={doc:doc,still:still,fine:fine,hasGsap:hasGsap,C:C,lb:lb,W:W,TAG:TAG,ARR:ARR,SALES:SALES,SALES_TEL:SALES_TEL,WA:WA,
     thumb:thumb,deps:deps,lbItem:lbItem,tags:tags,scrollToY:scrollToY,stopGlide:stopGlide,darkZone:darkZone,zone:zone,setDark:setDark,
-    hdCheck:hdCheck,hdScan:hdScan,sk:sk,projectCursor:projectCursor};
+    hdCheck:hdCheck,hdScan:hdScan,sk:sk,projectCursor:projectCursor,go:go};
 })();
 
 /* snap-icons (design-dna/tools/icons): כל חץ יושב על פיקסל שלם, כדי שלא יימרח על שתי שורות במסך של 100% */

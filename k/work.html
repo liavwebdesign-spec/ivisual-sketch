@@ -14,7 +14,12 @@
 <link rel="stylesheet" href="k.css">
 <script>(function(d){
   d.classList.add("lgx-done");
-  if(matchMedia("(prefers-reduced-motion:no-preference)").matches)d.classList.add("rv-js");else d.classList.add("still");
+  if(!matchMedia("(prefers-reduced-motion:no-preference)").matches){d.classList.add("still");return;}
+  d.classList.add("rv-js");
+  // הגענו ממעבר בין עמודים: המסך הלבן כבר כאן, ו-common.js פותח אותו כשהעמוד מוכן
+  var pt=0;try{pt=+sessionStorage.getItem("k-pt")||0;sessionStorage.removeItem("k-pt");}catch(e){}
+  var nav=performance.getEntriesByType&&performance.getEntriesByType("navigation")[0],ty=nav&&nav.type;
+  if(Date.now()-pt<8000&&ty!=="back_forward"&&ty!=="reload"){d.classList.add("pt-in");setTimeout(function(){d.classList.remove("pt-in");},4500);}
 })(document.documentElement)</script>
 </head>
 <body>
@@ -51,7 +56,7 @@
     </nav>
     <p class="sr" id="ar-status" aria-live="polite"></p>
     <ul class="ar-grid" id="ar-grid"></ul>
-    <div class="ar-more" id="ar-more" hidden><button type="button">עוד פרויקטים<i aria-hidden="true"></i></button></div>
+    <div class="ar-more" id="ar-more" hidden><button class="btn btn-line" type="button">עוד פרויקטים</button></div>
   </section>
 </main>
 
@@ -84,6 +89,7 @@
 <script src="site.js"></script>
 <script src="common.js"></script>
 <script src="soc.js"></script>
+<script src="filters.js"></script>
 <script src="work.js"></script>
 <script src="work-k.js"></script>
 <script src="tone.js"></script>

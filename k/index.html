@@ -19,9 +19,14 @@
   var nav=performance.getEntriesByType&&performance.getEntriesByType("navigation")[0],ty=nav&&nav.type,y=0;
   try{y=+sessionStorage.getItem("k-y")||0;}catch(e){}
   if("scrollRestoration" in history)history.scrollRestoration="manual";
+  // מעבר מעמוד הפרויקטים: המסך הלבן כבר כאן, ו-common.js פותח אותו כשהעמוד מוכן. הפתיחה הגדולה רק בכניסה ראשונה
+  var pt=0;try{pt=+sessionStorage.getItem("k-pt")||0;sessionStorage.removeItem("k-pt");}catch(e){}
+  pt=Date.now()-pt<8000&&ty!=="back_forward"&&ty!=="reload";
+  if(pt){d.classList.add("pt-in");setTimeout(function(){d.classList.remove("pt-in");d.classList.add("hr-go");},4500);}
   if(ty==="back_forward"||(ty==="reload"&&y>40)){window.__resumeY=y;return;}
   // קישור לעוגן נכנס ישר לתוכן, בלי הפתיחה
   if(location.hash)return;
+  if(pt){d.classList.add("hr-intro");return;}
   d.classList.add("op-on","hr-intro");
   // רשת ביטחון: אם הסקריפט לא עלה, הפתיחה לא נשארת תקועה
   setTimeout(function(){if(d.classList.contains("op-on")&&!window.__opRun){d.classList.remove("op-on");d.classList.add("hr-go");}},4000);
@@ -61,18 +66,18 @@
   <section class="hr hr-1" id="top" data-hd="dark" aria-labelledby="h1">
     <div class="sl1" id="hk-win" aria-roledescription="מצגת" aria-label="עבודה מכל מחלקה">
       <div class="hk-par" id="hk-par">
-      <div class="sl1-s on" data-k="0"><picture><source media="(max-width:767px)" srcset="img/b03-p.jpg"><img src="img/b03.jpg" alt="" width="2400" height="1600" fetchpriority="high" decoding="async"></picture></div>
+      <div class="sl1-s on" data-k="0"><picture><source media="(max-width:767px)" srcset="img/hero-p.jpg"><img src="img/hero.jpg" alt="" width="2000" height="1333" fetchpriority="high" decoding="async"></picture></div>
       <div class="sl1-s" data-k="1"><picture><source media="(max-width:767px)" srcset="img/dummy/p/w01.jpg"><img src="img/dummy/w01.jpg" alt="" width="2400" height="1920" decoding="async"></picture></div>
       <div class="sl1-s" data-k="2"><picture><source media="(max-width:767px)" srcset="img/dummy/p/c01.jpg"><img src="img/dummy/c01.jpg" alt="" width="2400" height="1350" decoding="async"></picture></div>
       </div>
       <i class="hr-filter" aria-hidden="true"></i>
       <div class="sl1-foot" id="hk-foot">
         <div class="hr-txt">
-          <p class="kick hr-in" style="--i:0"><i></i>ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
+          <p class="kick hr-in" style="--i:0">ויזואל · קרוב לעשרים שנה, לרשויות ולעסקים מכל הארץ</p>
           <h1 id="h1" class="hr-in" style="--i:1">המיתוג, האתר והקמפיין שלכם, במשרד אחד.</h1>
           <div class="hr-cta hr-in" style="--i:2"><a class="btn btn-light" href="#work">לעבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a></div>
         </div>
-        <div class="sl1-nav hr-in" style="--i:3"><button class="sl1-tab" type="button" aria-current="true"><span>מיתוג ועיצוב</span><span class="sl1-bar"><i></i></span></button><button class="sl1-tab" type="button" aria-current="false"><span>בניית אתרים</span><span class="sl1-bar"><i></i></span></button><button class="sl1-tab" type="button" aria-current="false"><span>שיווק דיגיטלי</span><span class="sl1-bar"><i></i></span></button><button class="sl1-pp" type="button" aria-pressed="false" aria-label="עצירת המצגת"><svg class="ic-pause" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3.4" height="12" rx="1"/><rect x="11.6" y="4" width="3.4" height="12" rx="1"/></svg><svg class="ic-play" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M14.5 10 7 15V5z"/></svg></button></div>
+        <div class="sl1-nav hr-in" style="--i:3"><button class="sl1-tab" type="button" aria-current="true"><span>מיתוג ועיצוב</span><span class="sl1-bar"><i></i></span></button><button class="sl1-tab" type="button" aria-current="false"><span>בניית אתרים</span><span class="sl1-bar"><i></i></span></button><button class="sl1-tab" type="button" aria-current="false"><span>שיווק דיגיטלי</span><span class="sl1-bar"><i></i></span></button></div>
       </div>
     </div>
   </section>
@@ -97,7 +102,7 @@
                 </div>
               </div>
             </div>
-            <p class="fp-txt" id="x5-txt" aria-hidden="true"><span class="fp-n">01 / 06</span><span class="fp-d" id="x5-d"></span></p>
+            <p class="fp-txt" id="x5-txt" aria-hidden="true"><span class="fp-d" id="x5-d"></span></p>
           </div>
         </article>
         <div class="x5-sp" id="x5-sp" aria-hidden="true"></div>
@@ -129,7 +134,7 @@
   <div class="dzj" id="dzj" data-hd="dark">
     <section class="qj" id="quote" data-axis="start" aria-label="ציטוט">
       <figure class="qj-f">
-        <blockquote><p class="qj-p lit" id="qt-p"><span class="st-l">״אם אתם מוכרים <span class="gold">זהב</span>,</span> <span class="st-l">ודאו שאתם לא עוטפים</span> <span class="st-l">אותו בנייר עיתון.״</span></p></blockquote>
+        <blockquote><p class="qj-p lit" id="qt-p"><span class="st-l">״אם אתם מוכרים זהב,</span> <span class="st-l">ודאו שאתם לא <span class="hl">עוטפים</span></span> <span class="st-l">אותו בנייר עיתון.״</span></p></blockquote>
         <figcaption data-rv>לילך סגל</figcaption>
       </figure>
     </section>
@@ -140,7 +145,7 @@
         <svg class="ag-ghost" id="ag-ghost" viewBox="0 0 812 610" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" aria-hidden="true"><circle cx="300" cy="285" r="240" pathLength="1"/><circle cx="688" cy="444" r="97" pathLength="1"/></svg>
         <div class="ag-obj" id="ag-obj" aria-hidden="true"></div>
         <div class="ag-txt">
-          <h2 id="cd-h">ככה עוטפים <span class="gold">זהב.</span></h2>
+          <h2 id="cd-h">ככה <span class="hl">עוטפים</span> זהב.</h2>
           <a class="btn btn-line" id="ag-btn" href="work.html">לכל העבודות<svg class="arr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10H5m4-4-4 4 4 4"/></svg></a>
         </div>
       </div>

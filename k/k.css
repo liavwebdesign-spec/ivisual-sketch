@@ -23,7 +23,8 @@ html.fl-end .flogo{opacity:0;visibility:hidden;transition:color .35s var(--ease-
 
 /* מילים שנדלקות בגלילה */
 .lit .w{--lit:1;color:color-mix(in srgb,var(--ink) calc(16% + var(--lit) * 84%),transparent)}
-.lit .gold .w{color:color-mix(in srgb,var(--gold) calc(16% + var(--lit) * 84%),transparent)}
+.lit .hl .w{color:color-mix(in srgb,var(--lime-t) calc(16% + var(--lit) * 84%),transparent)}
+.hl{color:var(--lime-t)}
 
 /* ================= הלוגו של הפתיחה, בחצי מהגודל של י ================= */
 .lgx{position:fixed;inset:0;z-index:52;pointer-events:none;direction:ltr;color:#F3F1EC}
@@ -91,8 +92,7 @@ html[data-sk=k] .stop-h{font-weight:400}
 .st-l{display:block;white-space:nowrap}
 .qj-p .st-l:nth-child(2){margin-inline-start:12vw}
 .qj-p .st-l:nth-child(3){margin-inline-start:4vw}
-.qj figcaption{display:inline-flex;align-items:center;gap:12px;margin-top:clamp(28px,3vw,56px);margin-inline-start:12vw;font-size:var(--fs-lead);color:var(--muted)}
-.qj figcaption::before{content:"";width:28px;height:2px;background:var(--lime)}
+.qj figcaption{margin-top:clamp(28px,3vw,56px);margin-inline-start:12vw;font-size:var(--fs-lead);color:var(--muted)}
 
 /* ================= ככה עוטפים זהב: סצנת החתימה ================= */
 .ag-pin{position:relative;height:100svh;overflow:hidden;display:grid;place-items:center}

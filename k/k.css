@@ -1,0 +1,163 @@
+/* סקיצה כ · השילוב מפגישת 3.11.2026: י הבסיס (לבן נקי, היפוך צבע של כל העמוד, Lenis), עם הירו 1, המסך השני, העבודות והמחלקות של ח.
+   נטענת אחרי core.css: מוסיפה ודורסת כאן */
+
+/* ================= גלילה רכה (Lenis) ================= */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped:not(.op-on){overflow:hidden}
+.lenis.lenis-smooth iframe{pointer-events:none}
+
+/* ================= טיפוגרפיה: משקל רגיל, צמוד, ולא ענק (לילך, 3.11: "תקטין קצת ואל תעשה הכל ענק") ================= */
+html[data-sk=k]{--w-display:400;--w-strong:500;--fs-h2:clamp(32px,3.5vw + .1rem,84px);--fs-big:clamp(34px,4.4vw + .1rem,108px);--fs-giant:clamp(40px,5vw + .3rem,120px)}
+html[data-sk=k] h1,html[data-sk=k] h2,html[data-sk=k] h3{font-weight:400;letter-spacing:-.03em}
+html[data-sk=k] .dpa-n,html[data-sk=k] .wk-n,html[data-sk=k] .nx-t b{font-weight:400}
+
+/* ================= העמוד מתהפך לשחור ולירוק ================= */
+html[data-sk=k]{transition:--bg .7s var(--ease-io),--ink .7s var(--ease-io)}
+html[data-sk=k].is-dark{--bg:var(--dark);--ink:#F3F1EC;--lime-t:var(--lime);--char:#F3F1EC;--err:#FF8A7A;--focus:var(--lime)}
+html[data-sk=k].is-green{--bg:var(--lime);--ink:#1F1D20;--lime-t:#1F1D20;--focus:#1F1D20;--err:#7A1010;--hdd:#fff}
+html[data-sk=k][data-hd=dark]:not(.is-dark):not(.is-green):not(.hd-tone){--hdc:#F3F1EC}
+.ftj{--hdd:var(--lime)}
+html.fl-end .flogo{opacity:0;visibility:hidden;transition:color .35s var(--ease-io),opacity .25s,visibility 0s linear .25s}
+
+/* מילים שנדלקות בגלילה */
+.lit .w{--lit:1;color:color-mix(in srgb,var(--ink) calc(16% + var(--lit) * 84%),transparent)}
+.lit .gold .w{color:color-mix(in srgb,var(--gold) calc(16% + var(--lit) * 84%),transparent)}
+
+/* ================= הלוגו של הפתיחה, בחצי מהגודל של י ================= */
+.lgx{position:fixed;inset:0;z-index:52;pointer-events:none;direction:ltr;color:#F3F1EC}
+.lgx-m,.lgx-w{position:absolute;transform-origin:0 0;will-change:transform}
+.lgx svg{display:block;width:100%;height:100%;overflow:visible;fill:currentColor}
+.lgx .dot{fill:var(--lime)}
+/* הסימן למעלה, בצד של תחילת השורה. הגדלים בפרופורציה של הלוגו: 812 על 610 ו-1914 על 610 */
+.lgx-m{--h:clamp(48px,8.5svh,90px);height:var(--h);width:calc(var(--h) * 812 / 610);top:clamp(16px,3svh,32px);right:var(--gutter)/* qa-allow: physical, הלוגו בפינה הימנית כמו בהדר */}
+/* המילה נוחתת בצד השמאלי, מעל שמות המחלקות */
+.lgx-w{width:clamp(160px,22vw,500px);aspect-ratio:1914/610;left:var(--gutter);/* qa-allow: physical, המילה בפינה השמאלית */ bottom:calc(clamp(40px,8vh,104px) + 72px)}
+.lgx-dk{z-index:0;color:var(--ink)}
+html.lgx-done .lgx{visibility:hidden}
+html:not(.lgx-done):not(.still) .flogo{opacity:0;pointer-events:none}
+html:not(.lgx-done):not(.still) .flogo:focus-visible{opacity:1}
+.still .lgx{display:none}
+
+/* בזמן הפתיחה: הכול מתחיל ריק, ורק הלוגו על הלבן */
+/* במחשב פס הגלילה נשאר במקומו בזמן הפתיחה, כדי שהעמוד לא יקפוץ כשהיא נגמרת. את הגלילה עוצר Lenis */
+@media (hover:none){.op-on{overflow:hidden}}
+.op-on .hx{opacity:0}
+.hx{transition:color .35s var(--ease-io),opacity .5s var(--ease-io)}
+.op-on .sl1,.op-on .lgx:not(.lgx-dk){clip-path:circle(0px at 50% 50%)}
+.op-on .lgx svg>g{opacity:0}
+.op-on .sl1 .hr-filter{opacity:0}
+.cl-form .cf-sum,.cl-form .cf-done{scroll-margin-top:calc(var(--hx-h) + 16px)}
+
+/* ================= הירו 1 ================= */
+.hk-par{position:absolute;inset:-1px;z-index:-2;will-change:transform}
+/* ההירו בגובה המסך גם במסכים נמוכים, כדי שהמילה של הלוגו, שמקובעת למסך, לא תעלה על שמות המחלקות */
+html[data-sk=k] .sl1{min-height:480px}
+html[data-sk=k] .sl1 h1{font-size:clamp(32px,3.15vw + .1rem,74px);line-height:1.06}
+
+/* ================= המסך השני: הירו 5 של ח כפאנל הראשון בערימה ================= */
+.wz{position:relative}
+/* האזור הכהה מתחיל כשהחלון כבר מכסה את המסך: 92% מ-140svh של הפתיחה, ועוד 55svh של נקודת ההתחלה של האזור */
+.wz-mark{position:absolute;top:183.8svh;bottom:0;inset-inline:0;pointer-events:none;visibility:hidden}
+html[data-sk=k] .fp{background:var(--dark)}
+html[data-sk=k] .fp.x5{height:100svh;min-height:0;background:var(--bg)}
+.x5 .x5-pin{height:100%;min-height:0}
+.x5 .hr-txt h2{font-size:clamp(40px,5vw + .3rem,120px);line-height:1.02;letter-spacing:-.04em}
+@media (min-width:768px){
+  .x5-row{grid-template-columns:minmax(0,1fr) minmax(0,1.7fr)}
+  .x5-slot{max-height:58svh}
+}
+@media (min-width:768px) and (max-aspect-ratio:1/1){
+  .x5-row{grid-template-columns:minmax(0,1fr)}
+  .x5-slot{order:-1;max-height:none;aspect-ratio:4/3}
+}
+.x5-sp{display:none}
+.is-stack .x5-sp{display:block;height:140svh}
+.x5 .fp-hit{z-index:3}
+.x5 .fp-txt{z-index:4}
+.x5:not(.live) .fp-txt{display:none}
+.x5-o{inset:auto 0 0;height:46%;background:linear-gradient(to top,var(--dark),color-mix(in srgb,var(--dark) 0%,transparent))}
+.x5.live .fp-hit{will-change:clip-path}
+
+/* ================= עצירה ================= */
+html[data-sk=k] .stop-h{font-weight:400}
+
+/* ================= ציטוט מדורג ================= */
+.qj{display:grid;align-items:center;min-height:100svh;padding:var(--sec-loose) var(--gutter)}
+.qj-f{margin:0}
+.qj blockquote{margin:0}
+.qj-p{font-size:var(--fs-big);line-height:1.08;letter-spacing:-.035em}
+.st-l{display:block;white-space:nowrap}
+.qj-p .st-l:nth-child(2){margin-inline-start:12vw}
+.qj-p .st-l:nth-child(3){margin-inline-start:4vw}
+.qj figcaption{display:inline-flex;align-items:center;gap:12px;margin-top:clamp(28px,3vw,56px);margin-inline-start:12vw;font-size:var(--fs-lead);color:var(--muted)}
+.qj figcaption::before{content:"";width:28px;height:2px;background:var(--lime)}
+
+/* ================= ככה עוטפים זהב: סצנת החתימה ================= */
+.ag-pin{position:relative;height:100svh;overflow:hidden;display:grid;place-items:center}
+.ag-ghost{position:absolute;left:50%;top:50%;/* qa-allow: physical, ממורכז */ width:min(130vmin,1500px);height:auto;translate:-37% -47%;color:color-mix(in srgb,var(--ink) 30%,transparent);overflow:visible}
+.ag-ghost circle{vector-effect:non-scaling-stroke}
+.ag-obj{position:absolute;inset:0;z-index:0}
+.ag-o{position:absolute;left:50%;top:50%;/* qa-allow: physical, יוצא מהמרכז */ --w:clamp(150px,calc(var(--b) * 1vw),640px);width:var(--w);height:auto;margin:calc(var(--w) * var(--r) * -.5) 0 0 calc(var(--w) * -.5);/* qa-allow: physical */ opacity:0;will-change:transform,opacity;pointer-events:none}
+/* העבודות נמסות לרקע, רק בצבע הרקע המדויק: מאחורי הכותרת כדי שהיא תמיד תיקרא, ולמעלה כדי שלא ייכנסו מתחת ללוגו */
+.ag-pin::after{content:"";position:absolute;inset:0 0 auto;height:clamp(96px,14svh,144px);z-index:1;background:linear-gradient(var(--bg) 42%,color-mix(in srgb,var(--bg) 0%,transparent));pointer-events:none}
+.ag-txt{position:relative;z-index:2;display:grid;justify-items:center;gap:clamp(20px,2.2vw,40px);text-align:center}
+.ag-txt::before{content:"";position:absolute;inset:-32% -16%;z-index:-1;background:radial-gradient(closest-side,var(--bg) 66%,color-mix(in srgb,var(--bg) 0%,transparent));pointer-events:none}
+.ag-txt h2{font-size:clamp(40px,6vw,150px);line-height:1;letter-spacing:-.04em}
+.ag-txt .wm{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.16em;margin-bottom:-.16em}
+.ag-txt .w{display:inline-block}
+.still .ag-o{opacity:1}
+
+/* ================= לקוחות ================= */
+html[data-sk=k] .clients{padding-block:var(--sec) clamp(48px,5vw,96px)}
+html[data-sk=k] .clients h2{font-size:var(--fs-h2);line-height:1.08}
+
+/* ================= צור קשר ================= */
+html[data-sk=k] .close{padding-block:var(--sec-loose) var(--sec)}
+html[data-sk=k] .ct-giant{font-size:var(--fs-big);line-height:1.05;max-width:17ch}
+html[data-sk=k] .ct-lead,html[data-sk=k] .way-a{font-weight:400}
+html[data-sk=k] .cf .cf-grid .cf-f:has([data-v=org]){grid-column:1/-1}
+
+/* ================= פוטר שנחשף מלמטה ================= */
+.ftj{overflow:clip}
+.ftj-in{display:flex;flex-direction:column;min-height:100svh;padding:clamp(96px,9vw,192px) var(--gutter) 0;will-change:transform}
+.ftj-top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) auto;gap:40px clamp(32px,4vw,96px);align-items:start}
+.ftj-top2{grid-template-columns:minmax(0,1.1fr) minmax(0,2fr)}
+.ftj-side{display:grid;gap:24px;justify-items:start}
+.ftj .ftg-cols{margin-top:0}
+.ftj .ft-legal{margin-top:clamp(48px,5vw,96px)}
+/* המילה שלמה, בלי חיתוך (ליאב, 4.11: "הלוגו נחתך בצורה מוזרה וזה לא ברור למה לגולש") */
+.ftj-in{padding-bottom:clamp(24px,3vw,56px)}
+.ftj-word{display:block;flex:none;direction:ltr;width:100%;margin-top:auto;padding-top:clamp(40px,5vw,88px)}
+.ftj-word img{display:block;width:100%;height:auto}
+/* "תמשיכו לגלול": מסך לבן, כמו עמוד הפרויקטים שאליו ממשיכים, שעולה על הפוטר כמו הערימה של העבודות. הפוטר נשאר במקום מתחתיו */
+.ftj .nx{position:relative;z-index:1;--bg:#fff;--ink:#1F1D20;--lime-t:#1F1D20;--focus:#1F1D20;--muted:color-mix(in srgb,var(--ink) 72%,var(--bg));background:var(--bg);color:var(--ink)}
+.ftj .nx-a:focus-visible{outline-color:var(--focus)}
+@media (prefers-reduced-motion:no-preference){.ftj:has(.nx) .ftj-in{position:sticky;top:var(--ftj-top,0px)}}
+html[data-sk=k].at-nx{--hdc:#1F1D20;--hdd:var(--lime)}
+
+/* ================= טאבלט וטלפון ================= */
+@media (max-width:1023px){
+  .ftj-top{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:767px){
+  .x5-slot{aspect-ratio:4/5;max-height:52svh}
+  .lgx-m{--h:clamp(32px,5.25svh,48px);top:10px}
+  .lgx-w{width:min(calc((100vw - var(--gutter) * 2) / 2),200px);bottom:14px}
+  .wk-n{white-space:normal;overflow:visible;text-wrap:balance}
+  .sl1-foot{bottom:clamp(72px,11svh,110px)}
+  html[data-sk=k] .sl1 h1{font-size:clamp(30px,8.4vw,44px)}
+  .qj-p{font-size:clamp(28px,7.6vw,48px)}
+  .qj-p .st-l:nth-child(2),.qj-p .st-l:nth-child(3){margin-inline-start:0}
+  .qj figcaption{margin-inline-start:0;font-size:var(--fs-body)}
+  .ag-ghost{width:190vmin}
+  .ag-o{--w:calc(var(--b) * 1.7vw)}
+}
+
+/* ================= הפחתת תנועה ================= */
+@media (prefers-reduced-motion: reduce){
+  html[data-sk=k]{transition:none}
+  .dzj,#more{background:var(--dark);color:#F3F1EC;--ink:#F3F1EC;--bg:var(--dark)}
+  html[data-sk=k] .close{background:var(--lime);color:#1F1D20;--ink:#1F1D20;--bg:var(--lime)}
+}
